@@ -5,16 +5,21 @@ main_collection = /main/main.collectionc
 shared_state = 1
 
 [display]
-width = 960
-height = 640
+width = 1280
+height = 720
 high_dpi = 1
 
 [android]
 input_method = HiddenInputField
 
 [html5]
-scale_mode = stretch
+scale_mode = fit
+show_made_with_defold = 0
+show_fullscreen_button = 0
+show_console_banner = 0
+cssfile = /builtins/manifests/web/dark_theme.css
 
 [project]
 title = Ultimate Brainrot Battle
+dependencies#0 = https://github.com/Insality/druid/archive/refs/tags/1.1.5.zip
 

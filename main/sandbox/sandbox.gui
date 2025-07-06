@@ -1,0 +1,33 @@
+fonts {
+  name: "game"
+  font: "/assets/font/game.font"
+}
+textures {
+  name: "ui"
+  texture: "/assets/img/ui/ui.atlas"
+}
+nodes {
+  position {
+    x: 627.0
+    y: 463.0
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "box"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "attack"
+  font: "game"
+  id: "text"
+  parent: "box"
+  inherit_alpha: true
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

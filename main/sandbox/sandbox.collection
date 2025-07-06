@@ -1,0 +1,18 @@
+name: "sandbox"
+scale_along_z: 0
+embedded_instances {
+  id: "gui"
+  data: "components {\n"
+  "  id: \"sandbox\"\n"
+  "  component: \"/main/sandbox/sandbox.gui\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "go"
+  data: "components {\n"
+  "  id: \"sandbox\"\n"
+  "  component: \"/main/sandbox/sandbox.script\"\n"
+  "}\n"
+  ""
+}

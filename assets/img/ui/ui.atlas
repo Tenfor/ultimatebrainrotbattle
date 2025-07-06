@@ -1,0 +1,4 @@
+images {
+  image: "/assets/img/ui/button1.png"
+}
+extrude_borders: 2
