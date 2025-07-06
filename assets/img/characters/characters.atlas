@@ -1,0 +1,7 @@
+images {
+  image: "/assets/img/characters/sahur.png"
+}
+images {
+  image: "/assets/img/characters/shinpannzini.png"
+}
+extrude_borders: 2
