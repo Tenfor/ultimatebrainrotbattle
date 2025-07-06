@@ -1,4 +1,28 @@
 images {
   image: "/assets/img/ui/button1.png"
 }
+images {
+  image: "/assets/img/ui/button_faq.png"
+}
+images {
+  image: "/assets/img/ui/button_info.png"
+}
+images {
+  image: "/assets/img/ui/button_music.png"
+}
+images {
+  image: "/assets/img/ui/button_music_off.png"
+}
+images {
+  image: "/assets/img/ui/button_pause.png"
+}
+images {
+  image: "/assets/img/ui/button_settings.png"
+}
+images {
+  image: "/assets/img/ui/button_sound.png"
+}
+images {
+  image: "/assets/img/ui/button_sound_off.png"
+}
 extrude_borders: 2

@@ -1,0 +1,141 @@
+script: ""
+fonts {
+  name: "game"
+  font: "/assets/font/game.font"
+}
+textures {
+  name: "ui"
+  texture: "/assets/img/ui/ui.atlas"
+}
+nodes {
+  position {
+    x: 629.0
+    y: 522.0
+  }
+  scale {
+    x: 1.098786
+    y: 1.143112
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "play_button"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: 6.123635
+  }
+  scale {
+    x: 1.3
+    y: 1.3
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Play"
+  font: "game"
+  id: "Play_text"
+  parent: "play_button"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 629.0
+    y: 338.0
+  }
+  scale {
+    x: 0.87565
+    y: 0.848246
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "upgrades"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -1.142009
+    y: 3.53671
+  }
+  scale {
+    x: 0.9
+    y: 0.9
+    z: 0.8
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Upgrades"
+  font: "game"
+  id: "Upgrades"
+  parent: "upgrades"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 518.0
+    y: 117.0
+  }
+  scale {
+    x: 0.9
+    y: 0.9
+  }
+  type: TYPE_BOX
+  texture: "ui/button_music"
+  id: "sound"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 298.0
+    y: 117.0
+  }
+  scale {
+    x: 0.9
+    y: 0.9
+  }
+  type: TYPE_BOX
+  texture: "ui/button_sound"
+  id: "music"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 737.0
+    y: 119.0
+  }
+  scale {
+    x: 0.9
+    y: 0.9
+  }
+  type: TYPE_BOX
+  texture: "ui/button_settings"
+  id: "settings"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 958.0
+    y: 117.0
+  }
+  scale {
+    x: 0.9
+    y: 0.9
+  }
+  type: TYPE_BOX
+  texture: "ui/button_info"
+  id: "info"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT
