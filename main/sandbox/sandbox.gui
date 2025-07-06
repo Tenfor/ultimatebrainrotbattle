@@ -8,12 +8,16 @@ textures {
 }
 nodes {
   position {
-    x: 627.0
-    y: 463.0
+    x: 80.0
+    y: 643.0
+  }
+  scale {
+    x: 0.4
+    y: 0.5
   }
   type: TYPE_BOX
   texture: "ui/button1"
-  id: "box"
+  id: "sahurBtn"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
 }
@@ -23,10 +27,66 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "attack"
+  text: "sahur\n"
+  ""
   font: "game"
-  id: "text"
-  parent: "box"
+  id: "sahur"
+  parent: "sahurBtn"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 80.0
+    y: 564.0
+  }
+  scale {
+    x: 0.4
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "patapimBtn"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "patapim\n"
+  ""
+  font: "game"
+  id: "patapim"
+  parent: "patapimBtn"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 80.0
+    y: 488.0
+  }
+  scale {
+    x: 0.4
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "cappucinoBtn"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "cappucino"
+  font: "game"
+  id: "cappucino"
+  parent: "cappucinoBtn"
   inherit_alpha: true
 }
 material: "/builtins/materials/gui.material"

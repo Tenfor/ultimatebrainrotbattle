@@ -1,0 +1,78 @@
+--local gameSettings = require "main/gameSettings"
+--local gameModel = require "main/game/gameModel"
+--local musics = {
+--	"#bgMusic",
+--	"#menuMusic",
+--}
+local sounds = {
+	"#hit_1",
+	"#hit_2",
+	"#hit_3",
+}
+
+function init(self)
+	self.bgMusicPlaying = false
+	self.menuMusicPlaying = false
+
+	self.sfxPlaying = {}
+
+	msg.post(".", "toggle_musics")
+	msg.post(".", "toggle_sounds")
+end
+
+
+
+function on_message(self, message_id, message)
+	--if message_id == hash("show_game_over") then
+	--	sound.stop("#bgMusic")
+	--end
+	if message_id == hash("playSfx") then 
+			local play_id = #self.sfxPlaying + 1
+			msg.post(message.url,"play_sound",{play_id = play_id})
+			table.insert(self.sfxPlaying,play_id)
+	end
+	if message_id == hash("sound_done") then
+		table.remove(self.sfxPlaying,message.play_id)
+	end
+	if message_id == hash("playMusic") then
+		--if gameSettings.music then
+			if message.url == "#menuMusic" and not self.menuMusicPlaying then 
+				self.menuMusicPlaying = true
+				sound.play(message.url)
+			elseif message.url == "#bgMusic" and not self.bgMusicPlaying then
+				self.bgMusicPlaying = true
+				sound.play(message.url)
+			end
+	--	end
+	end
+	if message_id == hash("stopMusic") then
+		if message.url == "#menuMusic" then 
+			self.menuMusicPlaying = false
+		elseif message.url == "#bgMusic" then
+			self.bgMusicPlaying = false
+		end
+		sound.stop(message.url)
+	end
+	--if message_id == hash("toggle_pause") then
+	--	for i = 1, #sounds, 1 do
+	--		sound.pause(sounds[i], gameModel.isPaused)
+	--	end
+	--	for j = 1, #sounds, 1 do
+	--		sound.pause(musics[j], gameModel.isPaused)
+	--	end
+	--end
+	--if message_id == hash("toggle_sounds") then
+	--	local gain = 0
+	--	if gameSettings.sounds then 
+	--		gain = 1
+	--	end
+	--	sound.set_group_gain("sfx", gain)
+	--end
+	--if message_id == hash("toggle_musics") then
+	--	local gain = 0
+	--	if gameSettings.music then 
+	--		gain = 1
+	--	end
+	--	sound.set_group_gain("music", gain)
+	--end
+end
