@@ -23,6 +23,7 @@ cssfile = /builtins/manifests/web/dark_theme.css
 [project]
 title = Ultimate Brainrot Battle
 dependencies#0 = https://github.com/Insality/druid/archive/refs/tags/1.1.5.zip
+dependencies#1 = https://github.com/Insality/defold-event/archive/refs/tags/12.zip
 
 [graphics]
 default_texture_min_filter = linear_mipmap_linear

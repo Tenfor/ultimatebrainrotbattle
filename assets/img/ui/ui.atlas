@@ -25,4 +25,13 @@ images {
 images {
   image: "/assets/img/ui/button_sound_off.png"
 }
+images {
+  image: "/assets/img/ui/bar_bg.png"
+}
+images {
+  image: "/assets/img/ui/bar_hp.png"
+}
+images {
+  image: "/assets/img/ui/bar_energy.png"
+}
 extrude_borders: 2

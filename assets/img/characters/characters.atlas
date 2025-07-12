@@ -4,4 +4,25 @@ images {
 images {
   image: "/assets/img/characters/shinpannzini.png"
 }
+images {
+  image: "/assets/img/characters/lirili.png"
+}
+images {
+  image: "/assets/img/characters/bombardino.png"
+}
+images {
+  image: "/assets/img/characters/boneca.png"
+}
+images {
+  image: "/assets/img/characters/patapim.png"
+}
+images {
+  image: "/assets/img/characters/cappucino.png"
+}
+images {
+  image: "/assets/img/characters/dindin.png"
+}
+images {
+  image: "/assets/img/characters/trallalero.png"
+}
 extrude_borders: 2

@@ -1,6 +1,5 @@
 local M = {}
 
--- Player támadás: objektumot mozgat 400 X-re, majd vissza
 function M.player_attack(go_url,soundControllerPath)
 	local original_pos = go.get_position(go_url)
 	local target_pos = vmath.vector3(600, original_pos.y, original_pos.z)

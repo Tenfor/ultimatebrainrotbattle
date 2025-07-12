@@ -1,0 +1,48 @@
+local druid = require("druid.druid")
+local events = require("event.events")
+local gameEvents = require("main/events/gameEvents")
+
+
+local function onSahurBtn(self)
+	events.trigger(gameEvents.LOAD_SAHUR)
+end
+
+local function onPatapimBtn(self)
+	events.trigger(gameEvents.LOAD_PATAPIM)
+end
+
+local function onCappucinoBtn(self)
+	events.trigger(gameEvents.LOAD_CAPPUCINO)
+end
+
+local function onCharacterLoaded(self)
+	print("ONCHARACTERLOADED")
+end
+
+function init(self)
+	self.druid = druid.new(self)
+	self.sahurBtn = self.druid:new_button("sahurBtn", onSahurBtn)
+	self.patapimBtn = self.druid:new_button("patapimBtn", onPatapimBtn)
+	self.CappucinoBtn = self.druid:new_button("cappucinoBtn", onCappucinoBtn)
+
+	events.subscribe(gameEvents.CHARACTER_LOADED, onCharacterLoaded, self)
+
+	self.progress = self.druid:new_progress("playerHpBar", "x")
+	self.progress:set_to(1)
+end
+
+function final(self)
+	self.druid:final()
+end
+
+function update(self, dt)
+	self.druid:update(dt)
+end
+
+function on_message(self, message_id, message, sender)
+	self.druid:on_message(message_id, message, sender)
+end
+
+function on_input(self, action_id, action)
+	return self.druid:on_input(action_id, action)
+end
