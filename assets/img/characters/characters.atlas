@@ -25,4 +25,10 @@ images {
 images {
   image: "/assets/img/characters/trallalero.png"
 }
+images {
+  image: "/assets/img/characters/bobrito.png"
+}
+images {
+  image: "/assets/img/characters/frigo.png"
+}
 extrude_borders: 2
