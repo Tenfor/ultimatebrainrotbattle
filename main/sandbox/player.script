@@ -1,8 +1,6 @@
 local battleController = require "main/battle/battleController"
 local playerModel = require("main/battle/playerModel")
 
-local count = 0
-
 local function attack(self)
 	--battleController.player_attack(go.get_id())
 	

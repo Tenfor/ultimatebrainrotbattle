@@ -3,7 +3,7 @@ local enemyModel = require("main/battle/enemyModel")
 local events = require("event.events")
 local gameEvents = require("main/events/gameEvents")
 
-local function onPlayEffect(self,effectUrl)
+local function onPlayEffect(self,effectUrl,doneEvent)
 	local pos = go.get_position()
 	factory.create("#effectFactory", pos, nil, {animName=hash("lionstrike")}, 1)
 end

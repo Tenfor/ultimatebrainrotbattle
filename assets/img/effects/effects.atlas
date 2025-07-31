@@ -26,9 +26,6 @@ animations {
 animations {
   id: "lionstrike"
   images {
-    image: "/assets/img/effects/lionstrike/lionstrike (1).png"
-  }
-  images {
     image: "/assets/img/effects/lionstrike/lionstrike (2).png"
   }
   images {
@@ -48,6 +45,9 @@ animations {
   }
   images {
     image: "/assets/img/effects/lionstrike/lionstrike (8).png"
+  }
+  images {
+    image: "/assets/img/effects/lionstrike/lionstrike (9).png"
   }
   fps: 20
 }

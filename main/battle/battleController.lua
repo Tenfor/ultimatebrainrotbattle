@@ -33,12 +33,15 @@ function M.player_lion_strike(go_url)
 	local target_pos = vmath.vector3(600, original_pos.y, original_pos.z)
 
 	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos.x, go.EASING_LINEAR, 0.2, 0, function()
+		events.trigger(gameEvents.PLAY_EFFECT,"lionstrike")
+		go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, original_pos.x, go.EASING_LINEAR, 0.2)
+	end)
+
+	timer.delay(0.3, false, function() 
 		local rand = math.random(1,2)
 		events.trigger(gameEvents.PLAY_SFX,"#hit_"..tostring(rand))
 		local dmg = M.calculate_player_damage()
 		events.trigger(gameEvents.ENEMY_HURT,dmg)
-		events.trigger(gameEvents.PLAY_EFFECT,"lionstrike")
-		go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, original_pos.x, go.EASING_LINEAR, 0.2)
 	end)
 end
 
