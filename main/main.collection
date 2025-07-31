@@ -12,5 +12,11 @@ embedded_instances {
   "  data: \"collection: \\\"/main/sandbox/sandbox.collection\\\"\\n"
   "\"\n"
   "}\n"
+  "embedded_components {\n"
+  "  id: \"menuProxy\"\n"
+  "  type: \"collectionproxy\"\n"
+  "  data: \"collection: \\\"/main/menu/menu.collection\\\"\\n"
+  "\"\n"
+  "}\n"
   ""
 }

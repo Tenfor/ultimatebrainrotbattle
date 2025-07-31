@@ -1,0 +1,110 @@
+local tweener = require("tweener.tweener")
+
+go.property("value", 1)
+go.property("crit", false)
+go.property("parentId", "enemy")
+
+function init(self)
+
+	go.set_parent(go.get_id(),self.parentId,true)
+
+	self.parentId = hash("enemy")
+	--print(self.parentId)
+
+	self.offsetX = 0;
+	self.offsetY = 100;
+	
+	go.set("#label", "color.w", 0)
+	go.set("#label", "outline.w", 0)
+	go.set("#label", "shadow.w", 0)
+	go.set("#label", "scale", vmath.vector3(1,1,1))
+
+	label.set_text("#label", tostring(self.value))
+
+	local inDur = 0.2
+	local outDur = 0.4
+	go.animate("#label", "color.w", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_LINEAR, inDur)
+	go.animate("#label", "outline.w", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_LINEAR, inDur)
+	go.animate("#label", "shadow.w", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_LINEAR, inDur)
+	go.animate("#label", "scale", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(1.1,1.1,1.1), go.EASING_LINEAR, inDur)
+	local pos = go.get_position()
+
+	--local randX = math.random(-100,100)
+	tweener.tween(go.EASING_LINEAR, 0, 12, inDur, function (value,is_final_call) 
+		self.offsetX = self.offsetX+math.floor(value)
+		self.offsetY = self.offsetY+math.floor(value)
+		if is_final_call then
+			tweener.tween(go.EASING_INSINE, 0, 6, outDur, function (value2,is_final_call2) 
+				self.offsetX = self.offsetX+math.floor(value2)
+			end)
+
+			tweener.tween(go.EASING_INSINE, 0, -20, outDur, function (value2,is_final_call2) 
+				self.offsetY = self.offsetY+math.floor(value2)
+				if is_final_call2 then 
+					go.delete()
+				end
+			end)
+		end
+	end)
+	--go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(pos.x+100,pos.y+100,pos.z), go.EASING_OUTCUBIC, inDur)
+
+	--go.animate(url, property, playback, to, easing, duration, delay)
+	go.animate("#label", "color.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, outDur-0.1,inDur+0.2)
+	go.animate("#label", "outline.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, outDur-0.1,inDur+0.2)
+	go.animate("#label", "shadow.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, outDur-0.1,inDur+0.2)
+	go.animate("#label", "scale", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(0.9,0.9,0.9), go.EASING_LINEAR, outDur,inDur)
+
+--	go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(pos.x+150,pos.y-200,pos.z), go.EASING_INSINE, outDur,inDur, 
+--	function() 
+--		go.delete()
+--	end)
+end
+
+function final(self)
+	-- Add finalization code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+end
+
+function update(self, dt)
+	local target_pos = go.get_position("/enemy")
+	target_pos.x = target_pos.x + self.offsetX
+	target_pos.y = target_pos.y + self.offsetY
+
+	--print(self.parentId,target_pos)
+	
+	go.set_position(target_pos,go.get_id())
+end
+
+function fixed_update(self, dt)
+	-- This function is called if 'Fixed Update Frequency' is enabled in the Engine section of game.project
+	-- Can be coupled with fixed updates of the physics simulation if 'Use Fixed Timestep' is enabled in
+	-- Physics section of game.project
+	-- Add update code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+end
+
+function on_message(self, message_id, message, sender)
+	-- Add message-handling code here
+	-- Learn more: https://defold.com/manuals/message-passing/
+	-- Remove this function if not needed
+end
+
+function on_input(self, action_id, action)
+	-- Add input-handling code here. The game object this script is attached to
+	-- must have acquired input focus:
+	--
+	--    msg.post(".", "acquire_input_focus")
+	--
+	-- All mapped input bindings will be received. Mouse and touch input will
+	-- be received regardless of where on the screen it happened.
+	-- Learn more: https://defold.com/manuals/input/
+	-- Remove this function if not needed
+end
+
+function on_reload(self)
+	-- Add reload-handling code here
+	-- Learn more: https://defold.com/manuals/hot-reload/
+	-- Remove this function if not needed
+end

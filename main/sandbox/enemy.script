@@ -1,23 +1,49 @@
 local battleController = require "main/battle/battleController"
+local enemyModel = require("main/battle/enemyModel")
+local events = require("event.events")
+local gameEvents = require("main/events/gameEvents")
+
+local function onPlayEffect(self,effectUrl)
+	local pos = go.get_position()
+	factory.create("#effectFactory", pos, nil, {animName=hash("lionstrike")}, 1)
+end
 
 local function attack(self)
-	battleController.enemy_attack(go.get_id(),"sandbox:/soundController")
+	battleController.enemy_attack(go.get_id())
+end
+
+local function onEnemyHurt(self,dmg)
+	--sprite.play_flipbook("hit_effect#sprite", "hit")
+	print("onenemyhurt")
+	local pos = go.get_position()
+	pos.y = pos.y + 100
+
+	local id_str = tostring(go.get_id())
+	factory.create("#floatingTextFactory", pos, nil, {value=dmg, crit=false}, 1)
+	
 end
 
 function init(self)
---	timer.delay(1.5, true, attack)
+	self.counter = 0
+	events.subscribe(gameEvents.ENEMY_HURT, onEnemyHurt,self)
+	events.subscribe(gameEvents.PLAY_EFFECT, onPlayEffect,self)
 end
 
 function final(self)
-	-- Add finalization code here
-	-- Learn more: https://defold.com/manuals/script/
-	-- Remove this function if not needed
+	events.unsubscribe(gameEvents.ENEMY_HURT, onEnemyHurt,self)
+	events.unsubscribe(gameEvents.PLAY_EFFECT, onPlayEffect, self)
 end
 
 function update(self, dt)
-	-- Add update code here
-	-- Learn more: https://defold.com/manuals/script/
-	-- Remove this function if not needed
+	self.counter = self.counter + (dt*enemyModel.spd)
+	if self.counter >= 3 then
+		attack(self)
+	--	local time = os.date("*t")
+	--	print(string.format("Most: %04d-%02d-%02d %02d:%02d:%02d",
+	--	time.year, time.month, time.day,
+	--	time.hour, time.min, time.sec))
+		self.counter = 0
+	end
 end
 
 function fixed_update(self, dt)

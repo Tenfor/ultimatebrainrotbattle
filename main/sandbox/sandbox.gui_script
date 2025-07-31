@@ -1,7 +1,8 @@
 local druid = require("druid.druid")
 local events = require("event.events")
 local gameEvents = require("main/events/gameEvents")
-
+local playerModel = require("main/battle/playerModel")
+local enemyModel = require("main/battle/enemyModel")
 
 local function onSahurBtn(self)
 	events.trigger(gameEvents.LOAD_SAHUR)
@@ -15,24 +16,63 @@ local function onCappucinoBtn(self)
 	events.trigger(gameEvents.LOAD_CAPPUCINO)
 end
 
+local function updatePlayerHpText(self)
+	gui.set_text(self.playerHpTextNode, tostring(playerModel.hp).."/"..tostring(playerModel.maxHp))
+	self.playerHpBar:set_to(playerModel.hp/playerModel.maxHp)
+end
+
+local function updateEnemyHpText(self)
+	gui.set_text(self.enemyHpTextNode, tostring(enemyModel.hp).."/"..tostring(enemyModel.maxHp))
+	self.enemyHpBar:set_to(enemyModel.hp/enemyModel.maxHp)
+end
+
 local function onCharacterLoaded(self)
-	print("ONCHARACTERLOADED")
+	updatePlayerHpText(self)
+end
+
+local function onEnemyHurt(self,dmg)
+	enemyModel.setHp(enemyModel.hp-dmg)
+	updateEnemyHpText(self)
+end
+
+local function onPlayerHurt(self,dmg)
+	playerModel.setHp(playerModel.hp-dmg)
+	updatePlayerHpText(self)
+end
+
+local function onMenuBtn(self)
+	events.trigger(gameEvents.LOAD_SCENE,"menu")
+	events.trigger(gameEvents.UNLOAD_SCENE,"sandbox")
 end
 
 function init(self)
 	self.druid = druid.new(self)
 	self.sahurBtn = self.druid:new_button("sahurBtn", onSahurBtn)
 	self.patapimBtn = self.druid:new_button("patapimBtn", onPatapimBtn)
-	self.CappucinoBtn = self.druid:new_button("cappucinoBtn", onCappucinoBtn)
+	self.cappucinoBtn = self.druid:new_button("cappucinoBtn", onCappucinoBtn)
+	self.menuBtn = self.druid:new_button("menuBtn", onMenuBtn)
+
+	self.playerHpTextNode = gui.get_node("playerHpText")
+	self.enemyHpTextNode = gui.get_node("enemyHpText")
+
+	self.enemyHpBar = self.druid:new_progress("enemyHpBar", "x")
+	self.enemyHpBar:set_to(1)
 
 	events.subscribe(gameEvents.CHARACTER_LOADED, onCharacterLoaded, self)
+	events.subscribe(gameEvents.ENEMY_HURT, onEnemyHurt, self)
+	events.subscribe(gameEvents.PLAYER_HURT, onPlayerHurt, self)
 
-	self.progress = self.druid:new_progress("playerHpBar", "x")
-	self.progress:set_to(1)
+	self.playerHpBar = self.druid:new_progress("playerHpBar", "x")
+	self.playerHpBar:set_to(1)
+
+
 end
 
 function final(self)
 	self.druid:final()
+	events.unsubscribe(gameEvents.CHARACTER_LOADED, onCharacterLoaded, self)
+	events.unsubscribe(gameEvents.ENEMY_HURT, onEnemyHurt, self)
+	events.unsubscribe(gameEvents.PLAYER_HURT, onPlayerHurt, self)
 end
 
 function update(self, dt)

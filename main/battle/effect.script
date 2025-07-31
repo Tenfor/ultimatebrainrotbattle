@@ -1,38 +1,17 @@
-local battleController = require "main/battle/battleController"
-local playerModel = require("main/battle/playerModel")
-
-local count = 0
-
-local function attack(self)
-	--battleController.player_attack(go.get_id())
-	
-	battleController.player_lion_strike(go.get_id())
-end
+go.property("animName", hash("lionstrike"))
 
 function init(self)
-	--timer.delay(1, true, attack)
-	self.counter = 0
+	print("NYEEEE",self.animName)
+	sprite.play_flipbook("#sprite", hash(self.animName))
 end
 
 function final(self)
-	-- Add finalization code here
-	-- Learn more: https://defold.com/manuals/script/
-	-- Remove this function if not needed
+
 end
 
 function update(self, dt)
-	self.counter = self.counter + (dt*playerModel.spd)
-	if self.counter >= 3 then
-		attack(self)
-		--local time = os.date("*t")
-		--print(string.format("Most: %04d-%02d-%02d %02d:%02d:%02d",
-		--time.year, time.month, time.day,
-		--time.hour, time.min, time.sec))
-		self.counter = 0
-	end
-	-- Add update code here
-	-- Learn more: https://defold.com/manuals/script/
-	-- Remove this function if not needed
+	local target_pos = go.get_position("/enemy")
+	go.set_position(target_pos,go.get_id())
 end
 
 function fixed_update(self, dt)
@@ -45,9 +24,9 @@ function fixed_update(self, dt)
 end
 
 function on_message(self, message_id, message, sender)
-	-- Add message-handling code here
-	-- Learn more: https://defold.com/manuals/message-passing/
-	-- Remove this function if not needed
+	if message_id == hash("animation_done") then
+		go.delete()
+	end
 end
 
 function on_input(self, action_id, action)

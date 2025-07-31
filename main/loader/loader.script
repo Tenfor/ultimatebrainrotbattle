@@ -1,15 +1,31 @@
 local event = require("event.event")
+local events = require("event.events")
+local gameEvents = require("main/events/gameEvents")
+
+local function loadScene(self,sceneName)
+	local proxy = "#"..sceneName.."Proxy"
+	msg.post(proxy, "load")
+end
+
+local function unloadScene(self,sceneName)
+	local proxy = "#"..sceneName.."Proxy"
+	msg.post(proxy, "disable")
+	msg.post(proxy, "final")
+	msg.post(proxy, "unload")
+end
 
 function init(self)
 	msg.post(".", "acquire_input_focus")
 	--msg.post("@render:", "use_fixed_fit_projection", { near = -1, far = 1 })
 	math.randomseed(os.clock() * 100000000000)	
-	
-	self.sandboxProxy = "#sandboxProxy"
-	msg.post(self.sandboxProxy, "load")
 
 	--TODO: we might need to set this to "none" on release ??? 
 	event.set_mode("pcall")
+
+	events.subscribe(gameEvents.LOAD_SCENE, loadScene, self)
+	events.subscribe(gameEvents.UNLOAD_SCENE, unloadScene, self)
+
+	events.trigger(gameEvents.LOAD_SCENE,"menu")
 	
 end
 

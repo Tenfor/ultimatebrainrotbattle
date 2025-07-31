@@ -1,4 +1,4 @@
-script: ""
+script: "/main/menu/menu.gui_script"
 fonts {
   name: "game"
   font: "/assets/font/game.font"
@@ -18,7 +18,7 @@ nodes {
   }
   type: TYPE_BOX
   texture: "ui/button1"
-  id: "play_button"
+  id: "playBtn"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
 }
@@ -37,8 +37,39 @@ nodes {
   type: TYPE_TEXT
   text: "Play"
   font: "game"
-  id: "Play_text"
-  parent: "play_button"
+  id: "playText"
+  parent: "playBtn"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 1167.0
+    y: 642.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "sandboxBtn"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: 6.123635
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Sandbox\n"
+  ""
+  font: "game"
+  id: "sandboxText"
+  parent: "sandboxBtn"
   inherit_alpha: true
 }
 nodes {
@@ -52,7 +83,7 @@ nodes {
   }
   type: TYPE_BOX
   texture: "ui/button1"
-  id: "upgrades"
+  id: "upgradesBtn"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
 }
@@ -73,8 +104,8 @@ nodes {
   type: TYPE_TEXT
   text: "Upgrades"
   font: "game"
-  id: "Upgrades"
-  parent: "upgrades"
+  id: "upgradesText"
+  parent: "upgradesBtn"
   inherit_alpha: true
 }
 nodes {
@@ -88,7 +119,7 @@ nodes {
   }
   type: TYPE_BOX
   texture: "ui/button_music"
-  id: "sound"
+  id: "sfxBtn"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
 }
@@ -103,7 +134,7 @@ nodes {
   }
   type: TYPE_BOX
   texture: "ui/button_sound"
-  id: "music"
+  id: "musicBtn"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
 }
@@ -118,7 +149,7 @@ nodes {
   }
   type: TYPE_BOX
   texture: "ui/button_settings"
-  id: "settings"
+  id: "settingsBtn"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
 }
@@ -133,7 +164,7 @@ nodes {
   }
   type: TYPE_BOX
   texture: "ui/button_info"
-  id: "info"
+  id: "infoBtn"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
 }

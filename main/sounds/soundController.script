@@ -1,3 +1,5 @@
+local events = require("event.events")
+local gameEvents = require("main/events/gameEvents")
 --local gameSettings = require "main/gameSettings"
 --local gameModel = require "main/game/gameModel"
 --local musics = {
@@ -10,6 +12,33 @@ local sounds = {
 	"#hit_3",
 }
 
+local function onPlaySfx(self,sfxUrl)
+	local play_id = #self.sfxPlaying + 1
+	msg.post(sfxUrl,"play_sound",{play_id = play_id})
+	table.insert(self.sfxPlaying,play_id)
+end
+
+local function onPlayMusic(self,musicUrl)
+	--if gameSettings.music
+		if musicUrl == "#menuMusic" and not self.menuMusicPlaying then 
+			self.menuMusicPlaying = true
+			sound.play(musicUrl)
+		elseif musicUrl == "#bgMusic" and not self.bgMusicPlaying then
+			self.bgMusicPlaying = true
+			sound.play(musicUrl)
+		end
+	--end
+end
+
+local function onStopMusic(self,musicUrl) 
+	if musicUrl == "#menuMusic" then 
+		self.menuMusicPlaying = false
+	elseif musicUrl == "#bgMusic" then
+		self.bgMusicPlaying = false
+	end
+	sound.stop(musicUrl)
+end
+
 function init(self)
 	self.bgMusicPlaying = false
 	self.menuMusicPlaying = false
@@ -18,6 +47,10 @@ function init(self)
 
 	msg.post(".", "toggle_musics")
 	msg.post(".", "toggle_sounds")
+
+	events.subscribe(gameEvents.PLAY_SFX, onPlaySfx, self)
+	events.subscribe(gameEvents.PLAY_MUSIC, onPlayMusic, self)
+	events.subscribe(gameEvents.STOP_MUSIC, onStopMusic, self)
 end
 
 
@@ -26,32 +59,9 @@ function on_message(self, message_id, message)
 	--if message_id == hash("show_game_over") then
 	--	sound.stop("#bgMusic")
 	--end
-	if message_id == hash("playSfx") then 
-			local play_id = #self.sfxPlaying + 1
-			msg.post(message.url,"play_sound",{play_id = play_id})
-			table.insert(self.sfxPlaying,play_id)
-	end
+
 	if message_id == hash("sound_done") then
 		table.remove(self.sfxPlaying,message.play_id)
-	end
-	if message_id == hash("playMusic") then
-		--if gameSettings.music then
-			if message.url == "#menuMusic" and not self.menuMusicPlaying then 
-				self.menuMusicPlaying = true
-				sound.play(message.url)
-			elseif message.url == "#bgMusic" and not self.bgMusicPlaying then
-				self.bgMusicPlaying = true
-				sound.play(message.url)
-			end
-	--	end
-	end
-	if message_id == hash("stopMusic") then
-		if message.url == "#menuMusic" then 
-			self.menuMusicPlaying = false
-		elseif message.url == "#bgMusic" then
-			self.bgMusicPlaying = false
-		end
-		sound.stop(message.url)
 	end
 	--if message_id == hash("toggle_pause") then
 	--	for i = 1, #sounds, 1 do
@@ -75,4 +85,10 @@ function on_message(self, message_id, message)
 	--	end
 	--	sound.set_group_gain("music", gain)
 	--end
+end
+
+function final(self)
+	events.unsubscribe(gameEvents.PLAY_SFX, onPlaySfx, self)
+	events.unsubscribe(gameEvents.PLAY_MUSIC, onPlayMusic, self)
+	events.unsubscribe(gameEvents.STOP_MUSIC, onStopMusic, self)
 end

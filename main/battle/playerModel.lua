@@ -20,14 +20,14 @@ end
 
 function M.loadSahurStats()
 	M.spd = 1
-	M.str = 2
+	M.str = 3
 	M.mag = 1
 	M.hp = 100
 	M.maxHp = 100
 end
 
 function M.loadCappucinoStats()
-	M.spd = 2
+	M.spd = 3
 	M.str = 1
 	M.mag = 1
 	M.hp = 80
@@ -37,7 +37,7 @@ end
 function M.loadPatapimStats()
 	M.spd = 1
 	M.str = 1
-	M.mag = 2
+	M.mag = 3
 	M.hp = 75
 	M.maxHp = 75
 end

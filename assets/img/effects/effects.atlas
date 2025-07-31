@@ -1,0 +1,54 @@
+animations {
+  id: "slash"
+  images {
+    image: "/assets/img/effects/slash10/slash10.spine_01.png"
+  }
+  images {
+    image: "/assets/img/effects/slash10/slash10.spine_02.png"
+  }
+  images {
+    image: "/assets/img/effects/slash10/slash10.spine_03.png"
+  }
+  images {
+    image: "/assets/img/effects/slash10/slash10.spine_04.png"
+  }
+  images {
+    image: "/assets/img/effects/slash10/slash10.spine_05.png"
+  }
+  images {
+    image: "/assets/img/effects/slash10/slash10.spine_06.png"
+  }
+  images {
+    image: "/assets/img/effects/slash10/slash10.spine_07.png"
+  }
+  fps: 15
+}
+animations {
+  id: "lionstrike"
+  images {
+    image: "/assets/img/effects/lionstrike/lionstrike (1).png"
+  }
+  images {
+    image: "/assets/img/effects/lionstrike/lionstrike (2).png"
+  }
+  images {
+    image: "/assets/img/effects/lionstrike/lionstrike (3).png"
+  }
+  images {
+    image: "/assets/img/effects/lionstrike/lionstrike (4).png"
+  }
+  images {
+    image: "/assets/img/effects/lionstrike/lionstrike (5).png"
+  }
+  images {
+    image: "/assets/img/effects/lionstrike/lionstrike (6).png"
+  }
+  images {
+    image: "/assets/img/effects/lionstrike/lionstrike (7).png"
+  }
+  images {
+    image: "/assets/img/effects/lionstrike/lionstrike (8).png"
+  }
+  fps: 20
+}
+extrude_borders: 2

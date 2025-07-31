@@ -132,6 +132,22 @@ nodes {
   inherit_alpha: true
 }
 nodes {
+  scale {
+    x: 0.7
+    y: 0.7
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "100/100"
+  font: "game"
+  id: "playerHpText"
+  parent: "playerHp"
+  inherit_alpha: true
+}
+nodes {
   position {
     x: 1090.0
     y: 670.0
@@ -170,6 +186,53 @@ nodes {
   id: "enemyHpBar"
   pivot: PIVOT_E
   parent: "enemyHp"
+  inherit_alpha: true
+}
+nodes {
+  scale {
+    x: 0.7
+    y: 0.7
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "100/100"
+  font: "game"
+  id: "enemyHpText"
+  parent: "enemyHp"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 652.0
+    y: 667.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "menuBtn"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "menu"
+  font: "game"
+  id: "menuText"
+  parent: "menuBtn"
   inherit_alpha: true
 }
 material: "/builtins/materials/gui.material"

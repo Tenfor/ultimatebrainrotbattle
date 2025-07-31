@@ -1,0 +1,60 @@
+local druid = require("druid.druid")
+local events = require("event.events")
+local gameEvents = require("main/events/gameEvents")
+
+local function onPlayBtn(self)
+	print("onPlayBtn")
+end
+
+local function onSandboxBtn(self)
+	events.trigger(gameEvents.LOAD_SCENE,"sandbox")
+	events.trigger(gameEvents.UNLOAD_SCENE,"menu")
+end
+
+local function onUpgradesBtn(self)
+	print("onUpgradesBtn")
+end
+
+local function onSfxBtn(self)
+	print("onSfxBtn")
+end
+
+local function onMusicBtn(self)
+	print("onMusicBtn")
+end
+
+local function onSettingsBtn(self)
+	print("onSettingsBtn")
+end
+
+local function onInfoBtn(self)
+	print("onInfoBtn")
+end
+
+function init(self)
+	self.druid = druid.new(self)
+
+	self.sandboxBtn = self.druid:new_button("sandboxBtn", onSandboxBtn)
+	self.playBtn = self.druid:new_button("playBtn", onPlayBtn)
+	self.upgradesBtn = self.druid:new_button("upgradesBtn", onUpgradesBtn)
+	self.sfxBtn = self.druid:new_button("sfxBtn", onSfxBtn)
+	self.musicBtn = self.druid:new_button("musicBtn", onMusicBtn)
+	self.settingsBtn = self.druid:new_button("settingsBtn", onSettingsBtn)
+	self.infoBtn = self.druid:new_button("infoBtn", onInfoBtn)
+end
+
+function final(self)
+	self.druid:final()
+end
+
+function update(self, dt)
+	self.druid:update(dt)
+end
+
+function on_message(self, message_id, message, sender)
+	self.druid:on_message(message_id, message, sender)
+end
+
+function on_input(self, action_id, action)
+	return self.druid:on_input(action_id, action)
+end

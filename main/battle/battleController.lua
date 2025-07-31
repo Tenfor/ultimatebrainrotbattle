@@ -1,23 +1,66 @@
+local events = require("event.events")
+local gameEvents = require("main/events/gameEvents")
+local playerModel = require("main/battle/playerModel")
+local enemyModel = require("main/battle/enemyModel")
+
 local M = {}
 
-function M.player_attack(go_url,soundControllerPath)
+function M.calculate_player_damage()
+	local rand = math.random(4)
+	return math.floor( (10+playerModel.str) * (0.8+0.1*rand) + 0.5 )
+end
+
+function M.calculate_enemy_damage()
+	local rand = math.random(4)
+	return math.floor( (10+enemyModel.str) * (0.8+0.1*rand) + 0.5 )
+end
+
+function M.player_attack(go_url)
 	local original_pos = go.get_position(go_url)
 	local target_pos = vmath.vector3(600, original_pos.y, original_pos.z)
 
 	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos.x, go.EASING_LINEAR, 0.2, 0, function()
 		local rand = math.random(1,2)
-		msg.post(soundControllerPath, "playSfx", {url = "#hit_"..tostring(rand)} )
+		events.trigger(gameEvents.PLAY_SFX,"#hit_"..tostring(rand))
+		local dmg = M.calculate_player_damage()
+		events.trigger(gameEvents.ENEMY_HURT,dmg)
 		go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, original_pos.x, go.EASING_LINEAR, 0.2)
 	end)
 end
 
-function M.enemy_attack(go_url,soundControllerPath)
+function M.player_lion_strike(go_url)
+	local original_pos = go.get_position(go_url)
+	local target_pos = vmath.vector3(600, original_pos.y, original_pos.z)
+
+	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos.x, go.EASING_LINEAR, 0.2, 0, function()
+		local rand = math.random(1,2)
+		events.trigger(gameEvents.PLAY_SFX,"#hit_"..tostring(rand))
+		local dmg = M.calculate_player_damage()
+		events.trigger(gameEvents.ENEMY_HURT,dmg)
+		events.trigger(gameEvents.PLAY_EFFECT,"lionstrike")
+		go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, original_pos.x, go.EASING_LINEAR, 0.2)
+	end)
+end
+
+function M.player_meteor_smash(go_url)
+	local original_pos = go.get_position(go_url)
+	local target_pos1 = vmath.vector3(800, 600, original_pos.z)
+	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos1.x, go.EASING_LINEAR, 0.2, 0)
+	go.animate(go_url, "position.y", go.PLAYBACK_ONCE_FORWARD, target_pos1.y, go.EASING_LINEAR, 0.2, 0)
+	go.animate(go_url, "position.y", go.PLAYBACK_ONCE_FORWARD, original_pos.y, go.EASING_LINEAR, 0.1, 0.25)
+	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, original_pos.x, go.EASING_LINEAR, 0.2, 0.35)
+end
+
+function M.enemy_attack(go_url)
 	local original_pos = go.get_position(go_url)
 	local target_pos = vmath.vector3(680, original_pos.y, original_pos.z)
 
 	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos.x, go.EASING_LINEAR, 0.2, 0, function()
 		local rand = math.random(1,2)
-		msg.post(soundControllerPath, "playSfx", {url = "#hit_"..tostring(rand)} )
+		events.trigger(gameEvents.PLAY_SFX,"#hit_"..tostring(rand))
+
+		local dmg = M.calculate_enemy_damage()
+		events.trigger(gameEvents.PLAYER_HURT,dmg)
 		go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, original_pos.x, go.EASING_LINEAR, 0.2)
 	end)
 end

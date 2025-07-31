@@ -6,6 +6,7 @@ embedded_components {
   id: "hit_1"
   type: "sound"
   data: "sound: \"/assets/sounds/sfx/hit_1.wav\"\n"
+  "gain: 0.5\n"
   ""
 }
 embedded_components {
@@ -18,5 +19,6 @@ embedded_components {
   id: "hit_2"
   type: "sound"
   data: "sound: \"/assets/sounds/sfx/hit_2.wav\"\n"
+  "gain: 0.5\n"
   ""
 }
