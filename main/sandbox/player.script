@@ -1,21 +1,49 @@
+local events = require("event.events")
+local gameEvents = require("main/events/gameEvents")
+local playerSkills = require("main/battle/playerSkills")
 local battleController = require "main/battle/battleController"
 local playerModel = require("main/battle/playerModel")
 
+local function setMode(self,newMode)
+	self.mode = newMode
+end
+
+local function onSkillTrigger(self, skillId)
+	if skillId == playerSkills.LION_STRIKE then 
+		setMode(self, skillId)
+	end
+	if skillId == playerSkills.METEOR_SMASH then 
+		setMode(self, skillId)
+	end
+	if skillId == playerSkills.BERSERK then 
+		print("BERSERK")
+		battleController.player_berserk(go.get_id())
+	end
+end
+
 local function attack(self)
-	--battleController.player_attack(go.get_id())
-	
-	battleController.player_lion_strike(go.get_id())
+	if self.mode == "normal" then
+		battleController.player_attack(go.get_id())
+	elseif self.mode == playerSkills.LION_STRIKE then
+		battleController.player_lion_strike(go.get_id())
+		self.mode = "normal"
+	elseif self.mode == playerSkills.METEOR_SMASH then
+		battleController.player_meteor_smash(go.get_id())
+		self.mode = "normal"
+	else
+		print("PLAYER HAS INVALID MODE",self.mode)
+	end
 end
 
 function init(self)
 	--timer.delay(1, true, attack)
 	self.counter = 0
+	self.mode = "normal"
+	events.subscribe(gameEvents.TRIGGER_SKILL, onSkillTrigger, self)
 end
 
 function final(self)
-	-- Add finalization code here
-	-- Learn more: https://defold.com/manuals/script/
-	-- Remove this function if not needed
+	events.unsubscribe(gameEvents.TRIGGER_SKILL, onSkillTrigger, self)
 end
 
 function update(self, dt)

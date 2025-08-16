@@ -1,29 +1,4 @@
 animations {
-  id: "slash"
-  images {
-    image: "/assets/img/effects/slash10/slash10.spine_01.png"
-  }
-  images {
-    image: "/assets/img/effects/slash10/slash10.spine_02.png"
-  }
-  images {
-    image: "/assets/img/effects/slash10/slash10.spine_03.png"
-  }
-  images {
-    image: "/assets/img/effects/slash10/slash10.spine_04.png"
-  }
-  images {
-    image: "/assets/img/effects/slash10/slash10.spine_05.png"
-  }
-  images {
-    image: "/assets/img/effects/slash10/slash10.spine_06.png"
-  }
-  images {
-    image: "/assets/img/effects/slash10/slash10.spine_07.png"
-  }
-  fps: 15
-}
-animations {
   id: "lionstrike"
   images {
     image: "/assets/img/effects/lionstrike/lionstrike (2).png"
@@ -48,6 +23,27 @@ animations {
   }
   images {
     image: "/assets/img/effects/lionstrike/lionstrike (9).png"
+  }
+}
+animations {
+  id: "smoke"
+  images {
+    image: "/assets/img/effects/smoke/smoke (1).png"
+  }
+  images {
+    image: "/assets/img/effects/smoke/smoke (3).png"
+  }
+  images {
+    image: "/assets/img/effects/smoke/smoke (6).png"
+  }
+  images {
+    image: "/assets/img/effects/smoke/smoke (7).png"
+  }
+  images {
+    image: "/assets/img/effects/smoke/smoke (8).png"
+  }
+  images {
+    image: "/assets/img/effects/smoke/smoke (9).png"
   }
   fps: 20
 }

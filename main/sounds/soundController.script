@@ -10,6 +10,10 @@ local sounds = {
 	"#hit_1",
 	"#hit_2",
 	"#hit_3",
+	"#explosion1",
+	"#swoosh",
+	"#swoosh2",
+	"#explosion_long2"
 }
 
 local function onPlaySfx(self,sfxUrl)

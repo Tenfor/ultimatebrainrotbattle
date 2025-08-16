@@ -5,6 +5,91 @@ instances {
 }
 scale_along_z: 0
 embedded_instances {
+  id: "sandboxController"
+  data: "components {\n"
+  "  id: \"sandbox\"\n"
+  "  component: \"/main/sandbox/sandbox.script\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "root"
+  children: "bg"
+  children: "enemy"
+  children: "gui"
+  children: "player"
+  data: "components {\n"
+  "  id: \"shakeEffect\"\n"
+  "  component: \"/main/battle/shakeEffect.script\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "bg"
+  data: "embedded_components {\n"
+  "  id: \"sprite\"\n"
+  "  type: \"sprite\"\n"
+  "  data: \"default_animation: \\\"bg1\\\"\\n"
+  "material: \\\"/builtins/materials/sprite.material\\\"\\n"
+  "size {\\n"
+  "  x: 1280.0\\n"
+  "  y: 720.0\\n"
+  "}\\n"
+  "textures {\\n"
+  "  sampler: \\\"texture_sampler\\\"\\n"
+  "  texture: \\\"/assets/img/bg/bg.atlas\\\"\\n"
+  "}\\n"
+  "\"\n"
+  "}\n"
+  ""
+  position {
+    x: 640.0
+    y: 360.0
+  }
+}
+embedded_instances {
+  id: "enemy"
+  data: "components {\n"
+  "  id: \"enemy\"\n"
+  "  component: \"/main/sandbox/enemy.script\"\n"
+  "}\n"
+  "embedded_components {\n"
+  "  id: \"floatingTextFactory\"\n"
+  "  type: \"factory\"\n"
+  "  data: \"prototype: \\\"/main/battle/floatingText.go\\\"\\n"
+  "\"\n"
+  "}\n"
+  "embedded_components {\n"
+  "  id: \"sprite\"\n"
+  "  type: \"sprite\"\n"
+  "  data: \"default_animation: \\\"dindin\\\"\\n"
+  "material: \\\"/builtins/materials/sprite.material\\\"\\n"
+  "size {\\n"
+  "  x: 200.0\\n"
+  "  y: 300.0\\n"
+  "}\\n"
+  "textures {\\n"
+  "  sampler: \\\"texture_sampler\\\"\\n"
+  "  texture: \\\"/assets/img/characters/characters.atlas\\\"\\n"
+  "}\\n"
+  "\"\n"
+  "  position {\n"
+  "    z: 0.1\n"
+  "  }\n"
+  "}\n"
+  "embedded_components {\n"
+  "  id: \"effectFactory\"\n"
+  "  type: \"factory\"\n"
+  "  data: \"prototype: \\\"/main/battle/effect.go\\\"\\n"
+  "\"\n"
+  "}\n"
+  ""
+  position {
+    x: 880.0
+    y: 276.0
+  }
+}
+embedded_instances {
   id: "gui"
   data: "components {\n"
   "  id: \"sandbox\"\n"
@@ -23,6 +108,10 @@ embedded_instances {
   "  type: \"sprite\"\n"
   "  data: \"default_animation: \\\"sahur\\\"\\n"
   "material: \\\"/builtins/materials/sprite.material\\\"\\n"
+  "size {\\n"
+  "  x: 200.0\\n"
+  "  y: 300.0\\n"
+  "}\\n"
   "textures {\\n"
   "  sampler: \\\"texture_sampler\\\"\\n"
   "  texture: \\\"/assets/img/characters/characters.atlas\\\"\\n"
@@ -42,71 +131,6 @@ embedded_instances {
   }
 }
 embedded_instances {
-  id: "enemy"
-  data: "components {\n"
-  "  id: \"enemy\"\n"
-  "  component: \"/main/sandbox/enemy.script\"\n"
-  "}\n"
-  "embedded_components {\n"
-  "  id: \"sprite\"\n"
-  "  type: \"sprite\"\n"
-  "  data: \"default_animation: \\\"dindin\\\"\\n"
-  "material: \\\"/builtins/materials/sprite.material\\\"\\n"
-  "size {\\n"
-  "  x: 1024.0\\n"
-  "  y: 1536.0\\n"
-  "}\\n"
-  "textures {\\n"
-  "  sampler: \\\"texture_sampler\\\"\\n"
-  "  texture: \\\"/assets/img/characters/characters.atlas\\\"\\n"
-  "}\\n"
-  "\"\n"
-  "  position {\n"
-  "    z: 0.1\n"
-  "  }\n"
-  "}\n"
-  "embedded_components {\n"
-  "  id: \"floatingTextFactory\"\n"
-  "  type: \"factory\"\n"
-  "  data: \"prototype: \\\"/main/battle/floatingText.go\\\"\\n"
-  "\"\n"
-  "}\n"
-  "embedded_components {\n"
-  "  id: \"effectFactory\"\n"
-  "  type: \"factory\"\n"
-  "  data: \"prototype: \\\"/main/battle/effect.go\\\"\\n"
-  "\"\n"
-  "}\n"
-  ""
-  position {
-    x: 880.0
-    y: 276.0
-  }
-}
-embedded_instances {
-  id: "sandboxController"
-  data: "components {\n"
-  "  id: \"sandbox\"\n"
-  "  component: \"/main/sandbox/sandbox.script\"\n"
-  "}\n"
-  ""
-}
-embedded_instances {
-  id: "bg"
-  data: "embedded_components {\n"
-  "  id: \"sprite\"\n"
-  "  type: \"sprite\"\n"
-  "  data: \"default_animation: \\\"bg1\\\"\\n"
-  "material: \\\"/builtins/materials/sprite.material\\\"\\n"
-  "textures {\\n"
-  "  sampler: \\\"texture_sampler\\\"\\n"
-  "  texture: \\\"/assets/img/bg/bg.atlas\\\"\\n"
-  "}\\n"
-  "\"\n"
-  "}\n"
-  ""
-  position {
-    x: 640.0
-    y: 360.0
-  }
+  id: "go"
+  data: ""
 }

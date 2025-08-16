@@ -3,9 +3,15 @@ local enemyModel = require("main/battle/enemyModel")
 local events = require("event.events")
 local gameEvents = require("main/events/gameEvents")
 
-local function onPlayEffect(self,effectUrl,doneEvent)
-	local pos = go.get_position()
-	factory.create("#effectFactory", pos, nil, {animName=hash("lionstrike")}, 1)
+local function onPlayEffect(self,effectUrl,x, y, rot,scale)
+	local xOffset = x or 0
+	local yOffset = y or 0
+	local rotation = rot and vmath.quat_rotation_z(math.rad(rot)) or vmath.quat()
+	local pos = go.get_position("#root")
+	pos.x = pos.x + xOffset
+	pos.y = pos.y + yOffset
+	local scale = scale or 1
+	factory.create("#effectFactory", pos, rotation, {animName=hash(effectUrl),xOffset = xOffset, yOffset = yOffset}, scale)
 end
 
 local function attack(self)

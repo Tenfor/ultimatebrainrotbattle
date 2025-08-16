@@ -33,6 +33,7 @@ function M.player_lion_strike(go_url)
 	local target_pos = vmath.vector3(600, original_pos.y, original_pos.z)
 
 	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos.x, go.EASING_LINEAR, 0.2, 0, function()
+		events.trigger(gameEvents.PLAY_SFX,"#swoosh")
 		events.trigger(gameEvents.PLAY_EFFECT,"lionstrike")
 		go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, original_pos.x, go.EASING_LINEAR, 0.2)
 	end)
@@ -48,10 +49,23 @@ end
 function M.player_meteor_smash(go_url)
 	local original_pos = go.get_position(go_url)
 	local target_pos1 = vmath.vector3(800, 600, original_pos.z)
+	events.trigger(gameEvents.PLAY_SFX,"#swoosh2")
 	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos1.x, go.EASING_LINEAR, 0.2, 0)
 	go.animate(go_url, "position.y", go.PLAYBACK_ONCE_FORWARD, target_pos1.y, go.EASING_LINEAR, 0.2, 0)
-	go.animate(go_url, "position.y", go.PLAYBACK_ONCE_FORWARD, original_pos.y, go.EASING_LINEAR, 0.1, 0.25)
+	go.animate(go_url, "position.y", go.PLAYBACK_ONCE_FORWARD, original_pos.y, go.EASING_LINEAR, 0.1, 0.25,function()
+		events.trigger(gameEvents.PLAY_EFFECT,"smoke",-10,-100,0,1.2)
+		events.trigger(gameEvents.SHAKE_EFFECT,0.2,20)	
+		events.trigger(gameEvents.PLAY_SFX,"#explosion1")
+	end)
 	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, original_pos.x, go.EASING_LINEAR, 0.2, 0.35)
+end
+
+function M.player_berserk(go_url)
+	local obj_url = msg.url(nil,go_url,"sprite")
+	go.set(obj_url, "tint", vmath.vector4(1, 0, 0, 1))
+
+	events.trigger(gameEvents.PLAY_SFX,"#explosion_long2")
+	events.trigger(gameEvents.SHAKE_EFFECT,0.2,20)	
 end
 
 function M.enemy_attack(go_url)

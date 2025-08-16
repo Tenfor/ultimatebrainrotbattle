@@ -235,5 +235,176 @@ nodes {
   parent: "menuBtn"
   inherit_alpha: true
 }
+nodes {
+  position {
+    x: 99.0
+    y: 48.0
+  }
+  scale {
+    x: 0.2
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "skillBtn1"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -10.0
+    y: -1.666667
+  }
+  scale {
+    x: 2.4
+    y: 0.8
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "1"
+  font: "game"
+  id: "skillBtnText1"
+  parent: "skillBtn1"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 193.0
+    y: 48.0
+  }
+  scale {
+    x: 0.2
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "skillBtn2"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: -1.666667
+  }
+  scale {
+    x: 2.4
+    y: 0.8
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "2"
+  font: "game"
+  id: "skillBtnText2"
+  parent: "skillBtn2"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 290.0
+    y: 48.0
+  }
+  scale {
+    x: 0.2
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "skillBtn3"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: -1.666667
+  }
+  scale {
+    x: 2.4
+    y: 0.8
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "3"
+  font: "game"
+  id: "skillBtnText3"
+  parent: "skillBtn3"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 388.0
+    y: 48.0
+  }
+  scale {
+    x: 0.2
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "skillBtn4"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: -1.666667
+  }
+  scale {
+    x: 2.4
+    y: 0.8
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "4"
+  font: "game"
+  id: "skillBtnText4"
+  parent: "skillBtn4"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 485.0
+    y: 48.0
+  }
+  scale {
+    x: 0.2
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "skillBtn5"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: -1.666667
+  }
+  scale {
+    x: 2.4
+    y: 0.8
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "5"
+  font: "game"
+  id: "skillBtnText5"
+  parent: "skillBtn5"
+  inherit_alpha: true
+}
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT

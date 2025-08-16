@@ -1,0 +1,8 @@
+local M = {
+	EMPTY = "EMPTY",
+	LION_STRIKE = "LION_STRIKE",
+	METEOR_SMASH = "METEOR_SMASH",
+	BERSERK = "BERSERK"
+}
+
+return M

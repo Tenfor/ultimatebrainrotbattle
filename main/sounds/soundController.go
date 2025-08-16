@@ -22,3 +22,28 @@ embedded_components {
   "gain: 0.5\n"
   ""
 }
+embedded_components {
+  id: "swoosh"
+  type: "sound"
+  data: "sound: \"/assets/sounds/sfx/swoosh.wav\"\n"
+  ""
+}
+embedded_components {
+  id: "swoosh2"
+  type: "sound"
+  data: "sound: \"/assets/sounds/sfx/swoosh2.wav\"\n"
+  ""
+}
+embedded_components {
+  id: "explosion1"
+  type: "sound"
+  data: "sound: \"/assets/sounds/sfx/explosion1.wav\"\n"
+  "gain: 0.3\n"
+  ""
+}
+embedded_components {
+  id: "explosion_long2"
+  type: "sound"
+  data: "sound: \"/assets/sounds/sfx/explosion_long2.wav\"\n"
+  ""
+}

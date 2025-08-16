@@ -5,7 +5,7 @@ components {
 embedded_components {
   id: "sprite"
   type: "sprite"
-  data: "default_animation: \"slash\"\n"
+  data: "default_animation: \"lionstrike\"\n"
   "material: \"/builtins/materials/sprite.material\"\n"
   "textures {\n"
   "  sampler: \"texture_sampler\"\n"
@@ -14,9 +14,5 @@ embedded_components {
   ""
   position {
     z: 0.2
-  }
-  rotation {
-    z: -0.17364818
-    w: 0.9848077
   }
 }

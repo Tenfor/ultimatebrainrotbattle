@@ -45,6 +45,26 @@ local function onMenuBtn(self)
 	events.trigger(gameEvents.UNLOAD_SCENE,"sandbox")
 end
 
+local function onSkillBtn1(self)
+	events.trigger(gameEvents.TRIGGER_SKILL,playerModel.skills[1])
+end
+
+local function onSkillBtn2(self)
+	events.trigger(gameEvents.TRIGGER_SKILL,playerModel.skills[2])
+end
+
+local function onSkillBtn3(self)
+	events.trigger(gameEvents.TRIGGER_SKILL,playerModel.skills[3])
+end
+
+local function onSkillBtn4(self)
+	events.trigger(gameEvents.TRIGGER_SKILL,playerModel.skills[4])
+end
+
+local function onSkillBtn5(self)
+	events.trigger(gameEvents.TRIGGER_SKILL,playerModel.skills[5])
+end
+
 function init(self)
 	self.druid = druid.new(self)
 	self.sahurBtn = self.druid:new_button("sahurBtn", onSahurBtn)
@@ -64,6 +84,12 @@ function init(self)
 
 	self.playerHpBar = self.druid:new_progress("playerHpBar", "x")
 	self.playerHpBar:set_to(1)
+
+	self.skillBtn1 = self.druid:new_button("skillBtn1", onSkillBtn1)
+	self.skillBtn2 = self.druid:new_button("skillBtn2", onSkillBtn2)
+	self.skillBtn3 = self.druid:new_button("skillBtn3", onSkillBtn3)
+	self.skillBtn4 = self.druid:new_button("skillBtn4", onSkillBtn4)
+	self.skillBtn5 = self.druid:new_button("skillBtn5", onSkillBtn5)
 
 
 end

@@ -1,9 +1,18 @@
+local playerSkills = require("main/battle/playerSkills")
+
 local M = {
 	spd = 1,
 	str = 1,
 	mag = 1,
 	hp = 100,
-	maxHp = 100,	
+	maxHp = 100,
+	skills = {
+		playerSkills.LION_STRIKE,
+		playerSkills.METEOR_SMASH,
+		playerSkills.BERSERK,
+		playerSkills.EMPTY,
+		playerSkills.EMPTY,
+	}
 }
 
 function M.setSpd(val)
