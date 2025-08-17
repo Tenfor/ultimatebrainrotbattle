@@ -2,6 +2,7 @@ local events = require("event.events")
 local gameEvents = require("main/events/gameEvents")
 local playerModel = require("main/battle/playerModel")
 local enemyModel = require("main/battle/enemyModel")
+local buffs = require("main/battle/buffs")
 
 local M = {}
 
@@ -66,6 +67,11 @@ function M.player_berserk(go_url)
 
 	events.trigger(gameEvents.PLAY_SFX,"#explosion_long2")
 	events.trigger(gameEvents.SHAKE_EFFECT,0.2,20)	
+
+	playerModel.addBuff(buffs.BERSERK,5)
+	timer.delay(5, false, function()
+		go.set(obj_url, "tint", vmath.vector4(1, 1, 1, 1))
+	end)
 end
 
 function M.enemy_attack(go_url)

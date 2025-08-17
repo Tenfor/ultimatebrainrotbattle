@@ -1,4 +1,5 @@
 local playerSkills = require("main/battle/playerSkills")
+local buffs = require("main/battle/buffs")
 
 local M = {
 	spd = 1,
@@ -12,6 +13,9 @@ local M = {
 		playerSkills.BERSERK,
 		playerSkills.EMPTY,
 		playerSkills.EMPTY,
+	},
+	buffs = {
+		BERSERK = 0
 	}
 }
 
@@ -49,6 +53,32 @@ function M.loadPatapimStats()
 	M.mag = 3
 	M.hp = 75
 	M.maxHp = 75
+end
+
+function M.updateBuffs(dt)
+	for name, duration in pairs(M.buffs) do
+		if M.buffs[name] > 0 then 
+			local updatedDuration = duration - dt
+			M.buffs[name] = updatedDuration
+			print(M.buffs[name],updatedDuration)
+		end
+	end
+end
+
+function M.addBuff(buff,duration)
+	if M.buffs[buff] ~= nil then 
+		M.buffs[buff] = duration
+	end
+end
+
+function M.hasBuff(buff)
+	return  M.buffs[buff] ~= nil and M.buffs[buff] > 0
+end
+
+function M.removeBuff(buff)
+	if M.buffs[buff] ~= nil then 
+		M.buffs[buff] = 0
+	end
 end
 
 return M

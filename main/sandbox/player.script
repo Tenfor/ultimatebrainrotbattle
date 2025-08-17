@@ -3,6 +3,7 @@ local gameEvents = require("main/events/gameEvents")
 local playerSkills = require("main/battle/playerSkills")
 local battleController = require "main/battle/battleController"
 local playerModel = require("main/battle/playerModel")
+local buffs = require("main/battle/buffs")
 
 local function setMode(self,newMode)
 	self.mode = newMode
@@ -47,7 +48,12 @@ function final(self)
 end
 
 function update(self, dt)
-	self.counter = self.counter + (dt*playerModel.spd)
+	playerModel.updateBuffs(dt)
+	local extra = 1
+	if playerModel.hasBuff(buffs.BERSERK) then
+		extra = 3 
+	end
+	self.counter = self.counter + (dt*playerModel.spd) * extra
 	if self.counter >= 3 then
 		attack(self)
 		--local time = os.date("*t")
