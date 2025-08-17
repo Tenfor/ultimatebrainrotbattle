@@ -4,15 +4,16 @@ go.property("animName", hash("lionstrike1"))
 go.property("doneEvent", hash("teszt"))
 go.property("xOffset", 0)
 go.property("yOffset", 0)
+go.property("target", hash("enemy"))
+go.property("flip", false)
 
 local function onDone(self)
 	go.delete()
 end
 
 function init(self)
-	print(self.animName)
 	sprite.play_flipbook("#sprite", hash(self.animName), onDone)
-
+	sprite.set_hflip("#sprite", self.flip)
 --	events.subscribe(self.doneEvent, callback, callback_context)
 end
 
@@ -22,6 +23,10 @@ end
 
 function update(self, dt)
 	local target_pos = go.get_position("/enemy")
+	
+	if self.target == hash("player") then 
+		target_pos = go.get_position("/player")
+	end
 	target_pos.x = target_pos.x + self.xOffset
 	target_pos.y = target_pos.y + self.yOffset
 	go.set_position(target_pos)

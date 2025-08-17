@@ -78,14 +78,14 @@ embedded_instances {
   "  }\n"
   "}\n"
   "embedded_components {\n"
-  "  id: \"effectFactory\"\n"
+  "  id: \"enemyEffectFactory\"\n"
   "  type: \"factory\"\n"
   "  data: \"prototype: \\\"/main/battle/effect.go\\\"\\n"
   "\"\n"
   "}\n"
   ""
   position {
-    x: 880.0
+    x: 830.0
     y: 276.0
   }
 }
@@ -124,9 +124,15 @@ embedded_instances {
   "    x: -1.0\n"
   "  }\n"
   "}\n"
+  "embedded_components {\n"
+  "  id: \"playerEffectFactory\"\n"
+  "  type: \"factory\"\n"
+  "  data: \"prototype: \\\"/main/battle/effect.go\\\"\\n"
+  "\"\n"
+  "}\n"
   ""
   position {
-    x: 400.0
+    x: 450.0
     y: 279.0
   }
 }

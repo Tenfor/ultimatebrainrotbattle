@@ -1,4 +1,4 @@
-local playerSkills = require("main/battle/playerSkills")
+local skills = require("main/battle/skills")
 local buffs = require("main/battle/buffs")
 
 local M = {
@@ -8,11 +8,11 @@ local M = {
 	hp = 100,
 	maxHp = 100,
 	skills = {
-		playerSkills.LION_STRIKE,
-		playerSkills.METEOR_SMASH,
-		playerSkills.BERSERK,
-		playerSkills.EMPTY,
-		playerSkills.EMPTY,
+		skills.LION_STRIKE,
+		skills.METEOR_SMASH,
+		skills.BERSERK,
+		skills.EMPTY,
+		skills.EMPTY,
 	},
 	buffs = {
 		BERSERK = 0
@@ -60,7 +60,6 @@ function M.updateBuffs(dt)
 		if M.buffs[name] > 0 then 
 			local updatedDuration = duration - dt
 			M.buffs[name] = updatedDuration
-			print(M.buffs[name],updatedDuration)
 		end
 	end
 end

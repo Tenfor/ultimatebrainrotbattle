@@ -2,8 +2,10 @@ local battleController = require "main/battle/battleController"
 local enemyModel = require("main/battle/enemyModel")
 local events = require("event.events")
 local gameEvents = require("main/events/gameEvents")
+local buffs = require("main/battle/buffs")
+local skills = require("main/battle/skills")
 
-local function onPlayEffect(self,effectUrl,x, y, rot,scale)
+local function onPlayEffect(self,effectUrl,x, y, rot,scale, flip)
 	local xOffset = x or 0
 	local yOffset = y or 0
 	local rotation = rot and vmath.quat_rotation_z(math.rad(rot)) or vmath.quat()
@@ -11,11 +13,26 @@ local function onPlayEffect(self,effectUrl,x, y, rot,scale)
 	pos.x = pos.x + xOffset
 	pos.y = pos.y + yOffset
 	local scale = scale or 1
-	factory.create("#effectFactory", pos, rotation, {animName=hash(effectUrl),xOffset = xOffset, yOffset = yOffset}, scale)
+	factory.create("#enemyEffectFactory", pos, rotation,
+	{animName=hash(effectUrl),xOffset = xOffset, yOffset = yOffset, target=hash("enemy"), flip = flip},
+	scale)
 end
 
-local function attack(self)
-	battleController.enemy_attack(go.get_id())
+local function attack(self)	
+	if enemyModel.pattern[self.currentMod] == skills.EMPTY then 
+		battleController.enemy_attack(go.get_id())
+	elseif enemyModel.pattern[self.currentMod] == skills.LION_STRIKE then 
+		battleController.enemy_lion_strike(go.get_id())
+	elseif enemyModel.pattern[self.currentMod] == skills.METEOR_SMASH then 
+		battleController.enemy_meteor_smash(go.get_id())
+	elseif enemyModel.pattern[self.currentMod] == skills.BERSERK then 
+		battleController.enemy_berserk(go.get_id())
+	end
+
+	self.currentMod = self.currentMod + 1
+	if self.currentMod > #enemyModel.pattern then 
+		self.currentMod = 0
+	end
 end
 
 local function onEnemyHurt(self,dmg)
@@ -31,17 +48,23 @@ end
 
 function init(self)
 	self.counter = 0
+	self.currentMod = 1
 	events.subscribe(gameEvents.ENEMY_HURT, onEnemyHurt,self)
-	events.subscribe(gameEvents.PLAY_EFFECT, onPlayEffect,self)
+	events.subscribe(gameEvents.PLAY_EFFECT_ON_ENEMY, onPlayEffect,self)
 end
 
 function final(self)
 	events.unsubscribe(gameEvents.ENEMY_HURT, onEnemyHurt,self)
-	events.unsubscribe(gameEvents.PLAY_EFFECT, onPlayEffect, self)
+	events.unsubscribe(gameEvents.PLAY_EFFECT_ON_ENEMY, onPlayEffect, self)
 end
 
 function update(self, dt)
-	self.counter = self.counter + (dt*enemyModel.spd)
+	enemyModel.updateBuffs(dt)
+	local extra = 1
+	if enemyModel.hasBuff(buffs.BERSERK) then
+		extra = 3 
+	end
+	self.counter = self.counter + (dt*enemyModel.spd) * extra
 	if self.counter >= 3 then
 		attack(self)
 	--	local time = os.date("*t")

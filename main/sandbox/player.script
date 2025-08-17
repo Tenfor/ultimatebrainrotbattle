@@ -1,22 +1,35 @@
 local events = require("event.events")
 local gameEvents = require("main/events/gameEvents")
-local playerSkills = require("main/battle/playerSkills")
+local skills = require("main/battle/skills")
 local battleController = require "main/battle/battleController"
 local playerModel = require("main/battle/playerModel")
 local buffs = require("main/battle/buffs")
+
+local function onPlayEffect(self,effectUrl,x, y, rot,scale, flip)
+	local xOffset = x or 0
+	local yOffset = y or 0
+	local rotation = rot and vmath.quat_rotation_z(math.rad(rot)) or vmath.quat()
+	local pos = go.get_position("#root")
+	pos.x = pos.x + xOffset
+	pos.y = pos.y + yOffset
+	local scale = scale or 1
+	factory.create("#playerEffectFactory", pos, rotation, 
+	{animName=hash(effectUrl),xOffset = xOffset, yOffset = yOffset, target=hash("player"), flip=flip}, 
+	scale)
+end
 
 local function setMode(self,newMode)
 	self.mode = newMode
 end
 
 local function onSkillTrigger(self, skillId)
-	if skillId == playerSkills.LION_STRIKE then 
+	if skillId == skills.LION_STRIKE then 
 		setMode(self, skillId)
 	end
-	if skillId == playerSkills.METEOR_SMASH then 
+	if skillId == skills.METEOR_SMASH then 
 		setMode(self, skillId)
 	end
-	if skillId == playerSkills.BERSERK then 
+	if skillId == skills.BERSERK then 
 		print("BERSERK")
 		battleController.player_berserk(go.get_id())
 	end
@@ -25,10 +38,10 @@ end
 local function attack(self)
 	if self.mode == "normal" then
 		battleController.player_attack(go.get_id())
-	elseif self.mode == playerSkills.LION_STRIKE then
+	elseif self.mode == skills.LION_STRIKE then
 		battleController.player_lion_strike(go.get_id())
 		self.mode = "normal"
-	elseif self.mode == playerSkills.METEOR_SMASH then
+	elseif self.mode == skills.METEOR_SMASH then
 		battleController.player_meteor_smash(go.get_id())
 		self.mode = "normal"
 	else
@@ -41,10 +54,12 @@ function init(self)
 	self.counter = 0
 	self.mode = "normal"
 	events.subscribe(gameEvents.TRIGGER_SKILL, onSkillTrigger, self)
+	events.subscribe(gameEvents.PLAY_EFFECT_ON_PLAYER, onPlayEffect,self)
 end
 
 function final(self)
 	events.unsubscribe(gameEvents.TRIGGER_SKILL, onSkillTrigger, self)
+	events.subscribe(gameEvents.PLAY_EFFECT_ON_PLAYER, onPlayEffect,self)
 end
 
 function update(self, dt)
