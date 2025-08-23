@@ -6,6 +6,22 @@ local buffs = require("main/battle/buffs")
 
 local M = {}
 
+function M.player_hurt(dmg)
+	events.trigger(gameEvents.PLAYER_HURT,dmg)
+	local randRot = math.random(360)
+	local randXoffset = math.random(-20,20)
+	local randYoffset = math.random(-20,20)
+	events.trigger(gameEvents.PLAY_EFFECT_ON_PLAYER,"hit2",70+randXoffset,75+randYoffset,randRot,0.3)
+end
+
+function M.enemy_hurt(dmg)
+	events.trigger(gameEvents.ENEMY_HURT,dmg)
+	local randRot = math.random(360)
+	local randXoffset = math.random(-20,20)
+	local randYoffset = math.random(-20,20)
+	events.trigger(gameEvents.PLAY_EFFECT_ON_ENEMY,"hit2",-70+randXoffset,75+randYoffset,randRot,0.3)
+end
+
 function M.calculate_player_damage()
 	local rand = math.random(4)
 	return math.floor( (10+playerModel.str) * (0.8+0.1*rand) + 0.5 )
@@ -24,10 +40,57 @@ function M.player_attack(go_url)
 		local rand = math.random(1,2)
 		events.trigger(gameEvents.PLAY_SFX,"#hit_"..tostring(rand))
 		local dmg = M.calculate_player_damage()
-		events.trigger(gameEvents.ENEMY_HURT,dmg)
+		M.enemy_hurt(dmg)
 		go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, original_pos.x, go.EASING_LINEAR, 0.2)
 	end)
 end
+
+function M.player_fire_bolt(go_url)
+	local original_pos = go.get_position(go_url)
+	local target_pos = vmath.vector3(420, original_pos.y, original_pos.z)
+
+	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos.x, go.EASING_LINEAR, 0.1, 0, function()
+		events.trigger(gameEvents.PLAY_SFX,"#laser3")
+		events.trigger(gameEvents.SHOOT_PROJECTILE,"fire_bolt",0,0,1,0.5)
+		go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, original_pos.x, go.EASING_LINEAR, 0.1, 0)
+	end)
+end
+
+function M.fire_bolt_impact(go_url)
+	if go_url == hash("enemy") then 
+		local dmg = M.calculate_player_damage()
+		events.trigger(gameEvents.PLAY_EFFECT_ON_ENEMY,"explosion",0,0,0,0.8)
+		events.trigger(gameEvents.PLAY_SFX,"#explosion1")
+		M.enemy_hurt(dmg)
+	else 
+		
+	end
+end
+
+
+function M.player_arcane_bolt(go_url)
+	local original_pos = go.get_position(go_url)
+	local target_pos = vmath.vector3(420, original_pos.y, original_pos.z)
+
+	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos.x, go.EASING_LINEAR, 0.1, 0, function()
+		events.trigger(gameEvents.PLAY_SFX,"#laser3")
+		events.trigger(gameEvents.SHOOT_PROJECTILE,"arcane_bolt",0,0,1,0.3)
+		go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, original_pos.x, go.EASING_LINEAR, 0.1, 0)
+	end)
+end
+
+function M.arcane_bolt_impact(go_url)
+	print(go_url)
+	if go_url == hash("enemy") then 
+		local dmg = M.calculate_player_damage()
+		events.trigger(gameEvents.PLAY_EFFECT_ON_ENEMY,"hit3",0,0,0,0.8)
+		events.trigger(gameEvents.PLAY_SFX,"#hit_1")
+		M.enemy_hurt(dmg)
+	else 
+
+	end
+end
+
 
 function M.player_lion_strike(go_url)
 	local original_pos = go.get_position(go_url)
@@ -35,7 +98,7 @@ function M.player_lion_strike(go_url)
 
 	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos.x, go.EASING_LINEAR, 0.2, 0, function()
 		events.trigger(gameEvents.PLAY_SFX,"#swoosh")
-		events.trigger(gameEvents.PLAY_EFFECT_ON_ENEMY,"lionstrike")
+		events.trigger(gameEvents.PLAY_EFFECT_ON_ENEMY,"lionstrike",0,0,0,1)
 		go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, original_pos.x, go.EASING_LINEAR, 0.2)
 	end)
 
@@ -43,7 +106,7 @@ function M.player_lion_strike(go_url)
 		local rand = math.random(1,2)
 		events.trigger(gameEvents.PLAY_SFX,"#hit_"..tostring(rand))
 		local dmg = M.calculate_player_damage()
-		events.trigger(gameEvents.ENEMY_HURT,dmg)
+		M.enemy_hurt(dmg)
 	end)
 end
 
@@ -54,11 +117,11 @@ function M.player_meteor_smash(go_url)
 	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos1.x, go.EASING_LINEAR, 0.2, 0)
 	go.animate(go_url, "position.y", go.PLAYBACK_ONCE_FORWARD, target_pos1.y, go.EASING_LINEAR, 0.2, 0)
 	go.animate(go_url, "position.y", go.PLAYBACK_ONCE_FORWARD, original_pos.y, go.EASING_LINEAR, 0.1, 0.25,function()
-		events.trigger(gameEvents.PLAY_EFFECT_ON_ENEMY,"smoke",-10,-100,0,1.2)
+		events.trigger(gameEvents.PLAY_EFFECT_ON_ENEMY,"smoke",-10,-50,0,1.2)
 		events.trigger(gameEvents.SHAKE_EFFECT,0.2,20)	
 		events.trigger(gameEvents.PLAY_SFX,"#explosion1")
 		local dmg = M.calculate_player_damage()
-		events.trigger(gameEvents.ENEMY_HURT,dmg)
+		M.enemy_hurt(dmg)
 	end)
 	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, original_pos.x, go.EASING_LINEAR, 0.2, 0.35)
 end
@@ -85,7 +148,7 @@ function M.enemy_attack(go_url)
 		events.trigger(gameEvents.PLAY_SFX,"#hit_"..tostring(rand))
 
 		local dmg = M.calculate_enemy_damage()
-		events.trigger(gameEvents.PLAYER_HURT,dmg)
+		M.player_hurt(dmg)
 		go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, original_pos.x, go.EASING_LINEAR, 0.2)
 	end)
 end
@@ -104,7 +167,7 @@ function M.enemy_lion_strike(go_url)
 		local rand = math.random(1,2)
 		events.trigger(gameEvents.PLAY_SFX,"#hit_"..tostring(rand))
 		local dmg = M.calculate_enemy_damage()
-		events.trigger(gameEvents.PLAYER_HURT,dmg)
+		M.player_hurt(dmg)
 	end)
 end
 
@@ -115,11 +178,11 @@ function M.enemy_meteor_smash(go_url)
 	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos1.x, go.EASING_LINEAR, 0.2, 0)
 	go.animate(go_url, "position.y", go.PLAYBACK_ONCE_FORWARD, target_pos1.y, go.EASING_LINEAR, 0.2, 0)
 	go.animate(go_url, "position.y", go.PLAYBACK_ONCE_FORWARD, original_pos.y, go.EASING_LINEAR, 0.1, 0.25,function()
-		events.trigger(gameEvents.PLAY_EFFECT_ON_PLAYER,"smoke",-10,-100,0,1.2,true)
+		events.trigger(gameEvents.PLAY_EFFECT_ON_PLAYER,"smoke",-10,-50,0,1.2,true)
 		events.trigger(gameEvents.SHAKE_EFFECT,0.2,20)	
 		events.trigger(gameEvents.PLAY_SFX,"#explosion1")
 		local dmg = M.calculate_enemy_damage()
-		events.trigger(gameEvents.PLAYER_HURT,dmg)
+		M.player_hurt(dmg)
 	end)
 	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, original_pos.x, go.EASING_LINEAR, 0.2, 0.35)
 end

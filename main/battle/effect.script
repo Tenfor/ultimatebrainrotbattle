@@ -14,6 +14,10 @@ end
 function init(self)
 	sprite.play_flipbook("#sprite", hash(self.animName), onDone)
 	sprite.set_hflip("#sprite", self.flip)
+
+	if self.animName == hash("hit1") then
+		go.set("#sprite", "tint", vmath.vector4(1, 1, 0, 1))
+	end
 --	events.subscribe(self.doneEvent, callback, callback_context)
 end
 

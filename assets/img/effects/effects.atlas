@@ -2,49 +2,147 @@ animations {
   id: "lionstrike"
   images {
     image: "/assets/img/effects/lionstrike/lionstrike (2).png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_8
   }
   images {
     image: "/assets/img/effects/lionstrike/lionstrike (3).png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_8
   }
   images {
     image: "/assets/img/effects/lionstrike/lionstrike (4).png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_8
   }
   images {
     image: "/assets/img/effects/lionstrike/lionstrike (5).png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_8
   }
   images {
     image: "/assets/img/effects/lionstrike/lionstrike (6).png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_8
   }
   images {
     image: "/assets/img/effects/lionstrike/lionstrike (7).png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_8
   }
   images {
     image: "/assets/img/effects/lionstrike/lionstrike (8).png"
-  }
-  images {
-    image: "/assets/img/effects/lionstrike/lionstrike (9).png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_8
   }
 }
 animations {
   id: "smoke"
   images {
-    image: "/assets/img/effects/smoke/smoke (1).png"
+    image: "/assets/img/effects/smoke/smoke1.png"
   }
   images {
-    image: "/assets/img/effects/smoke/smoke (3).png"
+    image: "/assets/img/effects/smoke/smoke3.png"
   }
   images {
-    image: "/assets/img/effects/smoke/smoke (6).png"
+    image: "/assets/img/effects/smoke/smoke6.png"
   }
   images {
-    image: "/assets/img/effects/smoke/smoke (7).png"
+    image: "/assets/img/effects/smoke/smoke7.png"
   }
   images {
-    image: "/assets/img/effects/smoke/smoke (8).png"
+    image: "/assets/img/effects/smoke/smoke8.png"
   }
   images {
-    image: "/assets/img/effects/smoke/smoke (9).png"
+    image: "/assets/img/effects/smoke/smoke9.png"
   }
   fps: 20
+}
+animations {
+  id: "hit1"
+  images {
+    image: "/assets/img/effects/hit1/hittry (2).png"
+  }
+  images {
+    image: "/assets/img/effects/hit1/hittry (3).png"
+  }
+  images {
+    image: "/assets/img/effects/hit1/hittry (5).png"
+  }
+  images {
+    image: "/assets/img/effects/hit1/hittry (7).png"
+  }
+  images {
+    image: "/assets/img/effects/hit1/hittry (8).png"
+  }
+  images {
+    image: "/assets/img/effects/hit1/hittry (10).png"
+  }
+  playback: PLAYBACK_ONCE_BACKWARD
+  fps: 15
+}
+animations {
+  id: "hit2"
+  images {
+    image: "/assets/img/effects/hit2/hittry2 (2).png"
+  }
+  images {
+    image: "/assets/img/effects/hit2/hittry2 (4).png"
+  }
+  images {
+    image: "/assets/img/effects/hit2/hittry2 (6).png"
+  }
+  images {
+    image: "/assets/img/effects/hit2/hittry2 (8).png"
+  }
+  playback: PLAYBACK_ONCE_BACKWARD
+  fps: 20
+}
+animations {
+  id: "hit3"
+  images {
+    image: "/assets/img/effects/hit3/hittry3 (6).png"
+  }
+  images {
+    image: "/assets/img/effects/hit3/hittry3 (7).png"
+  }
+  images {
+    image: "/assets/img/effects/hit3/hittry3 (2).png"
+  }
+  images {
+    image: "/assets/img/effects/hit3/hittry3 (3).png"
+  }
+  images {
+    image: "/assets/img/effects/hit3/hittry3 (4).png"
+  }
+  images {
+    image: "/assets/img/effects/hit3/hittry3 (5).png"
+  }
+  playback: PLAYBACK_ONCE_BACKWARD
+  fps: 20
+}
+animations {
+  id: "explosion"
+  images {
+    image: "/assets/img/effects/explosion/explosion_unoptimized (1).png"
+  }
+  images {
+    image: "/assets/img/effects/explosion/explosion_unoptimized (2).png"
+  }
+  images {
+    image: "/assets/img/effects/explosion/explosion_unoptimized (3).png"
+  }
+  images {
+    image: "/assets/img/effects/explosion/explosion_unoptimized (4).png"
+  }
+  images {
+    image: "/assets/img/effects/explosion/explosion_unoptimized (5).png"
+  }
+  images {
+    image: "/assets/img/effects/explosion/explosion_unoptimized (6).png"
+  }
+  images {
+    image: "/assets/img/effects/explosion/explosion_unoptimized (7).png"
+  }
+  images {
+    image: "/assets/img/effects/explosion/explosion_unoptimized (8).png"
+  }
+}
+animations {
+  id: "arcane"
+  playback: PLAYBACK_LOOP_FORWARD
 }
 extrude_borders: 2

@@ -1,5 +1,6 @@
 local skills = require("main/battle/skills")
 local buffs = require("main/battle/buffs")
+local attackType = require("main/battle/attackType")
 
 local M = {
 	spd = 1,
@@ -11,12 +12,13 @@ local M = {
 		skills.LION_STRIKE,
 		skills.METEOR_SMASH,
 		skills.BERSERK,
-		skills.EMPTY,
-		skills.EMPTY,
+		skills.FIRE_BOLT,
+		skills.ARCANE_BOLT,
 	},
 	buffs = {
 		BERSERK = 0
-	}
+	},
+	attackType = attackType.MELEE
 }
 
 function M.setSpd(val)
@@ -37,6 +39,7 @@ function M.loadSahurStats()
 	M.mag = 1
 	M.hp = 100
 	M.maxHp = 100
+	M.attackType = attackType.MELEE
 end
 
 function M.loadCappucinoStats()
@@ -45,6 +48,7 @@ function M.loadCappucinoStats()
 	M.mag = 1
 	M.hp = 80
 	M.maxHp = 80
+	M.attackType = attackType.MELEE
 end
 
 function M.loadPatapimStats()
@@ -53,6 +57,7 @@ function M.loadPatapimStats()
 	M.mag = 3
 	M.hp = 75
 	M.maxHp = 75
+	M.attackType = attackType.MAGIC
 end
 
 function M.updateBuffs(dt)

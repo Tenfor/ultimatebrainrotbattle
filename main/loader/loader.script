@@ -2,9 +2,22 @@ local event = require("event.event")
 local events = require("event.events")
 local gameEvents = require("main/events/gameEvents")
 
+local function onSlowMo(self,sceneName)
+	local proxy = "#"..sceneName.."Proxy"
+	if self.slowMo then 
+		self.slowMo = false
+		msg.post(proxy, "set_time_step", { factor = 1, mode = 0 })
+	else	
+		self.slowMo = true
+		msg.post(proxy, "set_time_step", { factor = 0.1, mode = 0 })
+	end
+	
+end
+
 local function loadScene(self,sceneName)
 	local proxy = "#"..sceneName.."Proxy"
 	msg.post(proxy, "load")
+	--msg.post(proxy, "set_time_step", { factor = 0.1, mode = 0 })
 end
 
 local function unloadScene(self,sceneName)
@@ -22,17 +35,20 @@ function init(self)
 	--TODO: we might need to set this to "none" on release ??? 
 	event.set_mode("pcall")
 
+	self.slowMo = false
+
 	events.subscribe(gameEvents.LOAD_SCENE, loadScene, self)
 	events.subscribe(gameEvents.UNLOAD_SCENE, unloadScene, self)
+	events.subscribe(gameEvents.SLOW_MOTION, onSlowMo, self)
 
 	events.trigger(gameEvents.LOAD_SCENE,"menu")
 	
 end
 
 function final(self)
-	-- Add finalization code here
-	-- Learn more: https://defold.com/manuals/script/
-	-- Remove this function if not needed
+	events.unsubscribe(gameEvents.LOAD_SCENE, loadScene, self)
+	events.unsubscribe(gameEvents.UNLOAD_SCENE, unloadScene, self)
+	events.unsubscribe(gameEvents.SLOW_MOTION, onSlowMo, self)
 end
 
 function update(self, dt)

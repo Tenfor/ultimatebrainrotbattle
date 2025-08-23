@@ -130,6 +130,12 @@ embedded_instances {
   "  data: \"prototype: \\\"/main/battle/effect.go\\\"\\n"
   "\"\n"
   "}\n"
+  "embedded_components {\n"
+  "  id: \"playerProjectileFactory\"\n"
+  "  type: \"factory\"\n"
+  "  data: \"prototype: \\\"/main/battle/projectile.go\\\"\\n"
+  "\"\n"
+  "}\n"
   ""
   position {
     x: 450.0

@@ -47,3 +47,21 @@ embedded_components {
   data: "sound: \"/assets/sounds/sfx/explosion_long2.wav\"\n"
   ""
 }
+embedded_components {
+  id: "laser"
+  type: "sound"
+  data: "sound: \"/assets/sounds/sfx/laser.wav\"\n"
+  ""
+}
+embedded_components {
+  id: "laser2"
+  type: "sound"
+  data: "sound: \"/assets/sounds/sfx/laser2.wav\"\n"
+  ""
+}
+embedded_components {
+  id: "laser3"
+  type: "sound"
+  data: "sound: \"/assets/sounds/sfx/laser3.wav\"\n"
+  ""
+}

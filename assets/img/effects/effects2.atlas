@@ -1,0 +1,49 @@
+animations {
+  id: "fire_bolt"
+  images {
+    image: "/assets/img/effects/firebolt/firebolt (1).png"
+  }
+  images {
+    image: "/assets/img/effects/firebolt/firebolt (2).png"
+  }
+  images {
+    image: "/assets/img/effects/firebolt/firebolt (3).png"
+  }
+  images {
+    image: "/assets/img/effects/firebolt/firebolt (4).png"
+  }
+  images {
+    image: "/assets/img/effects/firebolt/firebolt (5).png"
+  }
+  images {
+    image: "/assets/img/effects/firebolt/firebolt (6).png"
+  }
+  images {
+    image: "/assets/img/effects/firebolt/firebolt (7).png"
+  }
+  fps: 15
+}
+animations {
+  id: "arcane_bolt"
+  images {
+    image: "/assets/img/effects/arcane/arcane (1).png"
+  }
+  images {
+    image: "/assets/img/effects/arcane/arcane (2).png"
+  }
+  images {
+    image: "/assets/img/effects/arcane/arcane (3).png"
+  }
+  images {
+    image: "/assets/img/effects/arcane/arcane (4).png"
+  }
+  images {
+    image: "/assets/img/effects/arcane/arcane (5).png"
+  }
+  images {
+    image: "/assets/img/effects/arcane/arcane (6).png"
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 15
+}
+extrude_borders: 2

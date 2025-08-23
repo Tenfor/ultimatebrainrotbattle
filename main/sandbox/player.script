@@ -4,6 +4,22 @@ local skills = require("main/battle/skills")
 local battleController = require "main/battle/battleController"
 local playerModel = require("main/battle/playerModel")
 local buffs = require("main/battle/buffs")
+local attackType = require("main/battle/attackType")
+
+local function onShootProjectile(self,projectileUrl,x,y,rot,scale,flip)
+	local xOffset = x or 0
+	local yOffset = y or 0
+	local rotation = rot and vmath.quat_rotation_z(math.rad(rot)) or vmath.quat()
+	local pos = go.get_position("#root")
+	pos.x = pos.x + xOffset
+	pos.y = pos.y + yOffset
+	local scale = scale or 1
+
+	factory.create("#playerProjectileFactory", pos, rotation, 
+	{animName=hash(projectileUrl),xOffset = xOffset, yOffset = yOffset, 
+	target=hash("enemy"), flip=flip, speed = 1500}, 
+	scale)
+end
 
 local function onPlayEffect(self,effectUrl,x, y, rot,scale, flip)
 	local xOffset = x or 0
@@ -30,9 +46,15 @@ local function onSkillTrigger(self, skillId)
 		setMode(self, skillId)
 	end
 	if skillId == skills.BERSERK then 
-		print("BERSERK")
 		battleController.player_berserk(go.get_id())
 	end
+	if skillId == skills.FIRE_BOLT then
+		battleController.player_fire_bolt(go.get_id())
+	end
+	if skillId == skills.ARCANE_BOLT then
+		battleController.player_arcane_bolt(go.get_id())
+	end
+		
 end
 
 local function attack(self)
@@ -55,11 +77,13 @@ function init(self)
 	self.mode = "normal"
 	events.subscribe(gameEvents.TRIGGER_SKILL, onSkillTrigger, self)
 	events.subscribe(gameEvents.PLAY_EFFECT_ON_PLAYER, onPlayEffect,self)
+	events.subscribe(gameEvents.SHOOT_PROJECTILE,onShootProjectile, self)
 end
 
 function final(self)
 	events.unsubscribe(gameEvents.TRIGGER_SKILL, onSkillTrigger, self)
-	events.subscribe(gameEvents.PLAY_EFFECT_ON_PLAYER, onPlayEffect,self)
+	events.unsubscribe(gameEvents.PLAY_EFFECT_ON_PLAYER, onPlayEffect,self)
+	events.unsubscribe(gameEvents.SHOOT_PROJECTILE,onShootProjectile, self)
 end
 
 function update(self, dt)
@@ -68,7 +92,9 @@ function update(self, dt)
 	if playerModel.hasBuff(buffs.BERSERK) then
 		extra = 3 
 	end
-	self.counter = self.counter + (dt*playerModel.spd) * extra
+	if(playerModel.attackType == attackType.MELEE) then
+		self.counter = self.counter + (dt*playerModel.spd) * extra
+	end
 	if self.counter >= 3 then
 		attack(self)
 		--local time = os.date("*t")
