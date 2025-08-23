@@ -1,5 +1,6 @@
 local M = {
-	BERSERK = "BERSERK"
+	BERSERK = "BERSERK",
+	FROST = "FROST"
 }
 
 return M

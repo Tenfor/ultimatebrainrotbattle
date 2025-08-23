@@ -46,4 +46,23 @@ animations {
   playback: PLAYBACK_LOOP_FORWARD
   fps: 15
 }
+animations {
+  id: "frost_bolt"
+  images {
+    image: "/assets/img/effects/frost/frost (1).png"
+  }
+  images {
+    image: "/assets/img/effects/frost/frost (2).png"
+  }
+  images {
+    image: "/assets/img/effects/frost/frost (3).png"
+  }
+  images {
+    image: "/assets/img/effects/frost/frost (4).png"
+  }
+  images {
+    image: "/assets/img/effects/frost/frost (5).png"
+  }
+  fps: 15
+}
 extrude_borders: 2

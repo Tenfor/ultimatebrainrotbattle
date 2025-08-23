@@ -12,8 +12,8 @@ local M = {
 		skills.LION_STRIKE,
 		skills.METEOR_SMASH,
 		skills.BERSERK,
-		skills.FIRE_BOLT,
-		skills.ARCANE_BOLT,
+		skills.EMPTY,
+		skills.EMPTY,
 	},
 	buffs = {
 		BERSERK = 0
@@ -40,6 +40,13 @@ function M.loadSahurStats()
 	M.hp = 100
 	M.maxHp = 100
 	M.attackType = attackType.MELEE
+	M.skills = {
+		skills.LION_STRIKE,
+		skills.METEOR_SMASH,
+		skills.BERSERK,
+		skills.EMPTY,
+		skills.EMPTY,
+	}
 end
 
 function M.loadCappucinoStats()
@@ -49,6 +56,13 @@ function M.loadCappucinoStats()
 	M.hp = 80
 	M.maxHp = 80
 	M.attackType = attackType.MELEE
+	M.skills = {
+		skills.LION_STRIKE,
+		skills.METEOR_SMASH,
+		skills.BERSERK,
+		skills.EMPTY,
+		skills.EMPTY,
+	}
 end
 
 function M.loadPatapimStats()
@@ -58,6 +72,13 @@ function M.loadPatapimStats()
 	M.hp = 75
 	M.maxHp = 75
 	M.attackType = attackType.MAGIC
+	M.skills = {
+		skills.ARCANE_BOLT,
+		skills.FIRE_BOLT,
+		skills.FROST_BOLT,
+		skills.EMPTY,
+		skills.EMPTY,
+	}
 end
 
 function M.updateBuffs(dt)

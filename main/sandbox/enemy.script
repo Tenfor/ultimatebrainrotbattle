@@ -18,6 +18,10 @@ local function onPlayEffect(self,effectUrl,x, y, rot,scale, flip)
 	scale)
 end
 
+local function onPlayParticle(self,particleUrl)
+	particlefx.play(particleUrl)
+end
+
 local function attack(self)	
 	if enemyModel.pattern[self.currentMod] == skills.EMPTY then 
 		battleController.enemy_attack(go.get_id())
@@ -37,7 +41,6 @@ end
 
 local function onEnemyHurt(self,dmg)
 	--sprite.play_flipbook("hit_effect#sprite", "hit")
-	print("onenemyhurt")
 	local pos = go.get_position()
 	pos.y = pos.y + 100
 
@@ -51,11 +54,13 @@ function init(self)
 	self.currentMod = 1
 	events.subscribe(gameEvents.ENEMY_HURT, onEnemyHurt,self)
 	events.subscribe(gameEvents.PLAY_EFFECT_ON_ENEMY, onPlayEffect,self)
+	events.subscribe(gameEvents.PLAY_PARTICLE_ON_ENEMY, onPlayParticle,self)
 end
 
 function final(self)
 	events.unsubscribe(gameEvents.ENEMY_HURT, onEnemyHurt,self)
 	events.unsubscribe(gameEvents.PLAY_EFFECT_ON_ENEMY, onPlayEffect, self)
+	events.unsubscribe(gameEvents.PLAY_PARTICLE_ON_ENEMY, onPlayParticle,self)
 end
 
 function update(self, dt)

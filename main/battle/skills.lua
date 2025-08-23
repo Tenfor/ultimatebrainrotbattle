@@ -5,6 +5,7 @@ local M = {
 	BERSERK = "BERSERK",
 	FIRE_BOLT = "FIRE_BOLT",
 	ARCANE_BOLT = "ARCANE_BOLT",
+	ARCANE_BOLT = "ARCANE_BOLT",
 }
 
 return M

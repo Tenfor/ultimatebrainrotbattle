@@ -16,6 +16,9 @@ local function onImpact(self)
 	if self.animName == hash("arcane_bolt") then
 		battleController.arcane_bolt_impact(self.target)
 	end
+	if self.animName == hash("frost_bolt") then
+		battleController.frost_bolt_impact(self.target)
+	end
 end
 
 local function onDone(self)

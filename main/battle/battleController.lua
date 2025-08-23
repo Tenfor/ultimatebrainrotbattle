@@ -80,12 +80,40 @@ function M.player_arcane_bolt(go_url)
 end
 
 function M.arcane_bolt_impact(go_url)
-	print(go_url)
 	if go_url == hash("enemy") then 
 		local dmg = M.calculate_player_damage()
 		events.trigger(gameEvents.PLAY_EFFECT_ON_ENEMY,"hit3",0,0,0,0.8)
 		events.trigger(gameEvents.PLAY_SFX,"#hit_1")
 		M.enemy_hurt(dmg)
+	else 
+
+	end
+end
+
+function M.player_frost_bolt(go_url)
+	local original_pos = go.get_position(go_url)
+	local target_pos = vmath.vector3(420, original_pos.y, original_pos.z)
+
+	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos.x, go.EASING_LINEAR, 0.1, 0, function()
+		events.trigger(gameEvents.PLAY_SFX,"#laser3")
+		events.trigger(gameEvents.SHOOT_PROJECTILE,"frost_bolt",0,0,1,0.8)
+		go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, original_pos.x, go.EASING_LINEAR, 0.1, 0)
+	end)
+end
+
+function M.frost_bolt_impact(go_url)
+	if go_url == hash("enemy") then 
+		local dmg = M.calculate_player_damage()
+		events.trigger(gameEvents.PLAY_PARTICLE_ON_ENEMY,"#frost_bolt")
+		events.trigger(gameEvents.PLAY_SFX,"#hit_1")
+		--events.trigger(gameEvents.PLAY_SFX,"#hit_1")
+		M.enemy_hurt(dmg)
+		local obj_url = msg.url(nil,hash(go_url),"sprite")
+		go.set(obj_url, "tint", vmath.vector4(0, 0, 1, 1))
+		playerModel.addBuff(buffs.FROST,5)
+		timer.delay(5, false, function()
+			go.set(obj_url, "tint", vmath.vector4(1, 1, 1, 1))
+		end)
 	else 
 
 	end

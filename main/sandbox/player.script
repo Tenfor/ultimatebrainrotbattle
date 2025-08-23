@@ -54,6 +54,9 @@ local function onSkillTrigger(self, skillId)
 	if skillId == skills.ARCANE_BOLT then
 		battleController.player_arcane_bolt(go.get_id())
 	end
+	if skillId == skills.FROST_BOLT then
+		battleController.player_frost_bolt(go.get_id())
+	end
 		
 end
 

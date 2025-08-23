@@ -1,3 +1,6 @@
+images {
+  image: "/assets/img/effects/frost/snowflake.png"
+}
 animations {
   id: "lionstrike"
   images {
@@ -117,28 +120,28 @@ animations {
 animations {
   id: "explosion"
   images {
-    image: "/assets/img/effects/explosion/explosion_unoptimized (1).png"
+    image: "/assets/img/effects/explosion/explosion (1).png"
   }
   images {
-    image: "/assets/img/effects/explosion/explosion_unoptimized (2).png"
+    image: "/assets/img/effects/explosion/explosion (2).png"
   }
   images {
-    image: "/assets/img/effects/explosion/explosion_unoptimized (3).png"
+    image: "/assets/img/effects/explosion/explosion (3).png"
   }
   images {
-    image: "/assets/img/effects/explosion/explosion_unoptimized (4).png"
+    image: "/assets/img/effects/explosion/explosion (4).png"
   }
   images {
-    image: "/assets/img/effects/explosion/explosion_unoptimized (5).png"
+    image: "/assets/img/effects/explosion/explosion (5).png"
   }
   images {
-    image: "/assets/img/effects/explosion/explosion_unoptimized (6).png"
+    image: "/assets/img/effects/explosion/explosion (6).png"
   }
   images {
-    image: "/assets/img/effects/explosion/explosion_unoptimized (7).png"
+    image: "/assets/img/effects/explosion/explosion (7).png"
   }
   images {
-    image: "/assets/img/effects/explosion/explosion_unoptimized (8).png"
+    image: "/assets/img/effects/explosion/explosion (8).png"
   }
 }
 animations {
