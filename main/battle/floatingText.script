@@ -2,13 +2,14 @@ local tweener = require("tweener.tweener")
 
 go.property("value", 1)
 go.property("crit", false)
-go.property("parentId", "enemy")
+go.property("createdOnEnemy", true)
+--go.property("parentId", hash("enemy"))
 
 function init(self)
 
-	go.set_parent(go.get_id(),self.parentId,true)
+	--go.set_parent(go.get_id(),self.parentId,true)
 
-	self.parentId = hash("enemy")
+	--self.parentId = hash("enemy")
 	--print(self.parentId)
 
 	self.offsetX = 0;
@@ -29,13 +30,17 @@ function init(self)
 	go.animate("#label", "scale", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(1.1,1.1,1.1), go.EASING_LINEAR, inDur)
 	local pos = go.get_position()
 
+	local mirrorMultiplier = -1
+	if self.createdOnEnemy then 
+		mirrorMultiplier = 1
+	end
 	--local randX = math.random(-100,100)
 	tweener.tween(go.EASING_LINEAR, 0, 12, inDur, function (value,is_final_call) 
-		self.offsetX = self.offsetX+math.floor(value)
+		self.offsetX = self.offsetX+math.floor(value*mirrorMultiplier)
 		self.offsetY = self.offsetY+math.floor(value)
 		if is_final_call then
 			tweener.tween(go.EASING_INSINE, 0, 6, outDur, function (value2,is_final_call2) 
-				self.offsetX = self.offsetX+math.floor(value2)
+				self.offsetX = self.offsetX+math.floor(value2*mirrorMultiplier)
 			end)
 
 			tweener.tween(go.EASING_INSINE, 0, -20, outDur, function (value2,is_final_call2) 
@@ -67,7 +72,10 @@ function final(self)
 end
 
 function update(self, dt)
-	local target_pos = go.get_position("/enemy")
+	local target_pos = go.get_position("/player")
+	if self.createdOnEnemy then
+		target_pos = go.get_position("/enemy")
+	end
 	target_pos.x = target_pos.x + self.offsetX
 	target_pos.y = target_pos.y + self.offsetY
 

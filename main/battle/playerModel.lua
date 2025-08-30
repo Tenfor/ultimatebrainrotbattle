@@ -1,6 +1,7 @@
 local skills = require("main/battle/skills")
 local buffs = require("main/battle/buffs")
 local attackType = require("main/battle/attackType")
+local resourceType = require("main/battle/resourceType")
 
 local M = {
 	spd = 1,
@@ -8,18 +9,69 @@ local M = {
 	mag = 1,
 	hp = 100,
 	maxHp = 100,
+	rage = 0, 
+	maxRage = 100,
+	mana = 100,
+	maxMana = 100,
 	skills = {
-		skills.LION_STRIKE,
-		skills.METEOR_SMASH,
-		skills.BERSERK,
-		skills.EMPTY,
-		skills.EMPTY,
+		{skillName = skills.LION_STRIKE, cd = 0, maxCd = 0},
+		{skillName = skills.METEOR_SMASH, cd = 0, maxCd = 0},
+		{skillName = skills.BERSERK, cd = 0, maxCd = 0},
+		{skillName = skills.EMPTY, cd = 0, maxCd = 0},
+		{skillName = skills.EMPTY, cd = 0, maxCd = 0},
 	},
+	globalCd = 0,
 	buffs = {
-		BERSERK = 0
+		BERSERK = 0,
+		FROST = 0
 	},
-	attackType = attackType.MELEE
+	attackType = attackType.MELEE,
+	resourceType = resourceType.RAGE
 }
+
+function M.setRage(val) 
+	M.rage = val 
+	if(M.rage < 0) then
+		M.rage = 0
+	end
+	if(M.rage > M.maxRage) then 
+		M.rage = M.maxRage
+	end
+end
+
+function M.setMana(val) 
+	M.mana = val 
+	if(M.mana < 0) then
+		M.mana = 0
+	end
+	if(M.mana > M.maxMana) then 
+		M.mana = M.maxMana
+	end
+end
+
+function M.setResource(val)
+	if M.resourceType == resourceType.RAGE then
+		M.setRage(val)
+	elseif M.resourceType == resourceType.MANA then
+		M.setMana(val)
+	end
+end
+
+function M.getResource()
+	if M.resourceType == resourceType.RAGE then
+		return M.rage
+	elseif M.resourceType == resourceType.MANA then
+		return M.mana
+	end
+end
+
+function M.getMaxResource()
+	if M.resourceType == resourceType.RAGE then
+		return M.maxRage
+	elseif M.resourceType == resourceType.MANA then
+		return M.maxMana
+	end
+end
 
 function M.setSpd(val)
 	M.spd = val
@@ -41,12 +93,17 @@ function M.loadSahurStats()
 	M.maxHp = 100
 	M.attackType = attackType.MELEE
 	M.skills = {
-		skills.LION_STRIKE,
-		skills.METEOR_SMASH,
-		skills.BERSERK,
-		skills.EMPTY,
-		skills.EMPTY,
+		{skillName = skills.LION_STRIKE, cd = 0, maxCd = 0},
+		{skillName = skills.METEOR_SMASH, cd = 0, maxCd = 0},
+		{skillName = skills.BERSERK, cd = 0, maxCd = 0},
+		{skillName = skills.EMPTY, cd = 0, maxCd = 0},
+		{skillName = skills.EMPTY, cd = 0, maxCd = 0},
 	}
+	M.resourceType = resourceType.RAGE
+	M.rage = 0
+	M.maxRage = 100
+	M.mana = 0
+	M.maxMana = 0
 end
 
 function M.loadCappucinoStats()
@@ -57,11 +114,11 @@ function M.loadCappucinoStats()
 	M.maxHp = 80
 	M.attackType = attackType.MELEE
 	M.skills = {
-		skills.LION_STRIKE,
-		skills.METEOR_SMASH,
-		skills.BERSERK,
-		skills.EMPTY,
-		skills.EMPTY,
+		{skillName = skills.LION_STRIKE, cd = 0, maxCd = 0},
+		{skillName = skills.METEOR_SMASH, cd = 0, maxCd = 0},
+		{skillName = skills.BERSERK, cd = 0, maxCd = 0},
+		{skillName = skills.EMPTY, cd = 0, maxCd = 0},
+		{skillName = skills.EMPTY, cd = 0, maxCd = 0},
 	}
 end
 
@@ -73,12 +130,28 @@ function M.loadPatapimStats()
 	M.maxHp = 75
 	M.attackType = attackType.MAGIC
 	M.skills = {
-		skills.ARCANE_BOLT,
-		skills.FIRE_BOLT,
-		skills.FROST_BOLT,
-		skills.EMPTY,
-		skills.EMPTY,
+		{skillName = skills.ARCANE_BOLT, cd = 0, maxCd = 0},
+		{skillName = skills.FIRE_BOLT, cd = 0, maxCd = 0},
+		{skillName = skills.FROST_BOLT, cd = 0, maxCd = 0},
+		{skillName = skills.EMPTY, cd = 0, maxCd = 0},
+		{skillName = skills.EMPTY, cd = 0, maxCd = 0},
 	}
+	M.resourceType = resourceType.MANA
+	M.rage = 0
+	M.maxRage = 0
+	M.mana = 100
+	M.maxMana = 100
+end
+
+function M.updateCDS(dt)
+	for i = 1, #M.skills do
+		if(M.skills[i].cd > 0) then 
+			M.skills[i].cd = M.skills[i].cd - dt
+		end
+	end
+	if M.globalCd > 0 then
+		M.globalCd = M.globalCd - dt
+	end
 end
 
 function M.updateBuffs(dt)

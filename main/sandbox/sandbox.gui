@@ -10,7 +10,7 @@ textures {
 nodes {
   position {
     x: 80.0
-    y: 581.0
+    y: 448.0
   }
   scale {
     x: 0.4
@@ -38,7 +38,7 @@ nodes {
 nodes {
   position {
     x: 80.0
-    y: 502.0
+    y: 369.0
   }
   scale {
     x: 0.4
@@ -66,7 +66,7 @@ nodes {
 nodes {
   position {
     x: 80.0
-    y: 426.0
+    y: 293.0
   }
   scale {
     x: 0.4
@@ -124,8 +124,13 @@ nodes {
     x: 400.0
     y: 100.0
   }
+  color {
+    x: 0.028
+    y: 0.852
+    z: 0.0
+  }
   type: TYPE_BOX
-  texture: "ui/bar_hp"
+  texture: "ui/bar"
   id: "playerHpBar"
   pivot: PIVOT_W
   parent: "playerHp"
@@ -145,6 +150,67 @@ nodes {
   font: "game"
   id: "playerHpText"
   parent: "playerHp"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 191.0
+    y: 591.0
+  }
+  scale {
+    x: 0.8
+    y: 0.6
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "playerResource"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  type: TYPE_BOX
+  texture: "ui/bar_bg"
+  id: "playerResourceBg"
+  parent: "playerResource"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -200.0
+  }
+  size {
+    x: 400.0
+    y: 100.0
+  }
+  color {
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  texture: "ui/bar"
+  id: "playerResourceBar"
+  pivot: PIVOT_W
+  parent: "playerResource"
+  inherit_alpha: true
+}
+nodes {
+  scale {
+    x: 0.7
+    y: 0.7
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "100/100"
+  font: "game"
+  id: "playerResourceText"
+  parent: "playerResource"
   inherit_alpha: true
 }
 nodes {
@@ -181,8 +247,13 @@ nodes {
     x: 400.0
     y: 100.0
   }
+  color {
+    x: 0.027
+    y: 0.851
+    z: 0.0
+  }
   type: TYPE_BOX
-  texture: "ui/bar_hp"
+  texture: "ui/bar"
   id: "enemyHpBar"
   pivot: PIVOT_E
   parent: "enemyHp"
@@ -241,11 +312,11 @@ nodes {
     y: 48.0
   }
   scale {
-    x: 0.2
-    y: 0.6
+    x: 0.33
+    y: 0.33
   }
   type: TYPE_BOX
-  texture: "ui/button1"
+  texture: "ui/LION_STRIKE"
   id: "skillBtn1"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
@@ -254,10 +325,6 @@ nodes {
   position {
     x: -10.0
     y: -1.666667
-  }
-  scale {
-    x: 2.4
-    y: 0.8
   }
   size {
     x: 200.0
@@ -271,16 +338,33 @@ nodes {
   inherit_alpha: true
 }
 nodes {
+  size {
+    x: 256.0
+    y: 256.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "cd1"
+  parent: "skillBtn1"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+}
+nodes {
   position {
     x: 193.0
     y: 48.0
   }
   scale {
-    x: 0.2
-    y: 0.6
+    x: 0.33
+    y: 0.33
   }
   type: TYPE_BOX
-  texture: "ui/button1"
+  texture: "ui/EMPTY"
   id: "skillBtn2"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
@@ -288,10 +372,6 @@ nodes {
 nodes {
   position {
     y: -1.666667
-  }
-  scale {
-    x: 2.4
-    y: 0.8
   }
   size {
     x: 200.0
@@ -305,16 +385,33 @@ nodes {
   inherit_alpha: true
 }
 nodes {
+  size {
+    x: 256.0
+    y: 256.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "cd2"
+  parent: "skillBtn2"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+}
+nodes {
   position {
     x: 290.0
     y: 48.0
   }
   scale {
-    x: 0.2
-    y: 0.6
+    x: 0.33
+    y: 0.33
   }
   type: TYPE_BOX
-  texture: "ui/button1"
+  texture: "ui/EMPTY"
   id: "skillBtn3"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
@@ -322,10 +419,6 @@ nodes {
 nodes {
   position {
     y: -1.666667
-  }
-  scale {
-    x: 2.4
-    y: 0.8
   }
   size {
     x: 200.0
@@ -339,16 +432,33 @@ nodes {
   inherit_alpha: true
 }
 nodes {
+  size {
+    x: 256.0
+    y: 256.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "cd3"
+  parent: "skillBtn3"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+}
+nodes {
   position {
     x: 388.0
     y: 48.0
   }
   scale {
-    x: 0.2
-    y: 0.6
+    x: 0.33
+    y: 0.33
   }
   type: TYPE_BOX
-  texture: "ui/button1"
+  texture: "ui/EMPTY"
   id: "skillBtn4"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
@@ -356,10 +466,6 @@ nodes {
 nodes {
   position {
     y: -1.666667
-  }
-  scale {
-    x: 2.4
-    y: 0.8
   }
   size {
     x: 200.0
@@ -373,16 +479,33 @@ nodes {
   inherit_alpha: true
 }
 nodes {
+  size {
+    x: 256.0
+    y: 256.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "cd4"
+  parent: "skillBtn4"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+}
+nodes {
   position {
     x: 485.0
     y: 48.0
   }
   scale {
-    x: 0.2
-    y: 0.6
+    x: 0.33
+    y: 0.33
   }
   type: TYPE_BOX
-  texture: "ui/button1"
+  texture: "ui/EMPTY"
   id: "skillBtn5"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
@@ -390,10 +513,6 @@ nodes {
 nodes {
   position {
     y: -1.666667
-  }
-  scale {
-    x: 2.4
-    y: 0.8
   }
   size {
     x: 200.0
@@ -405,6 +524,121 @@ nodes {
   id: "skillBtnText5"
   parent: "skillBtn5"
   inherit_alpha: true
+}
+nodes {
+  size {
+    x: 256.0
+    y: 256.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "cd5"
+  parent: "skillBtn5"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+}
+nodes {
+  position {
+    x: 191.0
+    y: 591.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "playerComboPoints"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  position {
+    x: -120.0
+  }
+  size {
+    x: 50.0
+    y: 50.0
+  }
+  color {
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "cp1"
+  parent: "playerComboPoints"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -60.0
+  }
+  size {
+    x: 50.0
+    y: 50.0
+  }
+  color {
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "cp2"
+  parent: "playerComboPoints"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 50.0
+    y: 50.0
+  }
+  color {
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "cp3"
+  parent: "playerComboPoints"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 60.0
+  }
+  size {
+    x: 50.0
+    y: 50.0
+  }
+  color {
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "cp4"
+  parent: "playerComboPoints"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 120.0
+  }
+  size {
+    x: 50.0
+    y: 50.0
+  }
+  color {
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "cp5"
+  parent: "playerComboPoints"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
 }
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT

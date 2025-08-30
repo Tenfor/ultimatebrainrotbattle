@@ -4,6 +4,7 @@ local events = require("event.events")
 local gameEvents = require("main/events/gameEvents")
 local buffs = require("main/battle/buffs")
 local skills = require("main/battle/skills")
+local hitType = require("main/battle/hitType")
 
 local function onPlayEffect(self,effectUrl,x, y, rot,scale, flip)
 	local xOffset = x or 0
@@ -22,15 +23,38 @@ local function onPlayParticle(self,particleUrl)
 	particlefx.play(particleUrl)
 end
 
+local function onShootProjectile(self,projectileUrl,x,y,rot,scale,flip)
+	local xOffset = x or 0
+	local yOffset = y or 0
+	local rotation = rot and vmath.quat_rotation_z(math.rad(rot)) or vmath.quat()
+	local pos = go.get_position("#root")
+	pos.x = pos.x + xOffset
+	pos.y = pos.y + yOffset
+	local scale = scale or 1
+
+	factory.create("root#projectileFactory", pos, rotation, 
+	{animName=hash(projectileUrl),xOffset = xOffset, yOffset = yOffset, 
+	enemyCasted=true, flip=flip, speed = 1500}, 
+	scale)
+end
+
 local function attack(self)	
 	if enemyModel.pattern[self.currentMod] == skills.EMPTY then 
-		battleController.enemy_attack(go.get_id())
+		battleController.attack(go.get_id(),true)
 	elseif enemyModel.pattern[self.currentMod] == skills.LION_STRIKE then 
-		battleController.enemy_lion_strike(go.get_id())
+		battleController.lion_strike(go.get_id(),true)
 	elseif enemyModel.pattern[self.currentMod] == skills.METEOR_SMASH then 
-		battleController.enemy_meteor_smash(go.get_id())
+		battleController.meteor_smash(go.get_id(),true)
 	elseif enemyModel.pattern[self.currentMod] == skills.BERSERK then 
-		battleController.enemy_berserk(go.get_id())
+		battleController.berserk(go.get_id(),true)
+	elseif enemyModel.pattern[self.currentMod] == skills.ARCANE_BOLT then 
+		battleController.arcane_bolt(go.get_id(),true)
+	elseif enemyModel.pattern[self.currentMod] == skills.FIRE_BOLT then 
+		battleController.fire_bolt(go.get_id(),true)
+	elseif enemyModel.pattern[self.currentMod] == skills.FROST_BOLT then 
+		battleController.frost_bolt(go.get_id(),true)
+	elseif enemyModel.pattern[self.currentMod] == skills.BERSERK then 
+		battleController.berserk(go.get_id(),true)
 	end
 
 	self.currentMod = self.currentMod + 1
@@ -39,14 +63,40 @@ local function attack(self)
 	end
 end
 
-local function onEnemyHurt(self,dmg)
+local function onEnemyHurt(self,dmg, type)
 	--sprite.play_flipbook("hit_effect#sprite", "hit")
 	local pos = go.get_position()
 	pos.y = pos.y + 100
 
 	local id_str = tostring(go.get_id())
 	factory.create("#floatingTextFactory", pos, nil, {value=dmg, crit=false}, 1)
-	
+
+	if(type == hitType.BASIC) then
+		local randRot = math.random(360)
+		local randXoffset = math.random(-20,20)
+		local randYoffset = math.random(-20,20)
+		events.trigger(gameEvents.ADD_RAGE,5)
+		events.trigger(gameEvents.PLAY_EFFECT_ON_ENEMY,"hit2",-70+randXoffset,75+randYoffset,randRot,0.3)
+	elseif(type == hitType.FLASHING) then
+		go.animate("#sprite", "color_add.w", go.PLAYBACK_ONCE_PINGPONG, 1, go.EASING_LINEAR, 0.1)
+	end
+end
+
+local function updateBuffs(self,dt)
+	enemyModel.updateBuffs(dt)
+	if enemyModel.hasBuff(buffs.FROST) then
+		if go.get("#sprite", "tint") ~= vmath.vector4(0.4, 0.4, 1, 1) then
+			go.set("#sprite", "tint", vmath.vector4(0.4, 0.4, 1, 1))
+		end
+	elseif enemyModel.hasBuff(buffs.BERSERK) then
+		if go.get("#sprite", "tint") ~= vmath.vector4(1, 0, 0, 1) then
+			go.set("#sprite", "tint", vmath.vector4(1, 0, 0, 1))
+		end
+	else
+		if go.get("#sprite", "tint") ~= vmath.vector4(1, 1, 1, 1) then
+			go.set("#sprite", "tint", vmath.vector4(1, 1, 1, 1))
+		end
+	end
 end
 
 function init(self)
@@ -55,19 +105,27 @@ function init(self)
 	events.subscribe(gameEvents.ENEMY_HURT, onEnemyHurt,self)
 	events.subscribe(gameEvents.PLAY_EFFECT_ON_ENEMY, onPlayEffect,self)
 	events.subscribe(gameEvents.PLAY_PARTICLE_ON_ENEMY, onPlayParticle,self)
+	events.subscribe(gameEvents.ENEMY_SHOOT_PROJECTILE,onShootProjectile, self)
+
+	--go.animate("#sprite", "color_add.w", go.PLAYBACK_LOOP_PINGPONG, 1, go.EASING_LINEAR, 2)		
 end
 
 function final(self)
 	events.unsubscribe(gameEvents.ENEMY_HURT, onEnemyHurt,self)
 	events.unsubscribe(gameEvents.PLAY_EFFECT_ON_ENEMY, onPlayEffect, self)
 	events.unsubscribe(gameEvents.PLAY_PARTICLE_ON_ENEMY, onPlayParticle,self)
+	events.unsubscribe(gameEvents.ENEMY_SHOOT_PROJECTILE,onShootProjectile, self)
+	
 end
 
 function update(self, dt)
-	enemyModel.updateBuffs(dt)
+	updateBuffs(self,dt)
 	local extra = 1
 	if enemyModel.hasBuff(buffs.BERSERK) then
-		extra = 3 
+		extra = extra*3 
+	end
+	if enemyModel.hasBuff(buffs.FROST) then 
+		extra = extra / 3
 	end
 	self.counter = self.counter + (dt*enemyModel.spd) * extra
 	if self.counter >= 3 then

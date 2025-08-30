@@ -8,7 +8,8 @@ local M = {
 	hp = 100,
 	maxHp = 100,	
 	buffs = {
-		BERSERK = 0
+		BERSERK = 0,
+		FROST = 0
 	},
 	pattern = {
 		skills.EMPTY,

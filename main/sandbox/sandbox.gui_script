@@ -2,7 +2,76 @@ local druid = require("druid.druid")
 local events = require("event.events")
 local gameEvents = require("main/events/gameEvents")
 local playerModel = require("main/battle/playerModel")
+local skills = require("main/battle/skills")
 local enemyModel = require("main/battle/enemyModel")
+local resourceType = require("main/battle/resourceType")
+
+local function updateCds(self)
+	for i = 1, 5 do
+		local maxCd = playerModel.skills[i].maxCd
+		local currentCd = playerModel.skills[i].cd
+
+		currentCd = currentCd < maxCd and currentCd or maxCd
+		local cdMarkerNode = self["cdMarker"..i]
+		if currentCd > 0 then
+			gui.set_enabled(cdMarkerNode, true)
+			gui.set(cdMarkerNode, "size.y", 256*currentCd/maxCd)
+		else
+			gui.set_enabled(cdMarkerNode, false)
+		end
+	end
+end
+
+local function loadButtons(self)
+	gui.play_flipbook(self.skillBtn1Node, playerModel.skills[1].skillName)
+	gui.play_flipbook(self.skillBtn2Node,playerModel.skills[2].skillName)
+	gui.play_flipbook(self.skillBtn3Node,playerModel.skills[3].skillName)
+	gui.play_flipbook(self.skillBtn4Node,playerModel.skills[4].skillName)
+	gui.play_flipbook(self.skillBtn5Node,playerModel.skills[5].skillName)
+end
+
+local function updateButtons(self)
+	local resource = playerModel.getResource()
+	local enabledColor   = vmath.vector4(1, 1, 1, 1)
+	local disabledColor = vmath.vector4(0.15, 0.15, 0.15, 0.8)
+	local activeColor = vmath.vector4(0, 1, 0, 1)
+
+	for i = 1, 5 do
+		local btnNode = self["skillBtn" .. i .. "Node"]
+		local cost    = skills.getResourceCost(playerModel.skills[i].skillName)
+		local color   = enabledColor
+		if hash(gui.get_flipbook(btnNode)) == hash(self.playerMod) then
+			color = activeColor
+		end
+		if resource < cost then 
+			color = disabledColor
+		end
+		gui.set_color(btnNode, color)
+	end
+end
+
+local function onSetPlayerMod(self,mod)
+	self.playerMod = mod
+	updateButtons(self)
+end
+
+local function updateResourceBar(self)
+	self.playerResourceBar:set_to(playerModel.getResource()/playerModel.getMaxResource())
+	gui.set_text(self.playerResourceTextNode, tostring(playerModel.getResource()).."/"..tostring(playerModel.getMaxResource()))
+
+	if playerModel.resourceType == resourceType.MANA then
+		gui.set_color(self.playerResourceBarNode,vmath.vector4(0,0,1,1))
+	elseif playerModel.resourceType == resourceType.RAGE then
+		gui.set_color(self.playerResourceBarNode,vmath.vector4(1,0,0,1))
+	end
+
+	updateButtons(self)
+end
+
+local function onAddRage(self,value)
+	playerModel.setRage(playerModel.rage + value)
+	updateResourceBar(self)
+end
 
 local function onSahurBtn(self)
 	events.trigger(gameEvents.LOAD_SAHUR)
@@ -28,6 +97,8 @@ end
 
 local function onCharacterLoaded(self)
 	updatePlayerHpText(self)
+	updateResourceBar(self)
+	loadButtons(self)
 end
 
 local function onEnemyHurt(self,dmg)
@@ -45,24 +116,14 @@ local function onMenuBtn(self)
 	events.trigger(gameEvents.UNLOAD_SCENE,"sandbox")
 end
 
-local function onSkillBtn1(self)
-	events.trigger(gameEvents.TRIGGER_SKILL,playerModel.skills[1])
-end
-
-local function onSkillBtn2(self)
-	events.trigger(gameEvents.TRIGGER_SKILL,playerModel.skills[2])
-end
-
-local function onSkillBtn3(self)
-	events.trigger(gameEvents.TRIGGER_SKILL,playerModel.skills[3])
-end
-
-local function onSkillBtn4(self)
-	events.trigger(gameEvents.TRIGGER_SKILL,playerModel.skills[4])
-end
-
-local function onSkillBtn5(self)
-	events.trigger(gameEvents.TRIGGER_SKILL,playerModel.skills[5])
+local function onSkillBtn(self, skillIndex)
+	print(playerModel.skills[skillIndex].cd, playerModel.skills[skillIndex].cd > 0)
+	if playerModel.getResource() >= skills.getResourceCost(playerModel.skills[skillIndex].skillName) 
+	and playerModel.skills[skillIndex].cd <= 0 and playerModel.globalCd <= 0 then 
+		events.trigger(gameEvents.TRIGGER_SKILL,playerModel.skills[skillIndex].skillName)
+	else 
+		events.trigger(gameEvents.PLAY_SFX,"#buttonlocked")
+	end
 end
 
 function init(self)
@@ -71,6 +132,8 @@ function init(self)
 	self.patapimBtn = self.druid:new_button("patapimBtn", onPatapimBtn)
 	self.cappucinoBtn = self.druid:new_button("cappucinoBtn", onCappucinoBtn)
 	self.menuBtn = self.druid:new_button("menuBtn", onMenuBtn)
+
+	self.playerMod = ""
 
 	self.playerHpTextNode = gui.get_node("playerHpText")
 	self.enemyHpTextNode = gui.get_node("enemyHpText")
@@ -81,17 +144,40 @@ function init(self)
 	events.subscribe(gameEvents.CHARACTER_LOADED, onCharacterLoaded, self)
 	events.subscribe(gameEvents.ENEMY_HURT, onEnemyHurt, self)
 	events.subscribe(gameEvents.PLAYER_HURT, onPlayerHurt, self)
+	events.subscribe(gameEvents.ADD_RAGE, onAddRage,self)
+	events.subscribe(gameEvents.PAY_RESOURCE_COST, updateResourceBar,self)
+	events.subscribe(gameEvents.SET_PLAYER_MOD, onSetPlayerMod,self)
 
 	self.playerHpBar = self.druid:new_progress("playerHpBar", "x")
 	self.playerHpBar:set_to(1)
 
-	self.skillBtn1 = self.druid:new_button("skillBtn1", onSkillBtn1)
-	self.skillBtn2 = self.druid:new_button("skillBtn2", onSkillBtn2)
-	self.skillBtn3 = self.druid:new_button("skillBtn3", onSkillBtn3)
-	self.skillBtn4 = self.druid:new_button("skillBtn4", onSkillBtn4)
-	self.skillBtn5 = self.druid:new_button("skillBtn5", onSkillBtn5)
+	self.playerResourceBar = self.druid:new_progress("playerResourceBar", "x")
+	self.playerResourceBarNode = gui.get_node("playerResourceBar")
+	self.playerResourceTextNode = gui.get_node("playerResourceText")
+	self.playerResourceBar:set_to(0)
+	gui.set_text(self.playerResourceTextNode, tostring(playerModel.rage).."/"..tostring(playerModel.maxRage))
+
+	for i = 1, 5 do
+		self["skillBtn"..i] = self.druid:new_button("skillBtn"..i, onSkillBtn, i)
+		self["skillBtn"..i.."Node"] = gui.get_node("skillBtn"..i)
+		self["cdMarker"..i] = gui.get_node("cd"..i)
+	end
 
 
+	
+	--self.skillBtn1 = self.druid:new_button("skillBtn1", onSkillBtn, 1)
+	--self.skillBtn2 = self.druid:new_button("skillBtn2", onSkillBtn, 2)
+	--self.skillBtn3 = self.druid:new_button("skillBtn3", onSkillBtn, 3)
+	--self.skillBtn4 = self.druid:new_button("skillBtn4", onSkillBtn, 4)
+	--self.skillBtn5 = self.druid:new_button("skillBtn5", onSkillBtn, 5)
+	--self.skillBtn1Node = gui.get_node("skillBtn1")
+	--self.skillBtn2Node = gui.get_node("skillBtn2")
+	--self.skillBtn3Node = gui.get_node("skillBtn3")
+	--self.skillBtn4Node = gui.get_node("skillBtn4")
+	--self.skillBtn5Node = gui.get_node("skillBtn5")
+
+	loadButtons(self)
+	updateResourceBar(self)
 end
 
 function final(self)
@@ -99,10 +185,14 @@ function final(self)
 	events.unsubscribe(gameEvents.CHARACTER_LOADED, onCharacterLoaded, self)
 	events.unsubscribe(gameEvents.ENEMY_HURT, onEnemyHurt, self)
 	events.unsubscribe(gameEvents.PLAYER_HURT, onPlayerHurt, self)
+	events.unsubscribe(gameEvents.ADD_RAGE, onAddRage,self)
+	events.unsubscribe(gameEvents.PAY_RESOURCE_COST, updateResourceBar,self)
+	events.unsubscribe(gameEvents.SET_PLAYER_MOD, onSetPlayerMod,self)
 end
 
 function update(self, dt)
 	self.druid:update(dt)
+	updateCds(self)
 end
 
 function on_message(self, message_id, message, sender)

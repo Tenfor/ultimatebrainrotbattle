@@ -29,9 +29,39 @@ images {
   image: "/assets/img/ui/bar_bg.png"
 }
 images {
+  image: "/assets/img/ui/bar_rage.png"
+}
+images {
   image: "/assets/img/ui/bar_hp.png"
 }
 images {
-  image: "/assets/img/ui/bar_energy.png"
+  image: "/assets/img/ui/bar.png"
+}
+images {
+  image: "/assets/img/skillIcons/ARCANE_BOLT.png"
+}
+images {
+  image: "/assets/img/skillIcons/BERSERK.png"
+}
+images {
+  image: "/assets/img/skillIcons/FIRE_BOLT.png"
+}
+images {
+  image: "/assets/img/skillIcons/FROST_BOLT.png"
+}
+images {
+  image: "/assets/img/skillIcons/LION_STRIKE.png"
+}
+images {
+  image: "/assets/img/skillIcons/METEOR_SMASH.png"
+}
+images {
+  image: "/assets/img/skillIcons/SHIELDS_UP.png"
+}
+images {
+  image: "/assets/img/skillIcons/EMPTY.png"
+}
+images {
+  image: "/assets/img/skillIcons/cd.png"
 }
 extrude_borders: 2

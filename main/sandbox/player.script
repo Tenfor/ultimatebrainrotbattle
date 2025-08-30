@@ -5,6 +5,26 @@ local battleController = require "main/battle/battleController"
 local playerModel = require("main/battle/playerModel")
 local buffs = require("main/battle/buffs")
 local attackType = require("main/battle/attackType")
+local hitType = require("main/battle/hitType")
+
+local function onPlayerHurt(self,dmg, type)
+	--sprite.play_flipbook("hit_effect#sprite", "hit")
+	local pos = go.get_position()
+	pos.y = pos.y + 100
+
+	factory.create("#floatingTextFactory", pos, nil, {value=dmg, crit=false, createdOnEnemy=false}, 1)
+
+	if(type == hitType.BASIC) then
+		local randRot = math.random(360)
+		local randXoffset = math.random(-20,20)
+		local randYoffset = math.random(-20,20)
+		events.trigger(gameEvents.PLAY_EFFECT_ON_PLAYER,"hit2",-70+randXoffset,75+randYoffset,randRot,0.3)
+	elseif(type == hitType.FLASHING) then
+		go.animate("#sprite", "color_add.w", go.PLAYBACK_ONCE_PINGPONG, 1, go.EASING_LINEAR, 0.1)
+	end
+
+	events.trigger(gameEvents.ADD_RAGE,5)
+end
 
 local function onShootProjectile(self,projectileUrl,x,y,rot,scale,flip)
 	local xOffset = x or 0
@@ -15,9 +35,9 @@ local function onShootProjectile(self,projectileUrl,x,y,rot,scale,flip)
 	pos.y = pos.y + yOffset
 	local scale = scale or 1
 
-	factory.create("#playerProjectileFactory", pos, rotation, 
+	factory.create("root#projectileFactory", pos, rotation, 
 	{animName=hash(projectileUrl),xOffset = xOffset, yOffset = yOffset, 
-	target=hash("enemy"), flip=flip, speed = 1500}, 
+	enemyCasted=false, flip=flip, speed = 1500}, 
 	scale)
 end
 
@@ -34,66 +54,107 @@ local function onPlayEffect(self,effectUrl,x, y, rot,scale, flip)
 	scale)
 end
 
+local function onPlayParticle(self,particleUrl)
+	particlefx.play(particleUrl)
+end
+
+local function updateBuffs(self,dt)
+	playerModel.updateBuffs(dt)
+	playerModel.updateCDS(dt)
+	if playerModel.hasBuff(buffs.FROST) then
+		if go.get("#sprite", "tint") ~= vmath.vector4(0.4, 0.4, 1, 1) then
+			go.set("#sprite", "tint", vmath.vector4(0.4, 0.4, 1, 1))
+		end
+	elseif playerModel.hasBuff(buffs.BERSERK) then
+		if go.get("#sprite", "tint") ~= vmath.vector4(1, 0, 0, 1) then
+			go.set("#sprite", "tint", vmath.vector4(1, 0, 0, 1))
+		end
+	else
+		if go.get("#sprite", "tint") ~= vmath.vector4(1, 1, 1, 1) then
+			go.set("#sprite", "tint", vmath.vector4(1, 1, 1, 1))
+		end
+	end
+end
+
 local function setMode(self,newMode)
 	self.mode = newMode
+	events.trigger(gameEvents.SET_PLAYER_MOD,newMode)
+end
+
+local function checkCost(skillName)
+	return playerModel.getResource() >= skills.getResourceCost(skillName)
+end
+
+local function checkModeAfterSkill(self)
+	if self.mode ~= "normal" then 
+		if playerModel.getResource() < skills.getResourceCost(self.mode) then 
+			setMode(self,"normal")
+		end
+	end
 end
 
 local function onSkillTrigger(self, skillId)
 	if skillId == skills.LION_STRIKE then 
-		setMode(self, skillId)
+		setMode(self, self.mode == "normal" and skillId or "normal")
 	end
 	if skillId == skills.METEOR_SMASH then 
-		setMode(self, skillId)
+		setMode(self, self.mode == "normal" and skillId or "normal")
 	end
 	if skillId == skills.BERSERK then 
-		battleController.player_berserk(go.get_id())
+		battleController.berserk(go.get_id())
 	end
 	if skillId == skills.FIRE_BOLT then
-		battleController.player_fire_bolt(go.get_id())
+		battleController.fire_bolt(go.get_id())
 	end
 	if skillId == skills.ARCANE_BOLT then
-		battleController.player_arcane_bolt(go.get_id())
+		battleController.arcane_bolt(go.get_id())
 	end
 	if skillId == skills.FROST_BOLT then
-		battleController.player_frost_bolt(go.get_id())
+		battleController.frost_bolt(go.get_id())
 	end
-		
+	checkModeAfterSkill(self)
 end
 
 local function attack(self)
 	if self.mode == "normal" then
-		battleController.player_attack(go.get_id())
-	elseif self.mode == skills.LION_STRIKE then
-		battleController.player_lion_strike(go.get_id())
-		self.mode = "normal"
-	elseif self.mode == skills.METEOR_SMASH then
-		battleController.player_meteor_smash(go.get_id())
-		self.mode = "normal"
+		battleController.attack(go.get_id())
+	elseif self.mode == skills.LION_STRIKE and playerModel.getResource() > skills.getResourceCost(skills.LION_STRIKE) then
+		battleController.lion_strike(go.get_id())
+	elseif self.mode == skills.METEOR_SMASH and playerModel.getResource() > skills.getResourceCost(skills.LION_STRIKE) then
+		battleController.meteor_smash(go.get_id())
 	else
-		print("PLAYER HAS INVALID MODE",self.mode)
+		battleController.attack(go.get_id())
 	end
+	setMode(self, "normal")
 end
 
 function init(self)
 	--timer.delay(1, true, attack)
 	self.counter = 0
 	self.mode = "normal"
+	events.subscribe(gameEvents.PLAYER_HURT, onPlayerHurt,self)
 	events.subscribe(gameEvents.TRIGGER_SKILL, onSkillTrigger, self)
 	events.subscribe(gameEvents.PLAY_EFFECT_ON_PLAYER, onPlayEffect,self)
-	events.subscribe(gameEvents.SHOOT_PROJECTILE,onShootProjectile, self)
+	events.subscribe(gameEvents.PLAYER_SHOOT_PROJECTILE,onShootProjectile, self)
+	events.subscribe(gameEvents.PLAY_PARTICLE_ON_PLAYER, onPlayParticle,self)
 end
 
 function final(self)
+	events.unsubscribe(gameEvents.PLAYER_HURT, onPlayerHurt,self)
 	events.unsubscribe(gameEvents.TRIGGER_SKILL, onSkillTrigger, self)
 	events.unsubscribe(gameEvents.PLAY_EFFECT_ON_PLAYER, onPlayEffect,self)
-	events.unsubscribe(gameEvents.SHOOT_PROJECTILE,onShootProjectile, self)
+	events.unsubscribe(gameEvents.PLAYER_SHOOT_PROJECTILE,onShootProjectile, self)
+	events.unsubscribe(gameEvents.PLAY_PARTICLE_ON_PLAYER, onPlayParticle,self)
 end
 
 function update(self, dt)
-	playerModel.updateBuffs(dt)
+	updateBuffs(self,dt)
 	local extra = 1
 	if playerModel.hasBuff(buffs.BERSERK) then
 		extra = 3 
+	end
+	if playerModel.hasBuff(buffs.FROST) then 
+		extra = extra / 3
 	end
 	if(playerModel.attackType == attackType.MELEE) then
 		self.counter = self.counter + (dt*playerModel.spd) * extra

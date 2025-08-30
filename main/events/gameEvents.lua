@@ -9,6 +9,7 @@ local M = {
 	PLAY_MUSIC = "PLAY_MUSIC",
 	STOP_MUSIC = "STOP_MUSIC",
 	--
+	SET_PLAYER_MOD = "SET_PLAYER_MOD",
 	LOAD_SAHUR = "LOAD_SAHUR",
 	LOAD_PATAPIM = "LOAD_PATAPIM",
 	LOAD_CAPPUCINO = "LOAD_CAPPUCINO",
@@ -17,12 +18,48 @@ local M = {
 	PLAYER_HURT = "PLAYER_HURT",
 	ENEMY_HURT = "ENEMY_HURT",
 	TRIGGER_SKILL = "TRIGGER_SKILL",
+	ADD_RAGE = "ADD_RAGE",
+	PAY_RESOURCE_COST = "PAY_RESOURCE_COST",
 	--EFFECT
 	PLAY_PARTICLE_ON_ENEMY = "PLAY_PARTICLE_ON_ENEMY",
+	PLAY_PARTICLE_ON_PLAYER = "PLAY_PARTICLE_ON_PLAYER",
 	PLAY_EFFECT_ON_ENEMY = "PLAY_EFFECT_ON_ENEMY",
 	PLAY_EFFECT_ON_PLAYER = "PLAY_EFFECT_ON_PLAYER",
 	SHAKE_EFFECT = "SHAKE_EFFECT",
-	SHOOT_PROJECTILE = "SHOOT_PROJECTILE",
+	PLAYER_SHOOT_PROJECTILE = "PLAYER_SHOOT_PROJECTILE",
+	ENEMY_SHOOT_PROJECTILE = "ENEMY_SHOOT_PROJECTILE",
 }
+
+function M.getHurtEvent(enemyCasted) 
+	if enemyCasted then
+		return M.PLAYER_HURT
+	else
+		return M.ENEMY_HURT
+	end
+end
+
+function M.getEffectEvent(enemyCasted) 
+	if enemyCasted then
+		return M.PLAY_EFFECT_ON_PLAYER
+	else
+		return M.PLAY_EFFECT_ON_ENEMY
+	end
+end
+
+function M.getParticleEvent(enemyCasted) 
+	if enemyCasted then
+		return M.PLAY_PARTICLE_ON_PLAYER
+	else
+		return M.PLAY_PARTICLE_ON_ENEMY
+	end
+end
+
+function M.getProjectileEvent(enemyCasted)
+	if enemyCasted then
+		return M.ENEMY_SHOOT_PROJECTILE
+	else
+		return M.PLAYER_SHOOT_PROJECTILE
+	end
+end
 
 return M

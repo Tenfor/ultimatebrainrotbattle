@@ -65,3 +65,16 @@ embedded_components {
   data: "sound: \"/assets/sounds/sfx/laser3.wav\"\n"
   ""
 }
+embedded_components {
+  id: "explosion2"
+  type: "sound"
+  data: "sound: \"/assets/sounds/sfx/explosion2.wav\"\n"
+  "gain: 0.8\n"
+  ""
+}
+embedded_components {
+  id: "buttonlocked"
+  type: "sound"
+  data: "sound: \"/assets/sounds/sfx/buttonlocked.wav\"\n"
+  ""
+}

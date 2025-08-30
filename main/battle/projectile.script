@@ -5,19 +5,19 @@ go.property("animName", hash("lionstrike1"))
 go.property("doneEvent", hash("teszt"))
 go.property("xOffset", 0)
 go.property("yOffset", 0)
-go.property("target", hash("enemy"))
+go.property("enemyCasted", false)
 go.property("flip", false)
 go.property("speed", 200)
 
 local function onImpact(self)
 	if self.animName == hash("fire_bolt") then
-		battleController.fire_bolt_impact(self.target)
+		battleController.fire_bolt_impact(self.enemyCasted)
 	end
 	if self.animName == hash("arcane_bolt") then
-		battleController.arcane_bolt_impact(self.target)
+		battleController.arcane_bolt_impact(self.enemyCasted)
 	end
 	if self.animName == hash("frost_bolt") then
-		battleController.frost_bolt_impact(self.target)
+		battleController.frost_bolt_impact(self.enemyCasted)
 	end
 end
 
@@ -30,7 +30,7 @@ function init(self)
 	sprite.set_hflip("#sprite", self.flip)
 	--	events.subscribe(self.doneEvent, callback, callback_context)
 	local target_pos = go.get_position("/enemy")
-	if self.target == hash("player") then 
+	if self.enemyCasted then 
 		target_pos = go.get_position("/player")
 	end
 	go.animate(go.get_id(), "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos.x, go.EASING_LINEAR, 0.3,0,function() 
