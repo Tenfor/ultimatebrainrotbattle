@@ -13,6 +13,8 @@ local M = {
 	maxRage = 100,
 	mana = 100,
 	maxMana = 100,
+	combopoints = 0,
+	maxCombopoints = 5,
 	skills = {
 		{skillName = skills.LION_STRIKE, cd = 0, maxCd = 0},
 		{skillName = skills.METEOR_SMASH, cd = 0, maxCd = 0},
@@ -62,6 +64,8 @@ function M.getResource()
 		return M.rage
 	elseif M.resourceType == resourceType.MANA then
 		return M.mana
+	elseif M.resourceType == resourceType.COMBOPOINT then
+		return M.combopoints
 	end
 end
 
@@ -70,6 +74,8 @@ function M.getMaxResource()
 		return M.maxRage
 	elseif M.resourceType == resourceType.MANA then
 		return M.maxMana
+	elseif M.resourceType == resourceType.COMBOPOINT then
+		return M.maxCombopoints
 	end
 end
 
@@ -104,6 +110,8 @@ function M.loadSahurStats()
 	M.maxRage = 100
 	M.mana = 0
 	M.maxMana = 0
+	M.combopoints = 0
+	M.maxCombopoints = 0
 end
 
 function M.loadCappucinoStats()
@@ -120,6 +128,13 @@ function M.loadCappucinoStats()
 		{skillName = skills.EMPTY, cd = 0, maxCd = 0},
 		{skillName = skills.EMPTY, cd = 0, maxCd = 0},
 	}
+	M.rage = 0
+	M.maxRage = 0
+	M.mana = 0
+	M.maxMana = 0
+	M.combopoints = 0
+	M.maxCombopoints = 5
+	M.resourceType = resourceType.COMBOPOINT
 end
 
 function M.loadPatapimStats()
@@ -141,6 +156,8 @@ function M.loadPatapimStats()
 	M.maxRage = 0
 	M.mana = 100
 	M.maxMana = 100
+	M.combopoints = 0
+	M.maxCombopoints = 0
 end
 
 function M.updateCDS(dt)

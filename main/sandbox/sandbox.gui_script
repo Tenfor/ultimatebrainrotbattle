@@ -56,13 +56,22 @@ local function onSetPlayerMod(self,mod)
 end
 
 local function updateResourceBar(self)
-	self.playerResourceBar:set_to(playerModel.getResource()/playerModel.getMaxResource())
-	gui.set_text(self.playerResourceTextNode, tostring(playerModel.getResource()).."/"..tostring(playerModel.getMaxResource()))
+	gui.set_enabled(self.playerResourceNode, playerModel.resourceType ~= resourceType.COMBOPOINT)
+	gui.set_enabled(self.playerComboPointsNode, playerModel.resourceType == resourceType.COMBOPOINT)
 
 	if playerModel.resourceType == resourceType.MANA then
 		gui.set_color(self.playerResourceBarNode,vmath.vector4(0,0,1,1))
+		self.playerResourceBar:set_to(playerModel.getResource()/playerModel.getMaxResource())
+		gui.set_text(self.playerResourceTextNode, tostring(playerModel.getResource()).."/"..tostring(playerModel.getMaxResource()))
 	elseif playerModel.resourceType == resourceType.RAGE then
 		gui.set_color(self.playerResourceBarNode,vmath.vector4(1,0,0,1))
+		self.playerResourceBar:set_to(playerModel.getResource()/playerModel.getMaxResource())
+		gui.set_text(self.playerResourceTextNode, tostring(playerModel.getResource()).."/"..tostring(playerModel.getMaxResource()))
+	elseif playerModel.resourceType == resourceType.COMBOPOINT then
+	for i = 1, playerModel.getMaxResource() do
+		gui.set_color(self["cpHolder"..i], playerModel.getResource()>=i and vmath.vector4(0,1,1,1) or vmath.vector4(1,1,1,1))
+	end
+		
 	end
 
 	updateButtons(self)
@@ -153,6 +162,8 @@ function init(self)
 
 	self.playerResourceBar = self.druid:new_progress("playerResourceBar", "x")
 	self.playerResourceBarNode = gui.get_node("playerResourceBar")
+	self.playerResourceNode = gui.get_node("playerResource")
+	self.playerComboPointsNode = gui.get_node("playerComboPoints")
 	self.playerResourceTextNode = gui.get_node("playerResourceText")
 	self.playerResourceBar:set_to(0)
 	gui.set_text(self.playerResourceTextNode, tostring(playerModel.rage).."/"..tostring(playerModel.maxRage))
@@ -161,6 +172,7 @@ function init(self)
 		self["skillBtn"..i] = self.druid:new_button("skillBtn"..i, onSkillBtn, i)
 		self["skillBtn"..i.."Node"] = gui.get_node("skillBtn"..i)
 		self["cdMarker"..i] = gui.get_node("cd"..i)
+		self["cpHolder"..i] = gui.get_node("cp"..i)
 	end
 
 

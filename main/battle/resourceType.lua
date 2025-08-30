@@ -1,6 +1,7 @@
 local M = {
 	RAGE = "RAGE",
-	MANA = "MANA"
+	MANA = "MANA",
+	COMBOPOINT = "COMBOPOINT",
 }
 
 return M
