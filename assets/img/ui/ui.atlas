@@ -26,18 +26,6 @@ images {
   image: "/assets/img/ui/button_sound_off.png"
 }
 images {
-  image: "/assets/img/ui/bar_bg.png"
-}
-images {
-  image: "/assets/img/ui/bar_rage.png"
-}
-images {
-  image: "/assets/img/ui/bar_hp.png"
-}
-images {
-  image: "/assets/img/ui/bar.png"
-}
-images {
   image: "/assets/img/skillIcons/ARCANE_BOLT.png"
 }
 images {
@@ -56,12 +44,45 @@ images {
   image: "/assets/img/skillIcons/METEOR_SMASH.png"
 }
 images {
-  image: "/assets/img/skillIcons/SHIELDS_UP.png"
+  image: "/assets/img/skillIcons/SHIELD.png"
 }
 images {
   image: "/assets/img/skillIcons/EMPTY.png"
 }
 images {
   image: "/assets/img/skillIcons/cd.png"
+}
+images {
+  image: "/assets/img/skillIcons/WIND_SLASH.png"
+}
+images {
+  image: "/assets/img/skillIcons/DOUBLE_CUT.png"
+}
+images {
+  image: "/assets/img/ui/progressbarback.png"
+}
+images {
+  image: "/assets/img/ui/progressbarfront2.png"
+}
+images {
+  image: "/assets/img/ui/cpFront.png"
+}
+images {
+  image: "/assets/img/ui/cpBack.png"
+}
+images {
+  image: "/assets/img/ui/progressbarfront.png"
+}
+images {
+  image: "/assets/img/skillIcons/GIANT_FIRE_BALL.png"
+}
+images {
+  image: "/assets/img/skillIcons/LIGHTNING_BOLT.png"
+}
+images {
+  image: "/assets/img/skillIcons/ENRAGE.png"
+}
+images {
+  image: "/assets/img/skillIcons/DARK_PATAPIM.png"
 }
 extrude_borders: 2

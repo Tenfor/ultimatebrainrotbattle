@@ -14,8 +14,17 @@ local sounds = {
 	"#explosion2",
 	"#swoosh",
 	"#swoosh2",
+	"#swoosh3",
+	"#explosion_long",
 	"#explosion_long2",
-	"#buttonlocked"
+	"#buttonlocked",
+	"#doubleswoosh",
+	"#cast",
+	"#thunder",
+	"#powerup4",
+	"#laser",
+	"#swordhit",
+	"#sahur_ulti"
 }
 
 local function onPlaySfx(self,sfxUrl)
@@ -23,6 +32,17 @@ local function onPlaySfx(self,sfxUrl)
 	msg.post(sfxUrl,"play_sound",{play_id = play_id})
 	table.insert(self.sfxPlaying,play_id)
 end
+
+local function onPlayCast(self)
+	local play_id = #self.sfxPlaying + 1
+	msg.post("#cast","play_sound",{play_id = play_id})
+	table.insert(self.sfxPlaying,play_id)
+end
+
+local function onStopCast(self)
+	sound.stop("#cast")
+end
+
 
 local function onPlayMusic(self,musicUrl)
 	--if gameSettings.music
@@ -55,6 +75,8 @@ function init(self)
 	msg.post(".", "toggle_sounds")
 
 	events.subscribe(gameEvents.PLAY_SFX, onPlaySfx, self)
+	events.subscribe(gameEvents.PLAY_CAST, onPlayCast, self)
+	events.subscribe(gameEvents.STOP_CAST, onStopCast, self)
 	events.subscribe(gameEvents.PLAY_MUSIC, onPlayMusic, self)
 	events.subscribe(gameEvents.STOP_MUSIC, onStopMusic, self)
 end
@@ -97,4 +119,7 @@ function final(self)
 	events.unsubscribe(gameEvents.PLAY_SFX, onPlaySfx, self)
 	events.unsubscribe(gameEvents.PLAY_MUSIC, onPlayMusic, self)
 	events.unsubscribe(gameEvents.STOP_MUSIC, onStopMusic, self)
+	events.unsubscribe(gameEvents.PLAY_CAST, onPlayCast, self)
+	events.unsubscribe(gameEvents.STOP_CAST, onStopCast, self)
+	
 end

@@ -1,0 +1,72 @@
+images {
+  image: "/assets/img/effects/stun.png"
+}
+animations {
+  id: "shield"
+  images {
+    image: "/assets/img/effects/shield/fs (4).png"
+  }
+  images {
+    image: "/assets/img/effects/shield/fs (6).png"
+  }
+  images {
+    image: "/assets/img/effects/shield/fs (8).png"
+  }
+  images {
+    image: "/assets/img/effects/shield/fs (10).png"
+  }
+  images {
+    image: "/assets/img/effects/shield/fs (12).png"
+  }
+  images {
+    image: "/assets/img/effects/shield/fs (14).png"
+  }
+  playback: PLAYBACK_LOOP_BACKWARD
+  fps: 15
+}
+animations {
+  id: "wind_slash"
+  images {
+    image: "/assets/img/effects/windslash/windshlash (2).png"
+  }
+  images {
+    image: "/assets/img/effects/windslash/windshlash (3).png"
+  }
+  images {
+    image: "/assets/img/effects/windslash/windshlash (4).png"
+  }
+  images {
+    image: "/assets/img/effects/windslash/windshlash (5).png"
+  }
+  images {
+    image: "/assets/img/effects/windslash/windshlash (6).png"
+  }
+  images {
+    image: "/assets/img/effects/windslash/windshlash (7).png"
+  }
+  images {
+    image: "/assets/img/effects/windslash/windshlash (8).png"
+  }
+}
+animations {
+  id: "lionstrike"
+  images {
+    image: "/assets/img/effects/lionstrike/lionstrike (1).png"
+  }
+  images {
+    image: "/assets/img/effects/lionstrike/lionstrike (2).png"
+  }
+  images {
+    image: "/assets/img/effects/lionstrike/lionstrike (3).png"
+  }
+  images {
+    image: "/assets/img/effects/lionstrike/lionstrike (4).png"
+  }
+  images {
+    image: "/assets/img/effects/lionstrike/lionstrike (5).png"
+  }
+  images {
+    image: "/assets/img/effects/lionstrike/lionstrike (6).png"
+  }
+  fps: 20
+}

@@ -1,6 +1,9 @@
 local M = {
+	SHIELD = "SHIELD",
 	BERSERK = "BERSERK",
-	FROST = "FROST"
+	FROST = "FROST",
+	STUN = "STUN",
+	DARK_PATAPIM = "DARK_PATAPIM"
 }
 
 return M

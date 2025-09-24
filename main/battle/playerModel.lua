@@ -4,6 +4,8 @@ local attackType = require("main/battle/attackType")
 local resourceType = require("main/battle/resourceType")
 
 local M = {
+	critPercent = 1,
+	critDmg = 1.5,
 	spd = 1,
 	str = 1,
 	mag = 1,
@@ -25,7 +27,10 @@ local M = {
 	globalCd = 0,
 	buffs = {
 		BERSERK = 0,
-		FROST = 0
+		FROST = 0,
+		SHIELD = 0,
+		STUN = 0,
+		DARK_PATAPIM = 0
 	},
 	attackType = attackType.MELEE,
 	resourceType = resourceType.RAGE
@@ -51,11 +56,23 @@ function M.setMana(val)
 	end
 end
 
+function M.setCp(val) 
+	M.combopoints = val 
+	if(M.combopoints < 0) then
+		M.combopoints = 0
+	end
+	if(M.combopoints > M.maxCombopoints) then 
+		M.combopoints = M.maxCombopoints
+	end
+end
+
 function M.setResource(val)
 	if M.resourceType == resourceType.RAGE then
 		M.setRage(val)
 	elseif M.resourceType == resourceType.MANA then
 		M.setMana(val)
+	elseif M.resourceType == resourceType.COMBOPOINT then
+		M.setCp(val)
 	end
 end
 
@@ -92,6 +109,8 @@ function M.setHp(val)
 end
 
 function M.loadSahurStats()
+	M.critPercent = 3
+	M.critDmg = 1.5
 	M.spd = 1
 	M.str = 3
 	M.mag = 1
@@ -101,9 +120,17 @@ function M.loadSahurStats()
 	M.skills = {
 		{skillName = skills.LION_STRIKE, cd = 0, maxCd = 0},
 		{skillName = skills.METEOR_SMASH, cd = 0, maxCd = 0},
+		{skillName = skills.ENRAGE, cd = 0, maxCd = 0},
+		{skillName = skills.SHIELD, cd = 0, maxCd = 0},
 		{skillName = skills.BERSERK, cd = 0, maxCd = 0},
-		{skillName = skills.EMPTY, cd = 0, maxCd = 0},
-		{skillName = skills.EMPTY, cd = 0, maxCd = 0},
+	}
+	M.globalCd = 0
+	M.buffs = {
+		BERSERK = 0,
+		FROST = 0,
+		SHIELD = 0,
+		STUN = 0,
+		DARK_PATAPIM = 0
 	}
 	M.resourceType = resourceType.RAGE
 	M.rage = 0
@@ -115,6 +142,8 @@ function M.loadSahurStats()
 end
 
 function M.loadCappucinoStats()
+	M.critPercent = 3
+	M.critDmg = 2
 	M.spd = 3
 	M.str = 1
 	M.mag = 1
@@ -122,11 +151,19 @@ function M.loadCappucinoStats()
 	M.maxHp = 80
 	M.attackType = attackType.MELEE
 	M.skills = {
-		{skillName = skills.LION_STRIKE, cd = 0, maxCd = 0},
-		{skillName = skills.METEOR_SMASH, cd = 0, maxCd = 0},
+		{skillName = skills.WIND_SLASH, cd = 0, maxCd = 0},
+		{skillName = skills.DOUBLE_CUT, cd = 0, maxCd = 0},
 		{skillName = skills.BERSERK, cd = 0, maxCd = 0},
 		{skillName = skills.EMPTY, cd = 0, maxCd = 0},
 		{skillName = skills.EMPTY, cd = 0, maxCd = 0},
+	}
+	M.globalCd = 0
+	M.buffs = {
+		BERSERK = 0,
+		FROST = 0,
+		SHIELD = 0,
+		STUN = 0,
+		DARK_PATAPIM = 0
 	}
 	M.rage = 0
 	M.maxRage = 0
@@ -138,6 +175,8 @@ function M.loadCappucinoStats()
 end
 
 function M.loadPatapimStats()
+	M.critPercent = 3
+	M.critDmg = 1.5
 	M.spd = 1
 	M.str = 1
 	M.mag = 3
@@ -148,8 +187,16 @@ function M.loadPatapimStats()
 		{skillName = skills.ARCANE_BOLT, cd = 0, maxCd = 0},
 		{skillName = skills.FIRE_BOLT, cd = 0, maxCd = 0},
 		{skillName = skills.FROST_BOLT, cd = 0, maxCd = 0},
-		{skillName = skills.EMPTY, cd = 0, maxCd = 0},
-		{skillName = skills.EMPTY, cd = 0, maxCd = 0},
+		{skillName = skills.LIGHTNING_BOLT, cd = 0, maxCd = 0},
+		{skillName = skills.DARK_PATAPIM, cd = 0, maxCd = 0},
+	}
+	M.globalCd = 0
+	M.buffs = {
+		BERSERK = 0,
+		FROST = 0,
+		SHIELD = 0,
+		STUN = 0,
+		DARK_PATAPIM = 0
 	}
 	M.resourceType = resourceType.MANA
 	M.rage = 0
@@ -161,14 +208,24 @@ function M.loadPatapimStats()
 end
 
 function M.updateCDS(dt)
+	local modifiedDt = M.hasBuff(buffs.DARK_PATAPIM) and dt*2 or dt
 	for i = 1, #M.skills do
 		if(M.skills[i].cd > 0) then 
-			M.skills[i].cd = M.skills[i].cd - dt
+			M.skills[i].cd = M.skills[i].cd - modifiedDt
 		end
 	end
 	if M.globalCd > 0 then
-		M.globalCd = M.globalCd - dt
+		M.globalCd = M.globalCd - modifiedDt
 	end
+end
+
+function M.resetCDS()
+	for i = 1, #M.skills do
+		if(M.skills[i].cd > 0) then 
+			M.skills[i].cd = 0
+		end
+	end
+	M.globalCd = 0
 end
 
 function M.updateBuffs(dt)

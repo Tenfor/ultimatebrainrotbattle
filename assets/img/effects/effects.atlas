@@ -2,37 +2,6 @@ images {
   image: "/assets/img/effects/frost/snowflake.png"
 }
 animations {
-  id: "lionstrike"
-  images {
-    image: "/assets/img/effects/lionstrike/lionstrike (2).png"
-    sprite_trim_mode: SPRITE_TRIM_MODE_8
-  }
-  images {
-    image: "/assets/img/effects/lionstrike/lionstrike (3).png"
-    sprite_trim_mode: SPRITE_TRIM_MODE_8
-  }
-  images {
-    image: "/assets/img/effects/lionstrike/lionstrike (4).png"
-    sprite_trim_mode: SPRITE_TRIM_MODE_8
-  }
-  images {
-    image: "/assets/img/effects/lionstrike/lionstrike (5).png"
-    sprite_trim_mode: SPRITE_TRIM_MODE_8
-  }
-  images {
-    image: "/assets/img/effects/lionstrike/lionstrike (6).png"
-    sprite_trim_mode: SPRITE_TRIM_MODE_8
-  }
-  images {
-    image: "/assets/img/effects/lionstrike/lionstrike (7).png"
-    sprite_trim_mode: SPRITE_TRIM_MODE_8
-  }
-  images {
-    image: "/assets/img/effects/lionstrike/lionstrike (8).png"
-    sprite_trim_mode: SPRITE_TRIM_MODE_8
-  }
-}
-animations {
   id: "smoke"
   images {
     image: "/assets/img/effects/smoke/smoke1.png"
@@ -145,7 +114,100 @@ animations {
   }
 }
 animations {
-  id: "arcane"
-  playback: PLAYBACK_LOOP_FORWARD
+  id: "double_cut"
+  images {
+    image: "/assets/img/effects/doublecut/doublecut0.png"
+  }
+  images {
+    image: "/assets/img/effects/doublecut/doublecut2.png"
+  }
+  images {
+    image: "/assets/img/effects/doublecut/doublecut4.png"
+  }
+  images {
+    image: "/assets/img/effects/doublecut/doublecut6.png"
+  }
+  images {
+    image: "/assets/img/effects/doublecut/doublecut8.png"
+  }
+  images {
+    image: "/assets/img/effects/doublecut/doublecut10.png"
+  }
+  images {
+    image: "/assets/img/effects/doublecut/doublecut12.png"
+  }
+  images {
+    image: "/assets/img/effects/doublecut/doublecut14.png"
+  }
+  images {
+    image: "/assets/img/effects/doublecut/doublecut16.png"
+  }
+  fps: 15
+}
+animations {
+  id: "electric_explosion"
+  images {
+    image: "/assets/img/effects/electric_explosion/electric_explosion_01.png"
+  }
+  images {
+    image: "/assets/img/effects/electric_explosion/electric_explosion_03.png"
+  }
+  images {
+    image: "/assets/img/effects/electric_explosion/electric_explosion_05.png"
+  }
+  images {
+    image: "/assets/img/effects/electric_explosion/electric_explosion_07.png"
+  }
+  images {
+    image: "/assets/img/effects/electric_explosion/electric_explosion_09.png"
+  }
+  fps: 15
+}
+animations {
+  id: "lightning_bolt"
+  images {
+    image: "/assets/img/effects/lightningBolt/lightning_bolt (1).png"
+  }
+  images {
+    image: "/assets/img/effects/lightningBolt/lightning_bolt (2).png"
+  }
+  images {
+    image: "/assets/img/effects/lightningBolt/lightning_bolt (3).png"
+  }
+  images {
+    image: "/assets/img/effects/lightningBolt/lightning_bolt (4).png"
+  }
+  images {
+    image: "/assets/img/effects/lightningBolt/lightning_bolt (5).png"
+  }
+  fps: 15
+}
+animations {
+  id: "enrage"
+  images {
+    image: "/assets/img/effects/enrage/rage (2).png"
+  }
+  images {
+    image: "/assets/img/effects/enrage/rage (3).png"
+  }
+  images {
+    image: "/assets/img/effects/enrage/rage (4).png"
+  }
+  images {
+    image: "/assets/img/effects/enrage/rage (5).png"
+  }
+  images {
+    image: "/assets/img/effects/enrage/rage (6).png"
+  }
+  images {
+    image: "/assets/img/effects/enrage/rage (7).png"
+  }
+  images {
+    image: "/assets/img/effects/enrage/rage (8).png"
+  }
+  images {
+    image: "/assets/img/effects/enrage/rage (1).png"
+  }
+  fps: 15
 }
 extrude_borders: 2

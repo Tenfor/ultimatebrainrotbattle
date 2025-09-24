@@ -5,16 +5,19 @@ local gameEvents = require("main/events/gameEvents")
 local buffs = require("main/battle/buffs")
 local skills = require("main/battle/skills")
 local hitType = require("main/battle/hitType")
+local effectFactoryFinder = require("main/battle/effectFactoryFinder")
 
 local function onPlayEffect(self,effectUrl,x, y, rot,scale, flip)
 	local xOffset = x or 0
 	local yOffset = y or 0
+
 	local rotation = rot and vmath.quat_rotation_z(math.rad(rot)) or vmath.quat()
 	local pos = go.get_position("#root")
 	pos.x = pos.x + xOffset
 	pos.y = pos.y + yOffset
 	local scale = scale or 1
-	factory.create("#enemyEffectFactory", pos, rotation,
+	local factoryName = "#enemyEffectFactory"..effectFactoryFinder.getFactoryPostFix(effectUrl)
+	factory.create(factoryName, pos, rotation,
 	{animName=hash(effectUrl),xOffset = xOffset, yOffset = yOffset, target=hash("enemy"), flip = flip},
 	scale)
 end
@@ -38,6 +41,23 @@ local function onShootProjectile(self,projectileUrl,x,y,rot,scale,flip)
 	scale)
 end
 
+local function startCasting(self,skillId)
+	self.casting = true
+	events.trigger(gameEvents.ENEMY_START_CASTING,skillId,skills.getCastTime(skillId))
+end
+
+local function onInterruptCasting(self)
+	self.casting = false
+end
+
+local function onFinishCasting(self,skillId)
+	print("ENEMY - ENEMYFINESHCASTING")
+	self.casting = false
+	if skillId == skills.LIGHTNING_BOLT then
+		battleController.lightning_bolt(go.get_id(),true)
+	end
+end
+
 local function attack(self)	
 	if enemyModel.pattern[self.currentMod] == skills.EMPTY then 
 		battleController.attack(go.get_id(),true)
@@ -55,6 +75,10 @@ local function attack(self)
 		battleController.frost_bolt(go.get_id(),true)
 	elseif enemyModel.pattern[self.currentMod] == skills.BERSERK then 
 		battleController.berserk(go.get_id(),true)
+	elseif enemyModel.pattern[self.currentMod] == skills.SHIELD then
+		battleController.shield(go.get_id(), true)
+	elseif enemyModel.pattern[self.currentMod] == skills.LIGHTNING_BOLT then
+		startCasting(self,skills.LIGHTNING_BOLT)
 	end
 
 	self.currentMod = self.currentMod + 1
@@ -63,27 +87,60 @@ local function attack(self)
 	end
 end
 
-local function onEnemyHurt(self,dmg, type)
+local function onEnemyHurt(self,dmg, vfxType, sfxType)
 	--sprite.play_flipbook("hit_effect#sprite", "hit")
 	local pos = go.get_position()
 	pos.y = pos.y + 100
 
-	local id_str = tostring(go.get_id())
-	factory.create("#floatingTextFactory", pos, nil, {value=dmg, crit=false}, 1)
+	if enemyModel.hasBuff(buffs.SHIELD) then
+		events.trigger(gameEvents.PLAY_SFX,"#swordhit")
+	elseif sfxType == hitType.SFX.BASIC then
+		local rand = math.random(1,2)
+		events.trigger(gameEvents.PLAY_SFX,dmg.crit and "#hit_3" or "#hit_"..tostring(rand))
+	elseif sfxType == hitType.SFX.CRITONLY and dmg.crit then
+		events.trigger(gameEvents.PLAY_SFX,"#hit_3")
+	end
 
-	if(type == hitType.BASIC) then
-		local randRot = math.random(360)
-		local randXoffset = math.random(-20,20)
-		local randYoffset = math.random(-20,20)
-		events.trigger(gameEvents.ADD_RAGE,5)
-		events.trigger(gameEvents.PLAY_EFFECT_ON_ENEMY,"hit2",-70+randXoffset,75+randYoffset,randRot,0.3)
-	elseif(type == hitType.FLASHING) then
-		go.animate("#sprite", "color_add.w", go.PLAYBACK_ONCE_PINGPONG, 1, go.EASING_LINEAR, 0.1)
+	if not enemyModel.hasBuff(buffs.SHIELD) then
+		if(dmg.crit) then 
+			events.trigger(gameEvents.SHAKE_EFFECT,0.15,20)
+			events.trigger(gameEvents.ADD_RAGE,5)
+			events.trigger(gameEvents.ADD_CP,1)
+			factory.create("/root#statusTextFactory", vmath.vector3(640,500,0.2), nil)
+		end
+		factory.create("#floatingTextFactory", pos, nil, {value=dmg.dmg, crit=dmg.crit}, 1)
+		
+		if(vfxType == hitType.VFX.BASIC) then
+			local randRot = math.random(360)
+			local randXoffset = math.random(-20,20)
+			local randYoffset = math.random(-20,20)
+			events.trigger(gameEvents.ADD_RAGE,5)
+			events.trigger(gameEvents.PLAY_EFFECT_ON_ENEMY,"hit2",-70+randXoffset,75+randYoffset,randRot,0.3)
+		elseif(type == hitType.VFX.FLASHING) then
+			go.animate("#sprite", "color_add.w", go.PLAYBACK_ONCE_PINGPONG, 1, go.EASING_LINEAR, 0.1)
+		end
 	end
 end
 
 local function updateBuffs(self,dt)
 	enemyModel.updateBuffs(dt)
+
+	if enemyModel.hasBuff(buffs.SHIELD) then 
+		go.set("#shield", "tint.w", 1)
+	else 
+		go.set("#shield", "tint.w", 0)
+	end
+
+	if enemyModel.hasBuff(buffs.STUN) then
+		go.set("/stun#stun", "tint.w", 1)
+		local rot_speed = math.pi * 6 * dt  
+		local current_rot = go.get_rotation("/stun#stun")
+		local new_rot = current_rot * vmath.quat_rotation_z(rot_speed)
+		go.set_rotation(new_rot,"/stun#stun")
+	else 
+		go.set("/stun#stun", "tint.w", 0)
+	end
+	
 	if enemyModel.hasBuff(buffs.FROST) then
 		if go.get("#sprite", "tint") ~= vmath.vector4(0.4, 0.4, 1, 1) then
 			go.set("#sprite", "tint", vmath.vector4(0.4, 0.4, 1, 1))
@@ -106,6 +163,8 @@ function init(self)
 	events.subscribe(gameEvents.PLAY_EFFECT_ON_ENEMY, onPlayEffect,self)
 	events.subscribe(gameEvents.PLAY_PARTICLE_ON_ENEMY, onPlayParticle,self)
 	events.subscribe(gameEvents.ENEMY_SHOOT_PROJECTILE,onShootProjectile, self)
+	events.subscribe(gameEvents.ENEMY_FINISH_CASTING,onFinishCasting, self)
+	events.subscribe(gameEvents.INTERRUPT_ENEMY_CASTING,onInterruptCasting, self)
 
 	--go.animate("#sprite", "color_add.w", go.PLAYBACK_LOOP_PINGPONG, 1, go.EASING_LINEAR, 2)		
 end
@@ -115,7 +174,8 @@ function final(self)
 	events.unsubscribe(gameEvents.PLAY_EFFECT_ON_ENEMY, onPlayEffect, self)
 	events.unsubscribe(gameEvents.PLAY_PARTICLE_ON_ENEMY, onPlayParticle,self)
 	events.unsubscribe(gameEvents.ENEMY_SHOOT_PROJECTILE,onShootProjectile, self)
-	
+	events.unsubscribe(gameEvents.ENEMY_FINISH_CASTING,onFinishCasting, self)
+	events.unsubscribe(gameEvents.INTERRUPT_ENEMY_CASTING,onInterruptCasting, self)
 end
 
 function update(self, dt)
@@ -127,7 +187,9 @@ function update(self, dt)
 	if enemyModel.hasBuff(buffs.FROST) then 
 		extra = extra / 3
 	end
-	self.counter = self.counter + (dt*enemyModel.spd) * extra
+	if not self.casting and not enemyModel.hasBuff(buffs.STUN) then 
+		self.counter = self.counter + (dt*enemyModel.spd) * extra
+	end
 	if self.counter >= 3 then
 		attack(self)
 	--	local time = os.date("*t")

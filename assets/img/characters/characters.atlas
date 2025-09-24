@@ -31,4 +31,7 @@ images {
 images {
   image: "/assets/img/characters/frigo.png"
 }
+images {
+  image: "/assets/img/characters/darkpatapim.png"
+}
 extrude_borders: 2

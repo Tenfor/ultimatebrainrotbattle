@@ -5,6 +5,12 @@ local playerModel = require("main/battle/playerModel")
 local skills = require("main/battle/skills")
 local enemyModel = require("main/battle/enemyModel")
 local resourceType = require("main/battle/resourceType")
+local buffs = require("main/battle/buffs")
+
+local function truncate(num, decimals)
+	local mult = 10 ^ decimals
+	return math.floor(num * mult) / mult
+end
 
 local function updateCds(self)
 	for i = 1, 5 do
@@ -18,6 +24,79 @@ local function updateCds(self)
 			gui.set(cdMarkerNode, "size.y", 256*currentCd/maxCd)
 		else
 			gui.set_enabled(cdMarkerNode, false)
+		end
+	end
+end
+
+local function onPlayerStartCasting(self,skillId,castTime)
+	events.trigger(gameEvents.PLAY_CAST)
+	gui.set_enabled(self.playerCastNode, true)
+		
+	self.playerCastCountTarget = castTime
+	self.playerCastSkill = skillId
+end
+
+local function onEnemyStartCasting(self, skillId, castTime)
+	events.trigger(gameEvents.PLAY_CAST)
+	gui.set_enabled(self.enemyCastNode, true)
+
+	self.enemyCastCountTarget = castTime
+	self.enemyCastSkill = skillId
+end
+
+local function finishPlayerCasting(self)
+	events.trigger(gameEvents.STOP_CAST)
+
+	gui.set_enabled(self.playerCastNode,false)
+	print("fin",self.playerCastSkill)
+	events.trigger(gameEvents.PLAYER_FINISH_CASTING, self.playerCastSkill)
+	self.playerCastCountTarget = 0
+	self.playerCastCount = 0
+end
+
+local function onInterruptPlayerCasting(self)
+	events.trigger(gameEvents.STOP_CAST)
+	gui.set_enabled(self.playerCastNode,false)
+	self.playerCastCountTarget = 0
+	self.playerCastCount = 0
+end
+
+local function finishEnemyCasting(self)
+	events.trigger(gameEvents.STOP_CAST)
+
+	gui.set_enabled(self.enemyCastNode,false)
+	events.trigger(gameEvents.ENEMY_FINISH_CASTING, self.enemyCastSkill)
+	self.enemyCastCountTarget = 0
+	self.enemyCastCount = 0
+end
+
+local function onInterruptEnemyCasting(self)
+	print("GUI INTERRUPT")
+	events.trigger(gameEvents.STOP_CAST)
+	gui.set_enabled(self.enemyCastNode,false)
+	self.enemyCastCountTarget = 0
+	self.enemyCastCount = 0
+end
+	
+local function updatePlayerCast(self, dt)
+	if self.playerCastCountTarget > 0 then
+		local modifiedDt = playerModel.hasBuff(buffs.DARK_PATAPIM) and dt * 3 or dt
+		self.playerCastCount = self.playerCastCount + modifiedDt
+		self.playerCastBar:set_to(truncate(self.playerCastCount/self.playerCastCountTarget,4))
+		if self.playerCastCount >= self.playerCastCountTarget then 
+			finishPlayerCasting(self)
+		end
+	elseif gui.is_enabled(self.playerCastNode) then
+		gui.set_enabled(self.playerCastNode, false)
+	end
+end
+
+local function updateEnemyCast(self, dt)
+	if self.enemyCastCountTarget > 0 then
+		self.enemyCastCount = self.enemyCastCount + dt
+		self.enemyCastBar:set_to(truncate(self.enemyCastCount/self.enemyCastCountTarget,4))
+		if self.enemyCastCount >= self.enemyCastCountTarget then 
+			finishEnemyCasting(self)
 		end
 	end
 end
@@ -50,6 +129,13 @@ local function updateButtons(self)
 	end
 end
 
+local function onFlashEffect(self)
+	print("onFlashEffect")
+	gui.animate(self.flashEffectNode, "color.w", 1, gui.EASING_LINEAR, 0.1, 0,function() 
+		gui.set(self.flashEffectNode, "color.w", 0)
+	end)
+end
+
 local function onSetPlayerMod(self,mod)
 	self.playerMod = mod
 	updateButtons(self)
@@ -68,10 +154,12 @@ local function updateResourceBar(self)
 		self.playerResourceBar:set_to(playerModel.getResource()/playerModel.getMaxResource())
 		gui.set_text(self.playerResourceTextNode, tostring(playerModel.getResource()).."/"..tostring(playerModel.getMaxResource()))
 	elseif playerModel.resourceType == resourceType.COMBOPOINT then
-	for i = 1, playerModel.getMaxResource() do
-		gui.set_color(self["cpHolder"..i], playerModel.getResource()>=i and vmath.vector4(0,1,1,1) or vmath.vector4(1,1,1,1))
-	end
-		
+		for i = 1, playerModel.getMaxResource() do
+			if i > playerModel.combopoints then
+				gui.set_alpha(self["cpHolder"..i], 0)
+				gui.cancel_animation(self["cpHolder"..i], "color.w")
+			end
+		end
 	end
 
 	updateButtons(self)
@@ -80,6 +168,14 @@ end
 local function onAddRage(self,value)
 	playerModel.setRage(playerModel.rage + value)
 	updateResourceBar(self)
+end
+
+local function onAddCp(self,value)
+	if playerModel.resourceType == resourceType.COMBOPOINT then
+		playerModel.setCp(playerModel.combopoints + value)
+		gui.animate(self["cpHolder"..playerModel.combopoints], "color.w", 1, gui.EASING_LINEAR, 0.3)
+		updateResourceBar(self)
+	end
 end
 
 local function onSahurBtn(self)
@@ -111,13 +207,17 @@ local function onCharacterLoaded(self)
 end
 
 local function onEnemyHurt(self,dmg)
-	enemyModel.setHp(enemyModel.hp-dmg)
-	updateEnemyHpText(self)
+	if not enemyModel.hasBuff(buffs.SHIELD) then
+		enemyModel.setHp(enemyModel.hp-dmg.dmg)
+		updateEnemyHpText(self)
+	end
 end
 
 local function onPlayerHurt(self,dmg)
-	playerModel.setHp(playerModel.hp-dmg)
-	updatePlayerHpText(self)
+	if not playerModel.hasBuff(buffs.SHIELD) then
+		playerModel.setHp(playerModel.hp-dmg.dmg)
+		updatePlayerHpText(self)
+	end
 end
 
 local function onMenuBtn(self)
@@ -125,14 +225,49 @@ local function onMenuBtn(self)
 	events.trigger(gameEvents.UNLOAD_SCENE,"sandbox")
 end
 
+local function onPlayerHpMaxBtn(self)
+	playerModel.setHp(playerModel.maxHp)
+	updatePlayerHpText(self)
+end
+
+local function onResourceMaxBtn(self)
+	playerModel.setResource(playerModel.getMaxResource())
+	updateResourceBar(self)
+end
+
 local function onSkillBtn(self, skillIndex)
-	print(playerModel.skills[skillIndex].cd, playerModel.skills[skillIndex].cd > 0)
 	if playerModel.getResource() >= skills.getResourceCost(playerModel.skills[skillIndex].skillName) 
-	and playerModel.skills[skillIndex].cd <= 0 and playerModel.globalCd <= 0 then 
+	and playerModel.skills[skillIndex].cd <= 0 and playerModel.globalCd <= 0
+	and not playerModel.hasBuff(buffs.STUN)
+	and self.playerCastCountTarget == 0
+	then 
 		events.trigger(gameEvents.TRIGGER_SKILL,playerModel.skills[skillIndex].skillName)
 	else 
 		events.trigger(gameEvents.PLAY_SFX,"#buttonlocked")
 	end
+end
+
+local function onAllCritBtn(self)
+	if self.allCrit then 
+		playerModel.critPercent = 3
+		self.allCrit = false
+	else 
+		playerModel.critPercent = 100
+		self.allCrit = true
+	end
+
+	gui.set_text(gui.get_node("allCritText"), self.allCrit and "CRIT:ON" or "CRIT:OFF")
+end
+
+local function onSlowMoBtn(self)
+	events.trigger(gameEvents.SLOW_MOTION,"sandbox")
+	if self.slowMo then 
+		self.slowMo = false
+	else 
+		self.slowMo = true
+	end
+
+	gui.set_text(gui.get_node("slowMoText"), self.slowMo and "SLWMO:ON" or "SLWMO:OFF")
 end
 
 function init(self)
@@ -141,6 +276,10 @@ function init(self)
 	self.patapimBtn = self.druid:new_button("patapimBtn", onPatapimBtn)
 	self.cappucinoBtn = self.druid:new_button("cappucinoBtn", onCappucinoBtn)
 	self.menuBtn = self.druid:new_button("menuBtn", onMenuBtn)
+	self.playerHpMaxBtn = self.druid:new_button("playerHpMaxBtn", onPlayerHpMaxBtn)
+	self.resourceMaxBtn = self.druid:new_button("resourceMaxBtn", onResourceMaxBtn)
+	self.allCritBtn = self.druid:new_button("allCritBtn", onAllCritBtn)
+	self.slowMoBtn = self.druid:new_button("slowMoBtn", onSlowMoBtn)
 
 	self.playerMod = ""
 
@@ -150,12 +289,20 @@ function init(self)
 	self.enemyHpBar = self.druid:new_progress("enemyHpBar", "x")
 	self.enemyHpBar:set_to(1)
 
+	self.flashEffectNode = gui.get_node("flashEffect")
+
+	events.subscribe(gameEvents.PLAYER_START_CASTING, onPlayerStartCasting, self)
 	events.subscribe(gameEvents.CHARACTER_LOADED, onCharacterLoaded, self)
 	events.subscribe(gameEvents.ENEMY_HURT, onEnemyHurt, self)
 	events.subscribe(gameEvents.PLAYER_HURT, onPlayerHurt, self)
 	events.subscribe(gameEvents.ADD_RAGE, onAddRage,self)
+	events.subscribe(gameEvents.ADD_CP, onAddCp,self)
 	events.subscribe(gameEvents.PAY_RESOURCE_COST, updateResourceBar,self)
 	events.subscribe(gameEvents.SET_PLAYER_MOD, onSetPlayerMod,self)
+	events.subscribe(gameEvents.ENEMY_START_CASTING, onEnemyStartCasting, self)
+	events.subscribe(gameEvents.INTERRUPT_PLAYER_CASTING, onInterruptPlayerCasting, self)
+	events.subscribe(gameEvents.INTERRUPT_ENEMY_CASTING, onInterruptEnemyCasting, self)
+	events.subscribe(gameEvents.FLASH_EFFECT, onFlashEffect, self)
 
 	self.playerHpBar = self.druid:new_progress("playerHpBar", "x")
 	self.playerHpBar:set_to(1)
@@ -172,21 +319,20 @@ function init(self)
 		self["skillBtn"..i] = self.druid:new_button("skillBtn"..i, onSkillBtn, i)
 		self["skillBtn"..i.."Node"] = gui.get_node("skillBtn"..i)
 		self["cdMarker"..i] = gui.get_node("cd"..i)
-		self["cpHolder"..i] = gui.get_node("cp"..i)
+		self["cpHolder"..i] = gui.get_node("cpFront"..i)
 	end
 
+	self.playerCastBar = self.druid:new_progress("playerCastBar", "x")
+	self.playerCastNode = gui.get_node("playerCast")
 
-	
-	--self.skillBtn1 = self.druid:new_button("skillBtn1", onSkillBtn, 1)
-	--self.skillBtn2 = self.druid:new_button("skillBtn2", onSkillBtn, 2)
-	--self.skillBtn3 = self.druid:new_button("skillBtn3", onSkillBtn, 3)
-	--self.skillBtn4 = self.druid:new_button("skillBtn4", onSkillBtn, 4)
-	--self.skillBtn5 = self.druid:new_button("skillBtn5", onSkillBtn, 5)
-	--self.skillBtn1Node = gui.get_node("skillBtn1")
-	--self.skillBtn2Node = gui.get_node("skillBtn2")
-	--self.skillBtn3Node = gui.get_node("skillBtn3")
-	--self.skillBtn4Node = gui.get_node("skillBtn4")
-	--self.skillBtn5Node = gui.get_node("skillBtn5")
+	self.enemyCastBar = self.druid:new_progress("enemyCastBar", "x")
+	self.enemyCastNode = gui.get_node("enemyCast")
+
+	self.playerCastCount = 0
+	self.playerCastCountTarget = 0
+
+	self.enemyCastCountTarget = 0
+	self.enemyCastCount = 0
 
 	loadButtons(self)
 	updateResourceBar(self)
@@ -194,16 +340,24 @@ end
 
 function final(self)
 	self.druid:final()
+	events.unsubscribe(gameEvents.PLAYER_START_CASTING, onPlayerStartCasting, self)
 	events.unsubscribe(gameEvents.CHARACTER_LOADED, onCharacterLoaded, self)
 	events.unsubscribe(gameEvents.ENEMY_HURT, onEnemyHurt, self)
 	events.unsubscribe(gameEvents.PLAYER_HURT, onPlayerHurt, self)
 	events.unsubscribe(gameEvents.ADD_RAGE, onAddRage,self)
 	events.unsubscribe(gameEvents.PAY_RESOURCE_COST, updateResourceBar,self)
 	events.unsubscribe(gameEvents.SET_PLAYER_MOD, onSetPlayerMod,self)
+	events.unsubscribe(gameEvents.ADD_CP, onAddCp,self)
+	events.unsubscribe(gameEvents.ENEMY_START_CASTING, onEnemyStartCasting, self)
+	events.unsubscribe(gameEvents.INTERRUPT_PLAYER_CASTING, onInterruptPlayerCasting, self)
+	events.unsubscribe(gameEvents.INTERRUPT_ENEMY_CASTING, onInterruptEnemyCasting, self)
+	events.unsubscribe(gameEvents.FLASH_EFFECT, onFlashEffect, self)
 end
 
 function update(self, dt)
 	self.druid:update(dt)
+	updatePlayerCast(self,dt)
+	updateEnemyCast(self,dt)
 	updateCds(self)
 end
 

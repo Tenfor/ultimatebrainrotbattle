@@ -6,24 +6,57 @@ local playerModel = require("main/battle/playerModel")
 local buffs = require("main/battle/buffs")
 local attackType = require("main/battle/attackType")
 local hitType = require("main/battle/hitType")
+local effectFactoryFinder = require("main/battle/effectFactoryFinder")
 
-local function onPlayerHurt(self,dmg, type)
+local function onStartCasting(self)
+	self.isCasting = true
+end
+
+local function onInterruptCasting(self)
+	self.isCasting = false
+end
+
+local function onFinishCasting(self,skillId)
+	self.isCasting = false
+	if skillId == skills.LIGHTNING_BOLT then 
+		battleController.lightning_bolt(go.get_id())
+	end
+end
+
+local function onEnrage(self)
+	go.animate("#sprite", "tint", go.PLAYBACK_ONCE_PINGPONG, vmath.vector4(1,0.2,0,2,0.5), go.EASING_LINEAR, 0.2)
+end
+
+local function onPlayerHurt(self,dmg, vfxType, sfxType)
 	--sprite.play_flipbook("hit_effect#sprite", "hit")
 	local pos = go.get_position()
 	pos.y = pos.y + 100
 
-	factory.create("#floatingTextFactory", pos, nil, {value=dmg, crit=false, createdOnEnemy=false}, 1)
-
-	if(type == hitType.BASIC) then
-		local randRot = math.random(360)
-		local randXoffset = math.random(-20,20)
-		local randYoffset = math.random(-20,20)
-		events.trigger(gameEvents.PLAY_EFFECT_ON_PLAYER,"hit2",-70+randXoffset,75+randYoffset,randRot,0.3)
-	elseif(type == hitType.FLASHING) then
-		go.animate("#sprite", "color_add.w", go.PLAYBACK_ONCE_PINGPONG, 1, go.EASING_LINEAR, 0.1)
+	if playerModel.hasBuff(buffs.SHIELD) then
+		events.trigger(gameEvents.PLAY_SFX,"#swordhit")
+	elseif sfxType == hitType.SFX.BASIC then
+		local rand = math.random(1,2)
+		events.trigger(gameEvents.PLAY_SFX,dmg.crit and "#hit_3" or "#hit_"..tostring(rand))
+	elseif sfxType == hitType.SFX.CRITONLY and dmg.crit then
+		events.trigger(gameEvents.PLAY_SFX,"#hit_3")
 	end
 
-	events.trigger(gameEvents.ADD_RAGE,5)
+	if not playerModel.hasBuff(buffs.SHIELD) then
+		if(dmg.crit) then 
+			factory.create("/root#statusTextFactory", vmath.vector3(640,500,0.2), nil)
+			events.trigger(gameEvents.SHAKE_EFFECT,0.15,20)
+		end
+		factory.create("#floatingTextFactory", pos, nil, {value=dmg.dmg, crit=dmg.crit, createdOnEnemy=false}, 1)
+		if(vfxType == hitType.VFX.BASIC) then
+			local randRot = math.random(360)
+			local randXoffset = math.random(-20,20)
+			local randYoffset = math.random(-20,20)
+			events.trigger(gameEvents.PLAY_EFFECT_ON_PLAYER,"hit2",-70+randXoffset,75+randYoffset,randRot,0.3)
+		elseif(vfxType == hitType.VFX.FLASHING) then
+			go.animate("#sprite", "color_add.w", go.PLAYBACK_ONCE_PINGPONG, 1, go.EASING_LINEAR, 0.1)
+		end	
+		events.trigger(gameEvents.ADD_RAGE,5)
+	end
 end
 
 local function onShootProjectile(self,projectileUrl,x,y,rot,scale,flip)
@@ -44,12 +77,14 @@ end
 local function onPlayEffect(self,effectUrl,x, y, rot,scale, flip)
 	local xOffset = x or 0
 	local yOffset = y or 0
+
 	local rotation = rot and vmath.quat_rotation_z(math.rad(rot)) or vmath.quat()
 	local pos = go.get_position("#root")
 	pos.x = pos.x + xOffset
 	pos.y = pos.y + yOffset
 	local scale = scale or 1
-	factory.create("#playerEffectFactory", pos, rotation, 
+	local factoryName = "#playerEffectFactory"..effectFactoryFinder.getFactoryPostFix(effectUrl)
+	factory.create(factoryName, pos, rotation, 
 	{animName=hash(effectUrl),xOffset = xOffset, yOffset = yOffset, target=hash("player"), flip=flip}, 
 	scale)
 end
@@ -61,6 +96,23 @@ end
 local function updateBuffs(self,dt)
 	playerModel.updateBuffs(dt)
 	playerModel.updateCDS(dt)
+
+	if playerModel.hasBuff(buffs.STUN) then
+		go.set("/playerStun#stun", "tint.w", 1)
+		local rot_speed = math.pi * 6 * dt  
+		local current_rot = go.get_rotation("/playerStun#stun")
+		local new_rot = current_rot * vmath.quat_rotation_z(rot_speed)
+		go.set_rotation(new_rot,"/playerStun#stun")
+	else 
+		go.set("/playerStun#stun", "tint.w", 0)
+	end
+
+	if playerModel.hasBuff(buffs.SHIELD) then 
+		go.set("#shield", "tint.w", 1)
+	else 
+		go.set("#shield", "tint.w", 0)
+	end
+	
 	if playerModel.hasBuff(buffs.FROST) then
 		if go.get("#sprite", "tint") ~= vmath.vector4(0.4, 0.4, 1, 1) then
 			go.set("#sprite", "tint", vmath.vector4(0.4, 0.4, 1, 1))
@@ -94,10 +146,7 @@ local function checkModeAfterSkill(self)
 end
 
 local function onSkillTrigger(self, skillId)
-	if skillId == skills.LION_STRIKE then 
-		setMode(self, self.mode == "normal" and skillId or "normal")
-	end
-	if skillId == skills.METEOR_SMASH then 
+	if skillId == skills.WIND_SLASH or skillId == skills.LION_STRIKE or skillId == skills.METEOR_SMASH or skillId == skills.DOUBLE_CUT then 
 		setMode(self, self.mode == "normal" and skillId or "normal")
 	end
 	if skillId == skills.BERSERK then 
@@ -112,16 +161,32 @@ local function onSkillTrigger(self, skillId)
 	if skillId == skills.FROST_BOLT then
 		battleController.frost_bolt(go.get_id())
 	end
+	if skillId == skills.LIGHTNING_BOLT then
+		battleController.startCasting(skillId)
+	end
+	if skillId == skills.ENRAGE then
+		battleController.enrage(go.get_id())
+	end
+	if skillId == skills.SHIELD then
+		battleController.shield(go.get_id())
+	end
+	if skillId == skills.DARK_PATAPIM then
+		battleController.dark_patapim("/player#sprite")
+	end
 	checkModeAfterSkill(self)
 end
 
 local function attack(self)
 	if self.mode == "normal" then
 		battleController.attack(go.get_id())
-	elseif self.mode == skills.LION_STRIKE and playerModel.getResource() > skills.getResourceCost(skills.LION_STRIKE) then
+	elseif self.mode == skills.LION_STRIKE and playerModel.getResource() >= skills.getResourceCost(skills.LION_STRIKE) then
 		battleController.lion_strike(go.get_id())
-	elseif self.mode == skills.METEOR_SMASH and playerModel.getResource() > skills.getResourceCost(skills.LION_STRIKE) then
+	elseif self.mode == skills.METEOR_SMASH and playerModel.getResource() >= skills.getResourceCost(skills.METEOR_SMASH) then
 		battleController.meteor_smash(go.get_id())
+	elseif self.mode == skills.WIND_SLASH and playerModel.getResource() >= skills.getResourceCost(skills.WIND_SLASH) then
+		battleController.wind_slash(go.get_id())
+	elseif self.mode == skills.DOUBLE_CUT and playerModel.getResource() >= skills.getResourceCost(skills.DOUBLE_CUT) then
+		battleController.double_cut(go.get_id())
 	else
 		battleController.attack(go.get_id())
 	end
@@ -132,19 +197,28 @@ function init(self)
 	--timer.delay(1, true, attack)
 	self.counter = 0
 	self.mode = "normal"
+	self.isCasting = false 
+	events.subscribe(gameEvents.PLAYER_START_CASTING,onStartCasting,self)
+	events.subscribe(gameEvents.PLAYER_FINISH_CASTING,onFinishCasting,self)
 	events.subscribe(gameEvents.PLAYER_HURT, onPlayerHurt,self)
 	events.subscribe(gameEvents.TRIGGER_SKILL, onSkillTrigger, self)
 	events.subscribe(gameEvents.PLAY_EFFECT_ON_PLAYER, onPlayEffect,self)
 	events.subscribe(gameEvents.PLAYER_SHOOT_PROJECTILE,onShootProjectile, self)
 	events.subscribe(gameEvents.PLAY_PARTICLE_ON_PLAYER, onPlayParticle,self)
+	events.subscribe(gameEvents.ENRAGE_EFFECT, onEnrage,self)
+	events.subscribe(gameEvents.INTERRUPT_PLAYER_CASTING, onInterruptCasting,self)
 end
 
 function final(self)
+	events.unsubscribe(gameEvents.PLAYER_START_CASTING,onStartCasting,self)
+	events.subscribe(gameEvents.PLAYER_FINISH_CASTING,onFinishCasting,self)
 	events.unsubscribe(gameEvents.PLAYER_HURT, onPlayerHurt,self)
 	events.unsubscribe(gameEvents.TRIGGER_SKILL, onSkillTrigger, self)
 	events.unsubscribe(gameEvents.PLAY_EFFECT_ON_PLAYER, onPlayEffect,self)
 	events.unsubscribe(gameEvents.PLAYER_SHOOT_PROJECTILE,onShootProjectile, self)
 	events.unsubscribe(gameEvents.PLAY_PARTICLE_ON_PLAYER, onPlayParticle,self)
+	events.unsubscribe(gameEvents.ENRAGE_EFFECT, onEnrage,self)
+	events.unsubscribe(gameEvents.INTERRUPT_PLAYER_CASTING, onInterruptCasting,self)
 end
 
 function update(self, dt)
@@ -156,7 +230,7 @@ function update(self, dt)
 	if playerModel.hasBuff(buffs.FROST) then 
 		extra = extra / 3
 	end
-	if(playerModel.attackType == attackType.MELEE) then
+	if(playerModel.attackType == attackType.MELEE) and not playerModel.hasBuff(buffs.STUN) then
 		self.counter = self.counter + (dt*playerModel.spd) * extra
 	end
 	if self.counter >= 3 then

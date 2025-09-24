@@ -1,6 +1,9 @@
 local events = require("event.events")
 local gameEvents = require("main/events/gameEvents")
 local battleController = require("main/battle/battleController")
+local buffs = require("main/battle/buffs")
+local playerModel = require("main/battle/playerModel")
+local enemyModel = require("main/battle/enemyModel")
 go.property("animName", hash("lionstrike1"))
 go.property("doneEvent", hash("teszt"))
 go.property("xOffset", 0)
@@ -10,14 +13,19 @@ go.property("flip", false)
 go.property("speed", 200)
 
 local function onImpact(self)
-	if self.animName == hash("fire_bolt") then
-		battleController.fire_bolt_impact(self.enemyCasted)
-	end
-	if self.animName == hash("arcane_bolt") then
-		battleController.arcane_bolt_impact(self.enemyCasted)
-	end
-	if self.animName == hash("frost_bolt") then
-		battleController.frost_bolt_impact(self.enemyCasted)
+	print(self.enemyCasted,playerModel.hasBuff(buffs.SHIELD))
+	if (not self.enemyCasted and not enemyModel.hasBuff(buffs.SHIELD)) or (self.enemyCasted and not playerModel.hasBuff(buffs.SHIELD)) then
+		if self.animName == hash("fire_bolt") then
+			battleController.fire_bolt_impact(self.enemyCasted)
+		end
+		if self.animName == hash("arcane_bolt") then
+			battleController.arcane_bolt_impact(self.enemyCasted)
+		end
+		if self.animName == hash("frost_bolt") then
+			battleController.frost_bolt_impact(self.enemyCasted)
+		end
+	else
+		events.trigger(gameEvents.PLAY_SFX,"#swordhit")
 	end
 end
 

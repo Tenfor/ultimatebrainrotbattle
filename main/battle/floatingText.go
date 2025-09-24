@@ -14,6 +14,6 @@ embedded_components {
   "material: \"/builtins/fonts/label.material\"\n"
   ""
   position {
-    z: 0.2
+    z: 0.3
   }
 }

@@ -2,6 +2,8 @@ local buffs = require("main/battle/buffs")
 local skills = require("main/battle/skills")
 
 local M = {
+	critPercent = 3,
+	critDmg = 2,
 	spd = 1,
 	str = 1,
 	mag = 1,
@@ -9,13 +11,15 @@ local M = {
 	maxHp = 100,	
 	buffs = {
 		BERSERK = 0,
-		FROST = 0
+		FROST = 0,
+		SHIELD = 0,
+		STUN = 0
 	},
 	pattern = {
 		skills.EMPTY,
 		skills.EMPTY,
 		skills.EMPTY,
-		skills.LION_STRIKE,
+		skills.EMPTY,
 		skills.EMPTY,
 		skills.EMPTY,
 		skills.EMPTY,

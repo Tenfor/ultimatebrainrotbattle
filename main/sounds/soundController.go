@@ -78,3 +78,53 @@ embedded_components {
   data: "sound: \"/assets/sounds/sfx/buttonlocked.wav\"\n"
   ""
 }
+embedded_components {
+  id: "doubleswoosh"
+  type: "sound"
+  data: "sound: \"/assets/sounds/sfx/doubleswoosh.wav\"\n"
+  ""
+}
+embedded_components {
+  id: "cast"
+  type: "sound"
+  data: "sound: \"/assets/sounds/sfx/cast.wav\"\n"
+  "looping: 1\n"
+  "gain: 0.5\n"
+  ""
+}
+embedded_components {
+  id: "swoosh3"
+  type: "sound"
+  data: "sound: \"/assets/sounds/sfx/swoosh3.wav\"\n"
+  ""
+}
+embedded_components {
+  id: "thunder"
+  type: "sound"
+  data: "sound: \"/assets/sounds/sfx/thunder.wav\"\n"
+  ""
+}
+embedded_components {
+  id: "powerup4"
+  type: "sound"
+  data: "sound: \"/assets/sounds/sfx/powerup4.wav\"\n"
+  ""
+}
+embedded_components {
+  id: "swordhit"
+  type: "sound"
+  data: "sound: \"/assets/sounds/sfx/swordhit.wav\"\n"
+  ""
+}
+embedded_components {
+  id: "sahur_ulti"
+  type: "sound"
+  data: "sound: \"/assets/sounds/vo/sahur_ulti.wav\"\n"
+  ""
+}
+embedded_components {
+  id: "explosion_long"
+  type: "sound"
+  data: "sound: \"/assets/sounds/sfx/explosion_long.wav\"\n"
+  ""
+}
