@@ -1,18 +1,22 @@
 local druid = require("druid.druid")
 local events = require("event.events")
 local gameEvents = require("main/events/gameEvents")
+local gameModel = require("main/battle/gameModel")
 
 local function onPlayBtn(self)
-	print("onPlayBtn")
+	gameModel.reset()
+	events.trigger(gameEvents.LOAD_SCENE,"main")
+	events.trigger(gameEvents.UNLOAD_SCENE,"menu")
 end
 
 local function onSandboxBtn(self)
-	events.trigger(gameEvents.LOAD_SCENE,"sandbox")
+	events.trigger(gameEvents.LOAD_SCENE,"main")
 	events.trigger(gameEvents.UNLOAD_SCENE,"menu")
 end
 
 local function onUpgradesBtn(self)
-	print("onUpgradesBtn")
+	events.trigger(gameEvents.LOAD_SCENE,"upgrades")
+	events.trigger(gameEvents.UNLOAD_SCENE,"menu")
 end
 
 local function onSfxBtn(self)

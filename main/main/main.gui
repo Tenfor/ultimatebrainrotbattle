@@ -1,4 +1,4 @@
-script: "/main/sandbox/sandbox.gui_script"
+script: "/main/main/main.gui_script"
 fonts {
   name: "game"
   font: "/assets/font/game.font"
@@ -772,12 +772,12 @@ nodes {
 }
 nodes {
   position {
-    x: 409.0
-    y: 592.0
+    x: 387.0
+    y: 603.0
   }
   scale {
-    x: 0.4
-    y: 0.5
+    x: 0.3
+    y: 0.4
   }
   type: TYPE_BOX
   texture: "ui/button1"
@@ -799,12 +799,12 @@ nodes {
 }
 nodes {
   position {
-    x: 409.0
+    x: 389.0
     y: 671.0
   }
   scale {
-    x: 0.4
-    y: 0.5
+    x: 0.3
+    y: 0.4
   }
   type: TYPE_BOX
   texture: "ui/button1"
@@ -987,6 +987,33 @@ nodes {
   inherit_alpha: true
   alpha: 0.0
   size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 481.0
+    y: 671.0
+  }
+  scale {
+    x: 0.3
+    y: 0.4
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "playerHpMinusBtn"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "-10"
+  font: "game"
+  id: "playerHpMinusText"
+  parent: "playerHpMinusBtn"
+  inherit_alpha: true
 }
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT

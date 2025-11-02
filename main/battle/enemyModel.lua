@@ -4,11 +4,12 @@ local skills = require("main/battle/skills")
 local M = {
 	critPercent = 3,
 	critDmg = 2,
-	spd = 1,
-	str = 1,
+	spd = 2,
+	minDmg = 3,
+	maxDmg = 7,
 	mag = 1,
-	hp = 100,
-	maxHp = 100,	
+	hp = 50,
+	maxHp = 50,	
 	buffs = {
 		BERSERK = 0,
 		FROST = 0,
@@ -23,14 +24,9 @@ local M = {
 		skills.EMPTY,
 		skills.EMPTY,
 		skills.EMPTY,
-		skills.METEOR_SMASH,
-		skills.EMPTY,
-		skills.EMPTY,
-		skills.EMPTY,
-		skills.BERSERK,
-		skills.EMPTY,
-		skills.EMPTY,
-		skills.EMPTY
+		skills.BONECA_TRANSFORM,
+		skills.BONECA_ULTI,
+		skills.BONECA_TRANSFORM_BACK,
 	},
 	mod = 1
 }

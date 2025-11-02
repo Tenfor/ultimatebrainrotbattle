@@ -1,0 +1,97 @@
+local druid = require("druid.druid")
+local upgradesModel = require("main/upgrades/upgradesModel")
+local playerModel = require("main/battle/playerModel")
+local events = require("event.events")
+local gameEvents = require("main/events/gameEvents")
+
+local function setInfo(self,name)
+	local infoObj = upgradesModel.sahur[name]
+	
+	if playerModel.currentCharacter == "patapim" then
+		infoObj = upgradesModel.patapim[name]
+	elseif playerModel.currentCharacter == "cappucino" then
+		infoObj = upgradesModel.cappucino[name]
+	end
+	
+	if infoObj ~= nil then 
+		gui.set_text(self.titleNode, infoObj.title)
+		gui.set_text(self.descNode, infoObj.description)
+		gui.set_text(self.priceNode,infoObj.prices[infoObj.lvl])
+		gui.set_text(self.lvlNode,  "Level: "..(infoObj.lvl-1).."/"..#infoObj.prices)
+	end
+end
+
+local function onUpgradeSelect(self,name)
+	if not gui.is_enabled(self.buyBtnNode) then 
+		gui.set_enabled(self.buyBtnNode, true)
+	end
+	self.selectedUpgrade = name
+	setInfo(self,name)
+end
+
+local function onContinueBtn(self)
+	events.trigger(gameEvents.LOAD_SCENE,"menu")
+	events.trigger(gameEvents.UNLOAD_SCENE,"upgrades")
+end
+
+local function onBuyBtn(self)
+	print("buy"..self.selectedUpgrade)
+
+	local infoObj = upgradesModel.sahur[self.selectedUpgrade]
+
+	if playerModel.currentCharacter == "patapim" then
+		infoObj = upgradesModel.patapim[self.selectedUpgrade]
+	elseif playerModel.currentCharacter == "cappucino" then
+		infoObj = upgradesModel.cappucino[self.selectedUpgrade]
+	end
+
+	if infoObj ~= nil then 
+		if upgradesModel.gold >= infoObj.prices[infoObj.lvl] then
+			upgradesModel.gold = upgradesModel.gold - infoObj.prices[infoObj.lvl]
+			infoObj.lvl = infoObj.lvl + 1
+			setInfo(self, self.selectedUpgrade)
+			gui.set_text(self.goldTextNode, "Gold: "..upgradesModel.gold)
+		else
+			print("not enough gold")
+		end
+	end
+end
+
+function init(self)
+	self.druid = druid.new(self)
+	self.strBtn = self.druid:new_button("strBtn", onUpgradeSelect, "str")
+	self.speedBtn = self.druid:new_button("spdBtn", onUpgradeSelect, "spd")
+	self.hpBtn = self.druid:new_button("hpBtn", onUpgradeSelect, "hp")
+	self.critBtn = self.druid:new_button("critBtn", onUpgradeSelect, "crit")
+	self.rageBtn = self.druid:new_button("rageBtn", onUpgradeSelect, "rage")
+	self.incomeBtn = self.druid:new_button("incomeBtn", onUpgradeSelect, "income")
+	self.buyBtn = self.druid:new_button("buyBtn", onBuyBtn)
+
+	self.buyBtnNode = gui.get_node("buyBtn")
+
+	self.continueBtn = self.druid:new_button("continueBtn", onContinueBtn)
+
+	self.titleNode = gui.get_node("title")
+	self.lvlNode = gui.get_node("lvl")
+	self.descNode = gui.get_node("desc")
+	self.priceNode = gui.get_node("price")
+	self.goldTextNode = gui.get_node("goldText")
+
+	gui.set_text(self.goldTextNode, "Gold: "..upgradesModel.gold)
+end
+
+function final(self)
+	self.druid:final()
+end
+
+function update(self, dt)
+	self.druid:update(dt)
+end
+
+function on_message(self, message_id, message, sender)
+	self.druid:on_message(message_id, message, sender)
+end
+
+function on_input(self, action_id, action)
+	return self.druid:on_input(action_id, action)
+end

@@ -7,6 +7,14 @@ local buffs = require("main/battle/buffs")
 local attackType = require("main/battle/attackType")
 local hitType = require("main/battle/hitType")
 local effectFactoryFinder = require("main/battle/effectFactoryFinder")
+local gameModel = require("main/battle/gameModel")
+
+local function removeDarkPatapim(self)
+	go.animate("#sprite", "color_add.w", go.PLAYBACK_ONCE_PINGPONG, 1, go.EASING_LINEAR, 0.1)
+	sprite.play_flipbook("#sprite", "patapim")
+	events.trigger(gameEvents.PLAY_SFX,"#powerup4")
+	particlefx.stop("#dark")
+end
 
 local function onStartCasting(self)
 	self.isCasting = true
@@ -94,8 +102,16 @@ local function onPlayParticle(self,particleUrl)
 end
 
 local function updateBuffs(self,dt)
+	local hasDarkPatapim = playerModel.hasBuff(buffs.DARK_PATAPIM)
+	
 	playerModel.updateBuffs(dt)
 	playerModel.updateCDS(dt)
+
+	if(hasDarkPatapim) then 
+		if not playerModel.hasBuff(buffs.DARK_PATAPIM) then
+			removeDarkPatapim(self)
+		end
+	end
 
 	if playerModel.hasBuff(buffs.STUN) then
 		go.set("/playerStun#stun", "tint.w", 1)
@@ -230,7 +246,7 @@ function update(self, dt)
 	if playerModel.hasBuff(buffs.FROST) then 
 		extra = extra / 3
 	end
-	if(playerModel.attackType == attackType.MELEE) and not playerModel.hasBuff(buffs.STUN) then
+	if(playerModel.attackType == attackType.MELEE) and not playerModel.hasBuff(buffs.STUN) and not gameModel.isGameOver then
 		self.counter = self.counter + (dt*playerModel.spd) * extra
 	end
 	if self.counter >= 3 then

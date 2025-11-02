@@ -11,7 +11,10 @@ local M = {
 	FROST_BOLT = "FROST_BOLT",
 	WIND_SLASH = "WIND_SLASH",
 	DOUBLE_CUT = "DOUBLE_CUT",
-	DARK_PATAPIM = "DARK_PATAPIM"
+	DARK_PATAPIM = "DARK_PATAPIM",
+	BONECA_TRANSFORM = "BONECA_TRANSFORM",
+	BONECA_ULTI = "BONECA_ULTI",
+	BONECA_TRANSFORM_BACK = "BONECA_TRANSFORM_BACK",
 }
 
 local skillData = {
@@ -27,6 +30,8 @@ local skillData = {
 	[M.WIND_SLASH]   = { cost=0, damage = 1.5, cooldown = 5, globalCoolDown = 0.5, castTime = 0 },
 	[M.DOUBLE_CUT]   = { cost=2, damage = 1.25, cooldown = 3, globalCoolDown = 0.5, castTime = 0 },
 	[M.DARK_PATAPIM]   = { cost=50, damage = 0, cooldown = 60, globalCoolDown = 0.5, castTime = 0 },
+	[M.BONECA_TRANSFORM]   = { cost=50, damage = 0, cooldown = 60, globalCoolDown = 0.5, castTime = 0 },
+	[M.BONECA_ULTI]   = { cost=50, damage = 3, cooldown = 60, globalCoolDown = 0.5, castTime = 0 },
 }
 
 function M.getResourceCost(skillName)

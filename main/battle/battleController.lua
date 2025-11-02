@@ -40,15 +40,17 @@ function M.getShootTargetX(enemyCasted)
 end
 
 function M.calculate_damage(skillName,enemyCasted)
-	local str = enemyCasted and enemyModel.str or playerModel.str
+	local minDmg = enemyCasted and enemyModel.minDmg or playerModel.minDmg
+	local maxDmg = enemyCasted and enemyModel.maxDmg or playerModel.maxDmg
 	local critPercent = enemyCasted and enemyModel.critPercent or playerModel.critPercent
 	local critDmg = enemyCasted and enemyModel.critDmg or playerModel.critDmg 
+
+	print(minDmg,maxDmg)
 	
-	local rand = math.random(4)
 	local critRand = math.random(1,100)
 	local critMulti = critPercent >= critRand and critDmg or 1 
 	
-	local dmg =  math.floor( ((10+str) * (0.8+0.1*rand) * skills.getDamage(skillName) * critMulti ) + 0.5) 
+	local dmg =  math.floor( ((math.random(minDmg,maxDmg)) * skills.getDamage(skillName) * critMulti ) + 0.5) 
 	
 	return {dmg = dmg, crit = critMulti > 1}
 end
@@ -307,10 +309,50 @@ function M.dark_patapim(sprite_url,enemyCasted)
 	events.trigger(gameEvents.PLAY_SFX,"#explosion_long")
 	events.trigger(gameEvents.FLASH_EFFECT)
 	sprite.play_flipbook(sprite_url, "darkpatapim")
+	events.trigger(gameEvents.PLAY_PARTICLE_ON_PLAYER,"#dark")
 	
 	playerModel.resetCDS()
 	M.addCd(skills.DARK_PATAPIM,enemyCasted)
 	playerModel.addBuff(buffs.DARK_PATAPIM,8)
+end
+
+function M.boneca_transform(sprite_url)
+	events.trigger(gameEvents.PLAY_EFFECT_ON_ENEMY,"smoke",15,30,0,1.2)
+	events.trigger(gameEvents.PLAY_SFX,"#poof")
+	timer.delay(0.2, false, function()
+		sprite.play_flipbook(sprite_url, "kerek")
+	end)
+end
+
+function M.boneca_transform_back(sprite_url)
+	events.trigger(gameEvents.PLAY_EFFECT_ON_ENEMY,"smoke",15,30,0,1.2)
+	events.trigger(gameEvents.PLAY_SFX,"#poof")
+	timer.delay(0.2, false, function()
+		sprite.play_flipbook(sprite_url, "boneca")
+	end)
+end
+
+function M.boneca_ulti(go_url,enemyCasted)
+	if enemyCasted then 
+		local original_pos = go.get_position(go_url)
+		print("pos",original_pos.x)
+		local targetX = -100
+		local target_pos = vmath.vector3(targetX, original_pos.y, original_pos.z)
+
+		events.trigger(gameEvents.PLAY_SFX,"#whoosh3")
+
+		timer.delay(0.125, false, function() 
+			local dmg = M.calculate_damage(skills.EMPTY,enemyCasted)
+			events.trigger(gameEvents.getHurtEvent(enemyCasted),dmg,hitType.VFX.BASIC, hitType.SFX.BASIC)
+		end)
+
+		go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos.x, go.EASING_LINEAR, 0.25, 0, function()
+			local rightSideTransPos = vmath.vector3(1380,original_pos.y,original_pos.z)
+			go.set_position(rightSideTransPos,go_url)
+			print("pos",original_pos.x)
+			go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, original_pos.x, go.EASING_OUTSINE, 0.5, 0)
+		end)
+	end
 end
 
 return M

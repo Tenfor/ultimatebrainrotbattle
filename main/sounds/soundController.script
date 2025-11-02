@@ -24,10 +24,14 @@ local sounds = {
 	"#powerup4",
 	"#laser",
 	"#swordhit",
-	"#sahur_ulti"
+	"#sahur_ulti",
+	"#boneca",
+	"#whoosh3",
+	"#poof"
 }
 
 local function onPlaySfx(self,sfxUrl)
+	print("onplaysfx")
 	local play_id = #self.sfxPlaying + 1
 	msg.post(sfxUrl,"play_sound",{play_id = play_id})
 	table.insert(self.sfxPlaying,play_id)

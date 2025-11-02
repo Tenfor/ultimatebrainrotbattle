@@ -128,3 +128,24 @@ embedded_components {
   data: "sound: \"/assets/sounds/sfx/explosion_long.wav\"\n"
   ""
 }
+embedded_components {
+  id: "boneca"
+  type: "sound"
+  data: "sound: \"/assets/sounds/vo/boneca.wav\"\n"
+  ""
+}
+embedded_components {
+  id: "poof"
+  type: "sound"
+  data: "sound: \"/assets/sounds/sfx/poof.wav\"\n"
+  "gain: 2.0\n"
+  ""
+}
+embedded_components {
+  id: "whoosh3"
+  type: "sound"
+  data: "sound: \"/assets/sounds/sfx/whoosh3.wav\"\n"
+  "gain: 3.0\n"
+  "speed: 1.7\n"
+  ""
+}

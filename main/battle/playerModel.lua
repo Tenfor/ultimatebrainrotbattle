@@ -1,16 +1,24 @@
 local skills = require("main/battle/skills")
 local buffs = require("main/battle/buffs")
 local attackType = require("main/battle/attackType")
+local upgradesModel = require("main/upgrades/upgradesModel")
 local resourceType = require("main/battle/resourceType")
 
+local characters = {
+	SAHUR = "sahur",
+	PATAPIM = "patapim",
+	CAPPUCCINO = "cappuccino"
+}
+
 local M = {
+	currentCharacter = characters.CAPPUCCINO,
 	critPercent = 1,
 	critDmg = 1.5,
 	spd = 1,
 	str = 1,
 	mag = 1,
-	hp = 100,
-	maxHp = 100,
+	hp = 20,
+	maxHp = 20,
 	rage = 0, 
 	maxRage = 100,
 	mana = 100,
@@ -109,16 +117,18 @@ function M.setHp(val)
 end
 
 function M.loadSahurStats()
+	M.currentCharacter = characters.SAHUR
 	M.critPercent = 3
 	M.critDmg = 1.5
-	M.spd = 1
-	M.str = 3
+	M.spd = upgradesModel.sahur.spd.lvl
+	M.minDmg = upgradesModel.sahur.str.values[upgradesModel.sahur.str.lvl][1]
+	M.maxDmg = upgradesModel.sahur.str.values[upgradesModel.sahur.str.lvl][2]
 	M.mag = 1
-	M.hp = 100
-	M.maxHp = 100
+	M.hp = 20 + (upgradesModel.sahur.hp.lvl * 10)
+	M.maxHp = 10 + (upgradesModel.sahur.hp.lvl * 10)
 	M.attackType = attackType.MELEE
 	M.skills = {
-		{skillName = skills.LION_STRIKE, cd = 0, maxCd = 0},
+		{skillName = skills.LION_STRIKE, cd = 0, maxCd = 0, locked = upgradesModel.sahur.},
 		{skillName = skills.METEOR_SMASH, cd = 0, maxCd = 0},
 		{skillName = skills.ENRAGE, cd = 0, maxCd = 0},
 		{skillName = skills.SHIELD, cd = 0, maxCd = 0},
@@ -142,6 +152,7 @@ function M.loadSahurStats()
 end
 
 function M.loadCappucinoStats()
+	M.currentCharacter = characters.CAPPUCCINO
 	M.critPercent = 3
 	M.critDmg = 2
 	M.spd = 3
@@ -175,6 +186,7 @@ function M.loadCappucinoStats()
 end
 
 function M.loadPatapimStats()
+	M.currentCharacter = characters.PATAPIM
 	M.critPercent = 3
 	M.critDmg = 1.5
 	M.spd = 1

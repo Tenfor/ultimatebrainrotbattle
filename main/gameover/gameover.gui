@@ -1,0 +1,144 @@
+script: "/main/gameover/gameover.gui_script"
+fonts {
+  name: "game"
+  font: "/assets/font/game.font"
+}
+textures {
+  name: "ui"
+  texture: "/assets/img/ui/ui.atlas"
+}
+nodes {
+  position {
+    x: 640.0
+    y: 82.0
+  }
+  scale {
+    x: 0.7
+    y: 0.7
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "continueBtn"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Continue"
+  font: "game"
+  id: "label"
+  parent: "continueBtn"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 640.0
+    y: 664.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Game Over"
+  font: "game"
+  id: "title"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 640.0
+    y: 539.0
+  }
+  scale {
+    x: 0.7
+    y: 0.7
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Damage Done: 100 - 100 Coins"
+  font: "game"
+  id: "dmgDoneText"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 640.0
+    y: 459.0
+  }
+  scale {
+    x: 0.7
+    y: 0.7
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Damage Taken: 100 - 100 Coins"
+  font: "game"
+  id: "dmgTakenText"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 640.0
+    y: 387.0
+  }
+  scale {
+    x: 0.7
+    y: 0.7
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Enemies Defeated: 100 - 100 Coins"
+  font: "game"
+  id: "enemyText"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 640.0
+    y: 318.0
+  }
+  scale {
+    x: 0.7
+    y: 0.7
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Income Bonus: 2x"
+  font: "game"
+  id: "incomeBonusText"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 640.0
+    y: 217.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Total: 600 Coin"
+  font: "game"
+  id: "totalText"
+  inherit_alpha: true
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

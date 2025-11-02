@@ -2,8 +2,10 @@ local events = require("event.events")
 local playerModel = require("main/battle/playerModel")
 local enemyModel = require("main/battle/enemyModel")
 local gameEvents = require("main/events/gameEvents")
+local gameModel = require("main/battle/gameModel")
 
 local function on_load_sahur(self)
+	print("loadsah")
 	sprite.play_flipbook("player#sprite", "sahur")
 	playerModel.loadSahurStats()
 	events.trigger(gameEvents.CHARACTER_LOADED)
@@ -23,11 +25,19 @@ end
 
 function init(self)
 	on_load_sahur(self)
+	gameModel.isGameOver = false
 	msg.post(".", "acquire_input_focus")
 	enemyModel.setHp(enemyModel.maxHp)
 	events.subscribe(gameEvents.LOAD_SAHUR, on_load_sahur,self)
 	events.subscribe(gameEvents.LOAD_PATAPIM, on_load_patapim,self)
 	events.subscribe(gameEvents.LOAD_CAPPUCINO, on_load_cappucino,self)
+	print("init")
+	--TODO ENEMY BETÖLTÉSE EGY BEUGRÓ ANIMMAL
+	timer.delay(0.5, false, function()
+		print("wee")
+		events.trigger(gameEvents.PLAY_SFX,"#boneca")
+	end)
+
 end
 
 function final(self)
@@ -60,7 +70,7 @@ end
 function on_input(self, action_id, action)
 	if action_id == hash("slowmo") then
 		if action.pressed then
-			events.trigger(gameEvents.SLOW_MOTION,"sandbox")
+			events.trigger(gameEvents.SLOW_MOTION,"main")
 		end
 	end
 end

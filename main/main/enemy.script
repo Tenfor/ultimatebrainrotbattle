@@ -5,6 +5,7 @@ local gameEvents = require("main/events/gameEvents")
 local buffs = require("main/battle/buffs")
 local skills = require("main/battle/skills")
 local hitType = require("main/battle/hitType")
+local gameModel = require("main/battle/gameModel")
 local effectFactoryFinder = require("main/battle/effectFactoryFinder")
 
 local function onPlayEffect(self,effectUrl,x, y, rot,scale, flip)
@@ -79,6 +80,12 @@ local function attack(self)
 		battleController.shield(go.get_id(), true)
 	elseif enemyModel.pattern[self.currentMod] == skills.LIGHTNING_BOLT then
 		startCasting(self,skills.LIGHTNING_BOLT)
+	elseif enemyModel.pattern[self.currentMod] == skills.BONECA_TRANSFORM then
+		battleController.boneca_transform("/enemy#sprite")
+	elseif enemyModel.pattern[self.currentMod] == skills.BONECA_ULTI then
+		battleController.boneca_ulti(go.get_id(),true)
+	elseif enemyModel.pattern[self.currentMod] == skills.BONECA_TRANSFORM_BACK then
+		battleController.boneca_transform_back("/enemy#sprite")
 	end
 
 	self.currentMod = self.currentMod + 1
@@ -187,7 +194,7 @@ function update(self, dt)
 	if enemyModel.hasBuff(buffs.FROST) then 
 		extra = extra / 3
 	end
-	if not self.casting and not enemyModel.hasBuff(buffs.STUN) then 
+	if not self.casting and not enemyModel.hasBuff(buffs.STUN) and not gameModel.isGameOver then 
 		self.counter = self.counter + (dt*enemyModel.spd) * extra
 	end
 	if self.counter >= 3 then
