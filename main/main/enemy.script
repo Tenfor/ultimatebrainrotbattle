@@ -5,21 +5,148 @@ local gameEvents = require("main/events/gameEvents")
 local buffs = require("main/battle/buffs")
 local skills = require("main/battle/skills")
 local hitType = require("main/battle/hitType")
+local chats = require("main/battle/chats")
 local gameModel = require("main/battle/gameModel")
 local effectFactoryFinder = require("main/battle/effectFactoryFinder")
 
-local function onPlayEffect(self,effectUrl,x, y, rot,scale, flip)
+local function jumpIn(self,jump_height,jump_time)
+	local start_pos = go.get_position(".")
+	go.set("#sprite", "tint.w", 0)
+
+	events.trigger(gameEvents.PLAY_SFX,"#boing")
+
+	go.animate(".", "position.x", go.PLAYBACK_ONCE_FORWARD, enemyModel.enterPos[1], go.EASING_LINEAR, jump_time, 0, function() 
+		gameModel.setEnemyEntered(true)
+		events.trigger(gameEvents.PLAY_SFX,"#thud")
+		events.trigger(gameEvents.PLAY_SFX,"#"..enemyModel.name)
+	end)
+
+	go.animate(".", "position.y", go.PLAYBACK_ONCE_PINGPONG, start_pos.y + jump_height, go.EASING_OUTSINE, jump_time)
+	go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD,1, go.EASING_LINEAR, jump_time)
+end
+
+local function slideIn(self,duration)
+	go.set("#sprite", "tint.w", 0)
+	events.trigger(gameEvents.PLAY_SFX,"#whoosh")
+
+	go.animate(".", "position.x", go.PLAYBACK_ONCE_FORWARD, enemyModel.enterPos[1], go.EASING_LINEAR, duration, 0, function() 
+		gameModel.setEnemyEntered(true)
+		events.trigger(gameEvents.PLAY_SFX,"#"..enemyModel.name)
+	end)
+	go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD,1, go.EASING_LINEAR, duration)
+end
+
+local function bombardiroSlideOut(self,duration,nextEnemy)
+	events.trigger(gameEvents.PLAY_SFX,"#whoosh")
+
+	go.animate(".", "position.x", go.PLAYBACK_ONCE_FORWARD, 1200, go.EASING_LINEAR, duration, 0, function() 
+		enemyModel.loadEnemyModel(nextEnemy)
+		events.trigger(gameEvents.ENEMY_ENTER)
+		
+	end)
+	go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD,0, go.EASING_LINEAR, duration)
+end
+
+local function windIn(self,duration)
+	go.set("#sprite", "tint.w", 0)
+
+	events.trigger(gameEvents.PLAY_SFX, "#wind")
+	events.trigger(gameEvents.PLAY_EFFECT_ON_ENEMY,"wind",10,0,0,1,false,1,1)
+	
+	go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD,1, go.EASING_LINEAR, duration, 0, function() 
+		gameModel.setEnemyEntered(true)
+		events.trigger(gameEvents.PLAY_SFX,"#"..enemyModel.name)
+	end)
+end
+
+local function smokeIn(self,duration)
+	go.set("#sprite", "tint.w", 0)
+
+	events.trigger(gameEvents.PLAY_SFX, "#poof")
+	events.trigger(gameEvents.PLAY_EFFECT_ON_ENEMY,"smoke",10,0,0,1,false,1)
+
+	go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD,1, go.EASING_LINEAR, duration, 0, function() 
+		gameModel.setEnemyEntered(true)
+		events.trigger(gameEvents.PLAY_SFX,"#"..enemyModel.name)
+	end)
+end
+
+local function fallIn(self,duration)
+	go.set("#sprite", "tint.w", 1)
+	events.trigger(gameEvents.PLAY_SFX, "#whoosh3")
+	--events.trigger(gameEvents.PLAY_EFFECT_ON_ENEMY,"wind",10,0,0,1,false,1,1)
+
+	go.animate(".", "position.y", go.PLAYBACK_ONCE_FORWARD, enemyModel.enterPos[2], go.EASING_LINEAR, duration, 0, function() 
+		gameModel.setEnemyEntered(true)
+		events.trigger(gameEvents.SHAKE_EFFECT,0.1,20)
+		events.trigger(gameEvents.PLAY_SFX,"#explosion1")
+		events.trigger(gameEvents.PLAY_EFFECT_ON_ENEMY,"smoke",0,-65,0,1.2)
+		events.trigger(gameEvents.PLAY_SFX,"#"..enemyModel.name)
+	end)
+end
+
+local function ssj(self)
+	local yellow = vmath.vector4(1, 1, 0, 1)
+	events.trigger(gameEvents.PLAY_SFX,"#powerup6")
+	go.animate("#sprite", "color_add", go.PLAYBACK_ONCE_FORWARD, yellow, go.EASING_LINEAR, 1,0,function() 
+		local position = go.get_position()
+		position.y = enemyModel.enterPos[2]
+		go.set_position(position)
+		events.trigger(gameEvents.PLAY_SFX,"#explosion_long2")
+		events.trigger(gameEvents.SHAKE_EFFECT,0.2,20)	
+		events.trigger(gameEvents.FLASH_EFFECT,vmath.vector4(1,1,0,0))
+		go.set("#sprite", "color_add", vmath.vector4(1, 1, 1, 0))
+		sprite.play_flipbook("#sprite", "superdindin")
+		gameModel.setEnemyEntered(true)
+	end)
+end
+
+local function onEnemyEnter(self)
+	local position = go.get_position()
+	position.x = enemyModel.startPos[1]
+	position.y = enemyModel.startPos[2]
+	
+	go.set_position(position)
+	
+	sprite.play_flipbook("#sprite", enemyModel.sprite)
+	go.set_scale(enemyModel.scale)
+
+	self.counter = 0
+	self.currentMod = 1
+
+	if enemyModel.name == "boneca" then 
+		jumpIn(self, 180, 0.6)
+	elseif enemyModel.name == "lirili" or enemyModel.name == "patapim" then 
+		slideIn(self, 1)
+	elseif enemyModel.name == "frigo" then
+		windIn(self, 1)
+	elseif enemyModel.name == "dindin" then 
+		fallIn(self,0.35)
+	elseif enemyModel.name == "superDindin" then 
+		ssj(self)
+	elseif enemyModel.name == "cappuccino" then 
+		smokeIn(self,0.5)
+	else 
+		slideIn(self, 1)
+	end
+end
+
+local function onPlayEffect(self,effectUrl,x, y, rot,scale, flip, lifespan, alphaIn, scaleY)
 	local xOffset = x or 0
 	local yOffset = y or 0
+	local duration = lifespan or 0
+	local alphaDur = alphaIn or 0
 
 	local rotation = rot and vmath.quat_rotation_z(math.rad(rot)) or vmath.quat()
 	local pos = go.get_position("#root")
 	pos.x = pos.x + xOffset
 	pos.y = pos.y + yOffset
 	local scale = scale or 1
+	local scaleY = scaleY or scale
 	local factoryName = "#enemyEffectFactory"..effectFactoryFinder.getFactoryPostFix(effectUrl)
 	factory.create(factoryName, pos, rotation,
-	{animName=hash(effectUrl),xOffset = xOffset, yOffset = yOffset, target=hash("enemy"), flip = flip},
+	{animName=hash(effectUrl),xOffset = xOffset, yOffset = yOffset, target=hash("enemy"), flip = flip, lifespan = duration, 
+	alphaIn = alphaDur, scaleY = scaleY},
 	scale)
 end
 
@@ -42,6 +169,59 @@ local function onShootProjectile(self,projectileUrl,x,y,rot,scale,flip)
 	scale)
 end
 
+local function onPlayerDie(self)
+	gui.set_color(self.flashEffectNode, vmath.vector4(0, 0, 0, 1))
+	gui.set_alpha(self.flashEffectNode, 0)
+	gui.animate(self.flashEffectNode, "color.w", 1, gui.EASING_LINEAR, 1,0,function()
+		events.trigger(gameEvents.LOAD_SCENE,"gameOver")
+		events.trigger(gameEvents.UNLOAD_SCENE,"main")
+	end)
+end
+
+local function dieBlink(self, blinkCount)
+	go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_PINGPONG, 0, go.EASING_LINEAR, 0.2,0, function()
+		if blinkCount < 4 then 
+			dieBlink(self, blinkCount+1)
+		elseif enemyModel.name ~= "dindin" then
+			go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, 0.1, 0, function() 
+				print("dead",enemyModel.name)
+				if(enemyModel.name == "boneca") then
+					enemyModel.loadEnemyModel("frigo")
+					events.trigger(gameEvents.ENEMY_ENTER)
+				elseif(enemyModel.name == "frigo") then
+					enemyModel.loadEnemyModel("dindin")
+					events.trigger(gameEvents.ENEMY_ENTER)
+				elseif enemyModel.name == "superDindin" then 
+					enemyModel.loadEnemyModel("bombardiro")
+					events.trigger(gameEvents.ENEMY_ENTER)
+				elseif enemyModel.name == "patapim" then
+					enemyModel.loadEnemyModel("bombardiro")
+					enemyModel.setHp(self.bombardiroHp)
+					enemyModel.pattern[#enemyModel.pattern] = skills.CALL_CAPPUCINO
+					events.trigger(gameEvents.ENEMY_ENTER)
+				elseif enemyModel.name == "cappuccino" then 
+					enemyModel.loadEnemyModel("bombardiro")
+					enemyModel.setHp(self.bombardiroHp)
+					events.trigger(gameEvents.ENEMY_ENTER)
+				end
+			end)
+		else 
+			gameModel.setEnemyEntered(false)
+			events.trigger(gameEvents.START_CHAT, "dindin")
+		end
+	end)
+end
+	
+
+local function onEnemyDie(self)
+	gameModel.setEnemyEntered(false)
+	self.casting = false
+	if enemyModel.name ~= "dindin" then
+		gameModel.setEnemiesDefeated(gameModel.enemiesDefeated+1)
+	end
+	dieBlink(self,0)
+end
+
 local function startCasting(self,skillId)
 	self.casting = true
 	events.trigger(gameEvents.ENEMY_START_CASTING,skillId,skills.getCastTime(skillId))
@@ -52,10 +232,17 @@ local function onInterruptCasting(self)
 end
 
 local function onFinishCasting(self,skillId)
-	print("ENEMY - ENEMYFINESHCASTING")
 	self.casting = false
 	if skillId == skills.LIGHTNING_BOLT then
 		battleController.lightning_bolt(go.get_id(),true)
+	elseif skillId == skills.FROST_EXPLOSION then 
+		battleController.frost_explosion(go.get_id(),true)
+	elseif skillId == skills.FROST_BOLT_CAST then 
+		battleController.frost_bolt(go.get_id(),true)
+	elseif skillId == skills.KAME_HAME then 
+		battleController.kame_hame(go.get_id(),true)
+	elseif skillId == skills.ROCKET_BIG then 
+		battleController.rocket_big(go.get_id(),true)
 	end
 end
 
@@ -86,11 +273,39 @@ local function attack(self)
 		battleController.boneca_ulti(go.get_id(),true)
 	elseif enemyModel.pattern[self.currentMod] == skills.BONECA_TRANSFORM_BACK then
 		battleController.boneca_transform_back("/enemy#sprite")
+	elseif enemyModel.pattern[self.currentMod] == skills.GIGA_PUNCH then
+		battleController.giga_punch(go.get_id())
+	elseif enemyModel.pattern[self.currentMod] == skills.FROST_EXPLOSION then
+		startCasting(self,skills.FROST_EXPLOSION)
+	elseif enemyModel.pattern[self.currentMod] == skills.FROST_BOLT_CAST then
+		startCasting(self,skills.FROST_BOLT_CAST)
+	elseif enemyModel.pattern[self.currentMod] == skills.FIRE_PUNCH then 
+		battleController.fire_punch(go.get_id(),true)
+	elseif enemyModel.pattern[self.currentMod] == skills.KAME_HAME then
+		startCasting(self, skills.KAME_HAME)
+	elseif enemyModel.pattern[self.currentMod] == skills.SHOT then
+		battleController.shot(go.get_id(),true)
+	elseif enemyModel.pattern[self.currentMod] == skills.ROCKET then
+		battleController.rocket(go.get_id(),true)
+	elseif enemyModel.pattern[self.currentMod] == skills.ROCKET_BIG then
+		startCasting(self, skills.ROCKET_BIG)
+	elseif enemyModel.pattern[self.currentMod] == skills.CALL_PATAPIM then
+		gameModel.setEnemyEntered(false)
+		self.bombardiroHp = enemyModel.hp
+		events.trigger(gameEvents.START_CHAT, "bombardiro_to_patapim")
+	elseif enemyModel.pattern[self.currentMod] == skills.CALL_CAPPUCINO then
+		gameModel.setEnemyEntered(false)
+		self.bombardiroHp = enemyModel.hp
+		events.trigger(gameEvents.START_CHAT, "bombardiro_to_cappuccino")
+	elseif enemyModel.pattern[self.currentMod] == skills.WIND_SLASH then
+		battleController.wind_slash(go.get_id(),true)
+	elseif enemyModel.pattern[self.currentMod] == skills.DOUBLE_CUT then
+		battleController.double_cut(go.get_id(),true)
 	end
 
 	self.currentMod = self.currentMod + 1
 	if self.currentMod > #enemyModel.pattern then 
-		self.currentMod = 0
+		self.currentMod = 1
 	end
 end
 
@@ -130,36 +345,53 @@ local function onEnemyHurt(self,dmg, vfxType, sfxType)
 end
 
 local function updateBuffs(self,dt)
-	enemyModel.updateBuffs(dt)
+	if not gameModel.isGameOver then
+		enemyModel.updateBuffs(dt)
 
-	if enemyModel.hasBuff(buffs.SHIELD) then 
-		go.set("#shield", "tint.w", 1)
-	else 
-		go.set("#shield", "tint.w", 0)
-	end
+		if enemyModel.hasBuff(buffs.SHIELD) then 
+			go.set("#shield", "tint.w", 1)
+		else 
+			go.set("#shield", "tint.w", 0)
+		end
 
-	if enemyModel.hasBuff(buffs.STUN) then
-		go.set("/stun#stun", "tint.w", 1)
-		local rot_speed = math.pi * 6 * dt  
-		local current_rot = go.get_rotation("/stun#stun")
-		local new_rot = current_rot * vmath.quat_rotation_z(rot_speed)
-		go.set_rotation(new_rot,"/stun#stun")
-	else 
-		go.set("/stun#stun", "tint.w", 0)
+		if enemyModel.hasBuff(buffs.STUN) then
+			go.set("/stun#stun", "tint.w", 1)
+			local rot_speed = math.pi * 6 * dt  
+			local current_rot = go.get_rotation("/stun#stun")
+			local new_rot = current_rot * vmath.quat_rotation_z(rot_speed)
+			go.set_rotation(new_rot,"/stun#stun")
+		else 
+			go.set("/stun#stun", "tint.w", 0)
+		end
+
+		if gameModel.enemyEntered then 	
+			if enemyModel.hasBuff(buffs.FROST) then
+				if go.get("#sprite", "tint") ~= vmath.vector4(0.4, 0.4, 1, 1) then
+					go.set("#sprite", "tint", vmath.vector4(0.4, 0.4, 1, 1))
+				end
+			elseif enemyModel.hasBuff(buffs.BERSERK) then
+				if go.get("#sprite", "tint") ~= vmath.vector4(1, 0, 0, 1) then
+					go.set("#sprite", "tint", vmath.vector4(1, 0, 0, 1))
+				end
+			else
+				if go.get("#sprite", "tint") ~= vmath.vector4(1, 1, 1, 1) then
+					go.set("#sprite", "tint", vmath.vector4(1, 1, 1, 1))
+				end
+			end
+		end
 	end
-	
-	if enemyModel.hasBuff(buffs.FROST) then
-		if go.get("#sprite", "tint") ~= vmath.vector4(0.4, 0.4, 1, 1) then
-			go.set("#sprite", "tint", vmath.vector4(0.4, 0.4, 1, 1))
-		end
-	elseif enemyModel.hasBuff(buffs.BERSERK) then
-		if go.get("#sprite", "tint") ~= vmath.vector4(1, 0, 0, 1) then
-			go.set("#sprite", "tint", vmath.vector4(1, 0, 0, 1))
-		end
-	else
-		if go.get("#sprite", "tint") ~= vmath.vector4(1, 1, 1, 1) then
-			go.set("#sprite", "tint", vmath.vector4(1, 1, 1, 1))
-		end
+end
+
+local function onEndChat(self, dialogName)
+	if dialogName == "dindin" then
+		enemyModel.loadEnemyModel("superDindin")
+		events.trigger(gameEvents.ENEMY_ENTER)
+	end
+	if dialogName == "bombardiro_to_patapim" then
+		bombardiroSlideOut(self, 1, "patapim")
+	end
+	if dialogName == "bombardiro_to_cappuccino" then
+		bombardiroSlideOut(self, 1, "cappuccino")
 	end
 end
 
@@ -172,7 +404,9 @@ function init(self)
 	events.subscribe(gameEvents.ENEMY_SHOOT_PROJECTILE,onShootProjectile, self)
 	events.subscribe(gameEvents.ENEMY_FINISH_CASTING,onFinishCasting, self)
 	events.subscribe(gameEvents.INTERRUPT_ENEMY_CASTING,onInterruptCasting, self)
-
+	events.subscribe(gameEvents.ENEMY_DIE,onEnemyDie, self)
+	events.subscribe(gameEvents.ENEMY_ENTER,onEnemyEnter, self)
+	events.subscribe(gameEvents.END_CHAT,onEndChat, self)
 	--go.animate("#sprite", "color_add.w", go.PLAYBACK_LOOP_PINGPONG, 1, go.EASING_LINEAR, 2)		
 end
 
@@ -183,6 +417,9 @@ function final(self)
 	events.unsubscribe(gameEvents.ENEMY_SHOOT_PROJECTILE,onShootProjectile, self)
 	events.unsubscribe(gameEvents.ENEMY_FINISH_CASTING,onFinishCasting, self)
 	events.unsubscribe(gameEvents.INTERRUPT_ENEMY_CASTING,onInterruptCasting, self)
+	events.unsubscribe(gameEvents.ENEMY_DIE,onEnemyDie, self)
+	events.unsubscribe(gameEvents.ENEMY_ENTER,onEnemyEnter, self)
+	events.unsubscribe(gameEvents.END_CHAT,onEndChat, self)
 end
 
 function update(self, dt)
@@ -194,7 +431,7 @@ function update(self, dt)
 	if enemyModel.hasBuff(buffs.FROST) then 
 		extra = extra / 3
 	end
-	if not self.casting and not enemyModel.hasBuff(buffs.STUN) and not gameModel.isGameOver then 
+	if not self.casting and not enemyModel.hasBuff(buffs.STUN) and not gameModel.isGameOver and gameModel.enemyEntered then 
 		self.counter = self.counter + (dt*enemyModel.spd) * extra
 	end
 	if self.counter >= 3 then

@@ -1,4 +1,8 @@
 name: "gameover"
+instances {
+  id: "soundController"
+  prototype: "/main/sounds/soundController.go"
+}
 scale_along_z: 0
 embedded_instances {
   id: "gameOverGui"

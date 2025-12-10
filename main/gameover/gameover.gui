@@ -7,6 +7,10 @@ textures {
   name: "ui"
   texture: "/assets/img/ui/ui.atlas"
 }
+textures {
+  name: "characters"
+  texture: "/assets/img/characters/characters.atlas"
+}
 nodes {
   position {
     x: 640.0
@@ -21,6 +25,7 @@ nodes {
   id: "continueBtn"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
+  enabled: false
 }
 nodes {
   size {
@@ -51,8 +56,8 @@ nodes {
 }
 nodes {
   position {
-    x: 640.0
-    y: 539.0
+    x: 67.0
+    y: 540.0
   }
   scale {
     x: 0.7
@@ -66,12 +71,14 @@ nodes {
   text: "Damage Done: 100 - 100 Coins"
   font: "game"
   id: "dmgDoneText"
+  pivot: PIVOT_W
   inherit_alpha: true
+  visible: false
 }
 nodes {
   position {
-    x: 640.0
-    y: 459.0
+    x: 67.0
+    y: 470.0
   }
   scale {
     x: 0.7
@@ -85,12 +92,14 @@ nodes {
   text: "Damage Taken: 100 - 100 Coins"
   font: "game"
   id: "dmgTakenText"
+  pivot: PIVOT_W
   inherit_alpha: true
+  visible: false
 }
 nodes {
   position {
-    x: 640.0
-    y: 387.0
+    x: 67.0
+    y: 400.0
   }
   scale {
     x: 0.7
@@ -104,12 +113,14 @@ nodes {
   text: "Enemies Defeated: 100 - 100 Coins"
   font: "game"
   id: "enemyText"
+  pivot: PIVOT_W
   inherit_alpha: true
+  visible: false
 }
 nodes {
   position {
-    x: 640.0
-    y: 318.0
+    x: 67.0
+    y: 330.0
   }
   scale {
     x: 0.7
@@ -123,12 +134,14 @@ nodes {
   text: "Income Bonus: 2x"
   font: "game"
   id: "incomeBonusText"
+  pivot: PIVOT_W
   inherit_alpha: true
+  visible: false
 }
 nodes {
   position {
-    x: 640.0
-    y: 217.0
+    x: 67.0
+    y: 220.0
   }
   size {
     x: 200.0
@@ -138,7 +151,39 @@ nodes {
   text: "Total: 600 Coin"
   font: "game"
   id: "totalText"
+  pivot: PIVOT_W
   inherit_alpha: true
+  visible: false
+}
+nodes {
+  position {
+    x: 904.0
+    y: 238.0
+  }
+  type: TYPE_BOX
+  texture: "characters/boneca"
+  id: "character"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 904.0
+    y: 471.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "chatBox"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
 }
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT

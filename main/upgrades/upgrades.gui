@@ -8,6 +8,20 @@ textures {
   texture: "/assets/img/ui/ui.atlas"
 }
 nodes {
+  position {
+    x: 640.0
+    y: 360.0
+  }
+  scale {
+    x: 1.1
+  }
+  type: TYPE_BOX
+  texture: "ui/table"
+  id: "bg"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
   size {
     x: 200.0
     y: 100.0
@@ -19,6 +33,10 @@ nodes {
   visible: false
 }
 nodes {
+  position {
+    x: 1017.0
+    y: 383.0
+  }
   size {
     x: 200.0
     y: 100.0
@@ -31,9 +49,24 @@ nodes {
   visible: false
 }
 nodes {
+  scale {
+    x: 0.85
+    y: 0.8
+  }
+  type: TYPE_BOX
+  texture: "ui/window2"
+  id: "infoBg"
+  parent: "infos"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
   position {
-    x: 1038.0
-    y: 647.0
+    y: 180.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
   }
   size {
     x: 200.0
@@ -49,12 +82,11 @@ nodes {
 }
 nodes {
   position {
-    x: 1045.0
-    y: 562.0
+    y: 115.0
   }
   scale {
-    x: 0.7
-    y: 0.7
+    x: 0.6
+    y: 0.6
   }
   size {
     x: 200.0
@@ -68,31 +100,31 @@ nodes {
 }
 nodes {
   position {
-    x: 1049.0
-    y: 433.0
+    y: -18.0
   }
   scale {
-    x: 0.7
-    y: 0.7
+    x: 0.5
+    y: 0.5
   }
   size {
-    x: 200.0
-    y: 100.0
+    x: 600.0
+    y: 400.0
   }
   type: TYPE_TEXT
+  text: "Select an upgrade for more info"
   font: "game"
   id: "desc"
+  line_break: true
   parent: "infos"
   inherit_alpha: true
 }
 nodes {
   position {
-    x: 1051.0
-    y: 309.0
+    y: -168.0
   }
   scale {
-    x: 0.8
-    y: 0.8
+    x: 0.6
+    y: 0.6
   }
   type: TYPE_BOX
   texture: "ui/button1"
@@ -138,753 +170,12 @@ nodes {
 }
 nodes {
   position {
-    y: 84.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  type: TYPE_BOX
-  id: "strBox"
-  parent: "sahurUpgrades"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-  visible: false
-}
-nodes {
-  position {
-    x: 133.0
-    y: 450.0
-  }
-  size {
-    x: 150.0
-    y: 150.0
-  }
-  color {
-    y: 0.0
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "strBtn"
-  parent: "strBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 62.0
-    y: 347.0
-  }
-  size {
-    x: 30.0
-    y: 30.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "strBoxLvl1"
-  parent: "strBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 97.0
-    y: 347.0
-  }
-  size {
-    x: 30.0
-    y: 30.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "strBoxLvl2"
-  parent: "strBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 132.0
-    y: 347.0
-  }
-  size {
-    x: 30.0
-    y: 30.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "strBoxLvl3"
-  parent: "strBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 168.0
-    y: 347.0
-  }
-  rotation {
-    y: 0.575
-  }
-  size {
-    x: 30.0
-    y: 30.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "strBoxLvl4"
-  parent: "strBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 203.0
-    y: 347.0
-  }
-  size {
-    x: 30.0
-    y: 30.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "strBoxLvl5"
-  parent: "strBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    y: 84.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  type: TYPE_BOX
-  id: "spdBox"
-  parent: "sahurUpgrades"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-  visible: false
-}
-nodes {
-  position {
-    x: 357.0
-    y: 450.0
-  }
-  size {
-    x: 150.0
-    y: 150.0
-  }
-  color {
-    x: 0.0
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "spdBtn"
-  parent: "spdBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 289.0
-    y: 347.0
-  }
-  size {
-    x: 30.0
-    y: 30.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "spdBoxLvl1"
-  parent: "spdBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 324.0
-    y: 347.0
-  }
-  size {
-    x: 30.0
-    y: 30.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "spdBoxLvl2"
-  parent: "spdBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 359.0
-    y: 347.0
-  }
-  size {
-    x: 30.0
-    y: 30.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "spdBoxLvl3"
-  parent: "spdBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 395.0
-    y: 347.0
-  }
-  size {
-    x: 30.0
-    y: 30.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "spdBoxLvl4"
-  parent: "spdBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 429.0
-    y: 347.0
-  }
-  size {
-    x: 30.0
-    y: 30.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "spdBoxLvl5"
-  parent: "spdBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    y: 84.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  type: TYPE_BOX
-  id: "hpBox"
-  parent: "sahurUpgrades"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-  visible: false
-}
-nodes {
-  position {
-    x: 590.0
-    y: 450.0
-  }
-  size {
-    x: 150.0
-    y: 150.0
-  }
-  color {
-    y: 0.0
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "hpBtn"
-  parent: "hpBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 521.0
-    y: 343.0
-  }
-  size {
-    x: 30.0
-    y: 30.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "hpBoxLvl1"
-  parent: "hpBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 557.0
-    y: 343.0
-  }
-  size {
-    x: 30.0
-    y: 30.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "hpBoxLvl2"
-  parent: "hpBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 591.0
-    y: 343.0
-  }
-  size {
-    x: 30.0
-    y: 30.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "hpBoxLvl3"
-  parent: "hpBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 627.0
-    y: 343.0
-  }
-  size {
-    x: 30.0
-    y: 30.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "hpBoxLvl4"
-  parent: "hpBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 661.0
-    y: 343.0
-  }
-  size {
-    x: 30.0
-    y: 30.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "hpBoxLvl5"
-  parent: "hpBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    y: 84.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  type: TYPE_BOX
-  id: "incomeBox"
-  parent: "sahurUpgrades"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-  visible: false
-}
-nodes {
-  position {
-    x: 133.0
-    y: 195.0
-  }
-  size {
-    x: 150.0
-    y: 150.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "incomeBtn"
-  parent: "incomeBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 65.0
-    y: 89.0
-  }
-  size {
-    x: 30.0
-    y: 30.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "incomeBoxLvl1"
-  parent: "incomeBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 100.0
-    y: 89.0
-  }
-  size {
-    x: 30.0
-    y: 30.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "incomeBoxLvl2"
-  parent: "incomeBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 135.0
-    y: 89.0
-  }
-  size {
-    x: 30.0
-    y: 30.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "incomeBoxLvl3"
-  parent: "incomeBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 170.0
-    y: 89.0
-  }
-  size {
-    x: 30.0
-    y: 30.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "incomeBoxLvl4"
-  parent: "incomeBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 205.0
-    y: 89.0
-  }
-  size {
-    x: 30.0
-    y: 30.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "incomeBoxLvl5"
-  parent: "incomeBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    y: 84.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  type: TYPE_BOX
-  id: "rageBox"
-  parent: "sahurUpgrades"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-  visible: false
-}
-nodes {
-  position {
-    x: 357.0
-    y: 195.0
-  }
-  size {
-    x: 150.0
-    y: 150.0
-  }
-  color {
-    y: 0.0
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "rageBtn"
-  parent: "rageBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 283.0
-    y: 96.0
-  }
-  size {
-    x: 30.0
-    y: 30.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "rageBoxLvl1"
-  parent: "rageBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 318.0
-    y: 96.0
-  }
-  size {
-    x: 30.0
-    y: 30.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "rageBoxLvl2"
-  parent: "rageBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 353.0
-    y: 96.0
-  }
-  size {
-    x: 30.0
-    y: 30.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "rageBoxLvl3"
-  parent: "rageBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 389.0
-    y: 96.0
-  }
-  size {
-    x: 30.0
-    y: 30.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "rageBoxLvl4"
-  parent: "rageBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 423.0
-    y: 96.0
-  }
-  size {
-    x: 30.0
-    y: 30.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "rageBoxLvl5"
-  parent: "rageBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    y: 84.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  type: TYPE_BOX
-  id: "critBox"
-  parent: "sahurUpgrades"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-  visible: false
-}
-nodes {
-  position {
-    x: 590.0
-    y: 195.0
-  }
-  size {
-    x: 150.0
-    y: 150.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "critBtn"
-  parent: "critBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 521.0
-    y: 96.0
-  }
-  size {
-    x: 30.0
-    y: 30.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "critBoxLvl1"
-  parent: "critBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 557.0
-    y: 96.0
-  }
-  size {
-    x: 30.0
-    y: 30.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "critBoxLvl2"
-  parent: "critBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 591.0
-    y: 96.0
-  }
-  size {
-    x: 30.0
-    y: 30.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "critBoxLvl3"
-  parent: "critBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 627.0
-    y: 96.0
-  }
-  size {
-    x: 30.0
-    y: 30.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "critBoxLvl4"
-  parent: "critBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 661.0
-    y: 96.0
-  }
-  size {
-    x: 30.0
-    y: 30.0
-  }
-  color {
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "critBoxLvl5"
-  parent: "critBox"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 1051.0
-    y: 91.0
+    x: 932.0
+    y: 57.0
+  }
+  scale {
+    x: 0.8
+    y: 0.8
   }
   type: TYPE_BOX
   texture: "ui/button1"
@@ -910,63 +201,537 @@ nodes {
   inherit_alpha: true
 }
 nodes {
-  position {
-    x: 217.0
-    y: 82.0
-  }
-  scale {
-    x: 0.7
-    y: 0.7
+  size {
+    x: 200.0
+    y: 100.0
   }
   type: TYPE_BOX
-  texture: "ui/button1"
-  id: "upgradesBtn"
+  id: "attributes"
+  parent: "sahurUpgrades"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    x: 175.0
+    y: 500.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "stat1Box"
+  parent: "attributes"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  type: TYPE_BOX
+  texture: "ui/str"
+  id: "stat1Btn"
+  parent: "stat1Box"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: -75.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 200.0
+    y: 60.0
+  }
+  type: TYPE_TEXT
+  text: "0/5"
+  font: "game"
+  id: "stat1Lvl"
+  parent: "stat1Box"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 295.0
+    y: 500.0
+  }
+  size {
+    x: 200.0
+    y: 60.0
+  }
+  type: TYPE_BOX
+  id: "stat2Box"
+  parent: "attributes"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  type: TYPE_BOX
+  texture: "ui/str"
+  id: "stat2Btn"
+  parent: "stat2Box"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: -75.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 200.0
+    y: 60.0
+  }
+  type: TYPE_TEXT
+  text: "0/5"
+  font: "game"
+  id: "stat2Lvl"
+  parent: "stat2Box"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 415.0
+    y: 500.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "stat3Box"
+  parent: "attributes"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  type: TYPE_BOX
+  texture: "ui/str"
+  id: "stat3Btn"
+  parent: "stat3Box"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: -75.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 200.0
+    y: 60.0
+  }
+  type: TYPE_TEXT
+  text: "0/5"
+  font: "game"
+  id: "stat3Lvl"
+  parent: "stat3Box"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 535.0
+    y: 500.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "stat4Box"
+  parent: "attributes"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  type: TYPE_BOX
+  texture: "ui/str"
+  id: "stat4Btn"
+  parent: "stat4Box"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: -75.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 200.0
+    y: 60.0
+  }
+  type: TYPE_TEXT
+  text: "0/5"
+  font: "game"
+  id: "stat4Lvl"
+  parent: "stat4Box"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 655.0
+    y: 499.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "stat5Box"
+  parent: "attributes"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  type: TYPE_BOX
+  texture: "ui/str"
+  id: "stat5Btn"
+  parent: "stat5Box"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: -75.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 200.0
+    y: 60.0
+  }
+  type: TYPE_TEXT
+  text: "0/5"
+  font: "game"
+  id: "stat5Lvl"
+  parent: "stat5Box"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 775.0
+    y: 499.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "stat6Box"
+  parent: "attributes"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  type: TYPE_BOX
+  texture: "ui/str"
+  id: "stat6Btn"
+  parent: "stat6Box"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: -75.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 200.0
+    y: 60.0
+  }
+  type: TYPE_TEXT
+  text: "0/5"
+  font: "game"
+  id: "stat6Lvl"
+  parent: "stat6Box"
+  inherit_alpha: true
 }
 nodes {
   size {
     x: 200.0
     y: 100.0
   }
-  type: TYPE_TEXT
-  text: "Upgrades"
-  font: "game"
-  id: "label"
-  parent: "upgradesBtn"
+  type: TYPE_BOX
+  id: "skills"
+  parent: "sahurUpgrades"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    x: 225.0
+    y: 277.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "skill1Box"
+  parent: "skills"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  texture: "ui/LION_STRIKE"
+  id: "skill1Btn"
+  parent: "skill1Box"
   inherit_alpha: true
 }
 nodes {
   position {
-    x: 511.0
-    y: 82.0
+    y: -75.0
   }
   scale {
-    x: 0.7
-    y: 0.7
+    x: 0.5
+    y: 0.5
   }
-  type: TYPE_BOX
-  texture: "ui/button1"
-  id: "skillsBtn"
+  size {
+    x: 200.0
+    y: 60.0
+  }
+  type: TYPE_TEXT
+  text: "1/1"
+  font: "game"
+  id: "skill1Lvl"
+  parent: "skill1Box"
   inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
 }
 nodes {
+  position {
+    x: 345.0
+    y: 277.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "skill2Box"
+  parent: "skills"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  texture: "ui/LION_STRIKE"
+  id: "skill2Btn"
+  parent: "skill2Box"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: -75.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 200.0
+    y: 60.0
+  }
+  type: TYPE_TEXT
+  text: "1/1"
+  font: "game"
+  id: "skill2Lvl"
+  parent: "skill2Box"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 465.0
+    y: 277.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "skill3Box"
+  parent: "skills"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  texture: "ui/LION_STRIKE"
+  id: "skill3Btn"
+  parent: "skill3Box"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: -75.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 200.0
+    y: 60.0
+  }
+  type: TYPE_TEXT
+  text: "1/1"
+  font: "game"
+  id: "skill3Lvl"
+  parent: "skill3Box"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 585.0
+    y: 277.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "skill4Box"
+  parent: "skills"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  texture: "ui/LION_STRIKE"
+  id: "skill4Btn"
+  parent: "skill4Box"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: -75.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 200.0
+    y: 60.0
+  }
+  type: TYPE_TEXT
+  text: "1/1"
+  font: "game"
+  id: "skill4Lvl"
+  parent: "skill4Box"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 705.0
+    y: 277.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "skill5Box"
+  parent: "skills"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  texture: "ui/LION_STRIKE"
+  id: "skill5Btn"
+  parent: "skill5Box"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: -75.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 200.0
+    y: 60.0
+  }
+  type: TYPE_TEXT
+  text: "1/1"
+  font: "game"
+  id: "skill5Lvl"
+  parent: "skill5Box"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 479.0
+    y: 615.0
+  }
   size {
     x: 200.0
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Skills"
+  text: "Sahur Upgrades"
   font: "game"
-  id: "label1"
-  parent: "skillsBtn"
+  id: "text"
+  parent: "sahurUpgrades"
   inherit_alpha: true
 }
 nodes {
   position {
-    x: 144.0
-    y: 664.0
+    x: 465.0
+    y: 120.0
   }
   size {
     x: 200.0
@@ -976,6 +741,33 @@ nodes {
   text: "Gold: 0"
   font: "game"
   id: "goldText"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 685.0
+    y: 123.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "addGold"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "1000"
+  font: "game"
+  id: "text1"
+  parent: "addGold"
   inherit_alpha: true
 }
 material: "/builtins/materials/gui.material"

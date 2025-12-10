@@ -8,6 +8,18 @@ local skills = require("main/battle/skills")
 
 local M = {}
 
+function M.getRealSpeed(enemyCasted)
+	if enemyCasted then 
+		local extra = enemyModel.hasBuff(buffs.BERSERK) and 3 or 1
+		extra = enemyModel.hasBuff(buffs.FROST) and extra/3 or extra
+		return enemyModel.spd * extra
+	else 
+		local extra = playerModel.hasBuff(buffs.BERSERK) and 3 or 1
+		extra = playerModel.hasBuff(buffs.FROST) and extra/3 or extra
+		return playerModel.spd * extra
+	end
+end
+
 function M.addCd(skillName,enemyCasted)
 	if not enemyCasted then
 		for i, skill in ipairs(playerModel.skills) do
@@ -31,10 +43,10 @@ function M.payResourceCost(skillName,enemyCasted)
 	end
 end
 
-function M.getShootTargetX(enemyCasted)
-	local targetX = 420
+function M.getShootTargetX(originalX, enemyCasted)
+	local targetX = originalX - 30
 	if enemyCasted then 
-		targetX = 850
+		targetX = originalX + 30
 	end
 	return targetX
 end
@@ -44,8 +56,6 @@ function M.calculate_damage(skillName,enemyCasted)
 	local maxDmg = enemyCasted and enemyModel.maxDmg or playerModel.maxDmg
 	local critPercent = enemyCasted and enemyModel.critPercent or playerModel.critPercent
 	local critDmg = enemyCasted and enemyModel.critDmg or playerModel.critDmg 
-
-	print(minDmg,maxDmg)
 	
 	local critRand = math.random(1,100)
 	local critMulti = critPercent >= critRand and critDmg or 1 
@@ -68,10 +78,14 @@ function M.attack(go_url,enemyCasted)
 	end
 	local target_pos = vmath.vector3(targetX, original_pos.y, original_pos.z)
 
-	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos.x, go.EASING_LINEAR, 0.2, 0, function()
+	local realSpeed = M.getRealSpeed(enemyCasted)
+
+	local duration = realSpeed > 3 and 0.1 or 0.2
+
+	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos.x, go.EASING_LINEAR, duration, 0, function()
 		local dmg = M.calculate_damage(skills.EMPTY,enemyCasted)
 		events.trigger(gameEvents.getHurtEvent(enemyCasted),dmg,hitType.VFX.BASIC, hitType.SFX.BASIC)
-		go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, original_pos.x, go.EASING_LINEAR, 0.2)
+		go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, original_pos.x, go.EASING_LINEAR, duration)
 	end)
 end
 
@@ -93,6 +107,7 @@ function M.enrage(go_url)
 	timer.delay(0.1, false, function()
 		events.trigger(gameEvents.ENRAGE_EFFECT)
 		events.trigger(gameEvents.ADD_RAGE,30)
+		events.trigger(gameEvents.PLAYER_HEAL,15)
 	end)
 end
 
@@ -100,7 +115,7 @@ function M.lightning_bolt(go_url, enemyCasted)
 	M.payResourceCost(skills.LIGHTNING_BOLT, enemyCasted)
 	M.addCd(skills.LIGHTNING_BOLT,enemyCasted)
 	local original_pos = go.get_position(go_url)
-	local target_pos = vmath.vector3(M.getShootTargetX(enemyCasted), original_pos.y, original_pos.z)
+	local target_pos = vmath.vector3(M.getShootTargetX(original_pos.x,enemyCasted), original_pos.y, original_pos.z)
 
 	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos.x, go.EASING_LINEAR, 0.1, 0, function()
 		events.trigger(gameEvents.PLAY_SFX,"#thunder")
@@ -117,11 +132,78 @@ function M.lightning_bolt(go_url, enemyCasted)
 	end)
 end
 
+function M.rocket_big(go_url, enemyCasted)
+	local original_pos = go.get_position(go_url)
+	local target_pos = vmath.vector3(M.getShootTargetX(original_pos.x,enemyCasted), original_pos.y, original_pos.z)
+
+	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos.x, go.EASING_LINEAR, 0.1, 0, function()
+		events.trigger(gameEvents.PLAY_SFX,"#laser3")
+		events.trigger(gameEvents.getProjectileEvent(enemyCasted),"rocket2",-65,25,90,0.4,enemyCasted)
+		go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, original_pos.x, go.EASING_LINEAR, 0.1, 0)
+	end)
+end
+
+function M.rocket_big_impact(enemyCasted)
+	local dmg = {dmg = 120, crit = true}
+	events.trigger(gameEvents.getEffectEvent(enemyCasted),"explosion_big",0,0,0,1,enemyCasted)
+	events.trigger(gameEvents.PLAY_SFX,"#explosion_long")
+	events.trigger(gameEvents.SHAKE_EFFECT,0.4,30)	
+	events.trigger(gameEvents.FLASH_EFFECT, vmath.vector4(1,1,1,0))
+	events.trigger(gameEvents.getHurtEvent(enemyCasted),dmg,hitType.VFX.FLASHING,hitType.SFX.NONE)
+end
+
+function M.rocket(go_url, enemyCasted)
+	--M.payResourceCost(skills.FIRE_BOLT, enemyCasted)
+	--M.addCd(skills.FIRE_BOLT,enemyCasted)
+	local original_pos = go.get_position(go_url)
+	local target_pos = vmath.vector3(M.getShootTargetX(original_pos.x,enemyCasted), original_pos.y, original_pos.z)
+
+	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos.x, go.EASING_LINEAR, 0.1, 0, function()
+		events.trigger(gameEvents.PLAY_SFX,"#laser3")
+		events.trigger(gameEvents.getProjectileEvent(enemyCasted),"rocket",-65,25,90,0.35,enemyCasted)
+		go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, original_pos.x, go.EASING_LINEAR, 0.1, 0)
+	end)
+end
+
+function M.rocket_impact(enemyCasted)
+	local dmg = M.calculate_damage(skills.FIRE_BOLT,enemyCasted)
+	events.trigger(gameEvents.getEffectEvent(enemyCasted),"explosion",0,0,0,0.8,enemyCasted)
+	events.trigger(gameEvents.PLAY_SFX,"#explosion1")
+	events.trigger(gameEvents.getHurtEvent(enemyCasted),dmg,hitType.VFX.FLASHING,hitType.SFX.BASIC)
+	if enemyCasted and not playerModel.hasBuff(buffs.SHIELD) then
+		playerModel.addBuff(buffs.STUN,3)
+	else
+		enemyModel.addBuff(buffs.STUN,3)
+	end
+end
+
+function M.shot(go_url, enemyCasted)
+	--M.payResourceCost(skills.FIRE_BOLT, enemyCasted)
+	--M.addCd(skills.FIRE_BOLT,enemyCasted)
+	local original_pos = go.get_position(go_url)
+	local target_pos = vmath.vector3(M.getShootTargetX(original_pos.x,enemyCasted), original_pos.y, original_pos.z)
+
+	events.trigger(gameEvents.getEffectEvent(not enemyCasted),"shotBase",10,40,90,0.5,false,0.15)
+
+	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos.x, go.EASING_LINEAR, 0.1, 0, function()
+		events.trigger(gameEvents.PLAY_SFX,"#laser3")
+		events.trigger(gameEvents.getProjectileEvent(enemyCasted),"shot",0,40,90,0.5,enemyCasted)
+		go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, original_pos.x, go.EASING_LINEAR, 0.1, 0)
+	end)
+end
+
+function M.shot_impact(enemyCasted)
+	local dmg = M.calculate_damage(skills.SHOT,enemyCasted)
+	--events.trigger(gameEvents.getEffectEvent(enemyCasted),"explosion",0,0,0,0.8,enemyCasted)
+	--events.trigger(gameEvents.PLAY_SFX,"#explosion1")
+	events.trigger(gameEvents.getHurtEvent(enemyCasted),dmg,hitType.VFX.BASIC,hitType.SFX.BASIC)
+end
+
 function M.fire_bolt(go_url, enemyCasted)
 	M.payResourceCost(skills.FIRE_BOLT, enemyCasted)
 	M.addCd(skills.FIRE_BOLT,enemyCasted)
 	local original_pos = go.get_position(go_url)
-	local target_pos = vmath.vector3(M.getShootTargetX(enemyCasted), original_pos.y, original_pos.z)
+	local target_pos = vmath.vector3(M.getShootTargetX(original_pos.x,enemyCasted), original_pos.y, original_pos.z)
 
 	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos.x, go.EASING_LINEAR, 0.1, 0, function()
 		events.trigger(gameEvents.PLAY_SFX,"#laser3")
@@ -141,7 +223,7 @@ function M.arcane_bolt(go_url,enemyCasted)
 	M.addCd(skills.ARCANE_BOLT,enemyCasted)
 	M.payResourceCost(skills.ARCANE_BOLT, enemyCasted)
 	local original_pos = go.get_position(go_url)
-	local target_pos = vmath.vector3(M.getShootTargetX(enemyCasted), original_pos.y, original_pos.z)
+	local target_pos = vmath.vector3(M.getShootTargetX(original_pos.x,enemyCasted), original_pos.y, original_pos.z)
 
 	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos.x, go.EASING_LINEAR, 0.1, 0, function()
 		events.trigger(gameEvents.PLAY_SFX,"#laser3")
@@ -156,11 +238,48 @@ function M.arcane_bolt_impact(enemyCasted)
 	events.trigger(gameEvents.getHurtEvent(enemyCasted),dmg,hitType.VFX.NONE,hitType.SFX.BASIC)
 end
 
+function M.frost_explosion(go_url,enemyCasted)
+	M.addCd(skills.FROST_EXPLOSION,enemyCasted)
+	M.payResourceCost(skills.FROST_EXPLOSION, enemyCasted)
+	local original_pos = go.get_position(go_url)
+	local target_pos = vmath.vector3(M.getShootTargetX(original_pos.x,enemyCasted), original_pos.y, original_pos.z)
+
+	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos.x, go.EASING_LINEAR, 0.1, 0, function()
+		events.trigger(gameEvents.PLAY_SFX,"#laser3")
+		events.trigger(gameEvents.PLAY_SFX,"#wind")
+		events.trigger(gameEvents.getEffectEvent(enemyCasted),"wind",10,0,0,1,false,1.4,1.4)
+		go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, original_pos.x, go.EASING_LINEAR, 0.1, 0)
+	end)
+
+	timer.delay(0.6, false, function() 
+		local dmg = M.calculate_damage(skills.FROST_EXPLOSION,enemyCasted)
+		events.trigger(gameEvents.getHurtEvent(enemyCasted),dmg,hitType.VFX.NONE,hitType.SFX.BASIC)
+	end)
+	timer.delay(1, false, function() 
+		local dmg = M.calculate_damage(skills.FROST_EXPLOSION,enemyCasted)
+		events.trigger(gameEvents.getHurtEvent(enemyCasted),dmg,hitType.VFX.NONE,hitType.SFX.BASIC)
+	end)
+
+	timer.delay(1.4, false, function() 
+		local dmg = M.calculate_damage(skills.FROST_EXPLOSION,enemyCasted)
+		events.trigger(gameEvents.getParticleEvent(enemyCasted),"#frost_bolt")
+		events.trigger(gameEvents.PLAY_SFX,"#explosion2")
+		if enemyCasted and not playerModel.hasBuff(buffs.SHIELD) then
+			playerModel.addBuff(buffs.FROST,7)
+			playerModel.addBuff(buffs.STUN,3)
+		else
+			enemyModel.addBuff(buffs.FROST,7)
+			enemyModel.addBuff(buffs.STUN,3)
+		end
+		events.trigger(gameEvents.getHurtEvent(enemyCasted),dmg,hitType.VFX.NONE,hitType.SFX.BASIC)
+	end)
+end
+
 function M.frost_bolt(go_url,enemyCasted)
 	M.addCd(skills.FROST_BOLT,enemyCasted)
 	M.payResourceCost(skills.FROST_BOLT, enemyCasted)
 	local original_pos = go.get_position(go_url)
-	local target_pos = vmath.vector3(M.getShootTargetX(enemyCasted), original_pos.y, original_pos.z)
+	local target_pos = vmath.vector3(M.getShootTargetX(original_pos.x,enemyCasted), original_pos.y, original_pos.z)
 
 	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos.x, go.EASING_LINEAR, 0.1, 0, function()
 		events.trigger(gameEvents.PLAY_SFX,"#laser3")
@@ -171,14 +290,14 @@ end
 
 function M.frost_bolt_impact(enemyCasted)
 	local dmg = M.calculate_damage(skills.FROST_BOLT,enemyCasted)
-		events.trigger(gameEvents.getParticleEvent(enemyCasted),"#frost_bolt")
-		events.trigger(gameEvents.PLAY_SFX,"#explosion2")
-		if enemyCasted then
-			playerModel.addBuff(buffs.FROST,7)
-		else
-			enemyModel.addBuff(buffs.FROST,7)
-		end
-		events.trigger(gameEvents.getHurtEvent(enemyCasted),dmg,hitType.VFX.NONE,hitType.SFX.BASIC)
+	events.trigger(gameEvents.getParticleEvent(enemyCasted),"#frost_bolt")
+	events.trigger(gameEvents.PLAY_SFX,"#explosion2")
+	if enemyCasted and not playerModel.hasBuff(buffs.SHIELD) then
+		playerModel.addBuff(buffs.FROST,7)
+	else
+		enemyModel.addBuff(buffs.FROST,7)
+	end
+	events.trigger(gameEvents.getHurtEvent(enemyCasted),dmg,hitType.VFX.NONE,hitType.SFX.BASIC)
 end
 
 function M.wind_slash(go_url,enemyCasted)
@@ -243,17 +362,20 @@ function M.lion_strike(go_url,enemyCasted)
 	end
 	local target_pos = vmath.vector3(targetX, original_pos.y, original_pos.z)
 
-	timer.delay(0.1, false, function() 
+	local realSpeed = M.getRealSpeed(enemyCasted)
+	local duration = realSpeed > 3 and 0.1 or 0.2
+
+	timer.delay(duration/2, false, function() 
 		events.trigger(gameEvents.getEffectEvent(not enemyCasted),"lionstrike",enemyCasted and -120 or 120,0,0,1,enemyCasted)
 		events.trigger(gameEvents.PLAY_SFX,"#swoosh3")
 	end)
 
-	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos.x, go.EASING_LINEAR, 0.2, 0, function()
+	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos.x, go.EASING_LINEAR, duration, 0, function()
 		--events.trigger(gameEvents.getEffectEvent(enemyCasted),"lionstrike",0,0,1,1,enemyCasted)
-		go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, original_pos.x, go.EASING_LINEAR, 0.2)
+		go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, original_pos.x, go.EASING_LINEAR, duration)
 	end)
 
-	timer.delay(0.2, false, function() 
+	timer.delay(duration, false, function() 
 		local dmg = M.calculate_damage(skills.LION_STRIKE,enemyCasted)
 		events.trigger(gameEvents.getHurtEvent(enemyCasted),dmg,hitType.VFX.FLASHING, hitType.SFX.BASIC)
 	end)
@@ -269,9 +391,13 @@ function M.meteor_smash(go_url,enemyCasted)
 	end
 	local target_pos1 = vmath.vector3(targetX, 600, original_pos.z)
 	events.trigger(gameEvents.PLAY_SFX,"#swoosh2")
-	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos1.x, go.EASING_LINEAR, 0.2, 0)
-	go.animate(go_url, "position.y", go.PLAYBACK_ONCE_FORWARD, target_pos1.y, go.EASING_LINEAR, 0.2, 0)
-	go.animate(go_url, "position.y", go.PLAYBACK_ONCE_FORWARD, original_pos.y, go.EASING_LINEAR, 0.1, 0.25,function()
+
+	local realSpeed = M.getRealSpeed(enemyCasted)
+	local duration = realSpeed > 3 and 0.08 or 0.2
+	
+	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos1.x, go.EASING_LINEAR, duration, 0)
+	go.animate(go_url, "position.y", go.PLAYBACK_ONCE_FORWARD, target_pos1.y, go.EASING_LINEAR, duration, 0)
+	go.animate(go_url, "position.y", go.PLAYBACK_ONCE_FORWARD, original_pos.y, go.EASING_LINEAR, duration/2, duration+duration/4,function()
 		events.trigger(gameEvents.getEffectEvent(enemyCasted),"smoke",-10,-50,0,1.2)
 		events.trigger(gameEvents.SHAKE_EFFECT,0.2,20)	
 		events.trigger(gameEvents.PLAY_SFX,"#explosion1")
@@ -286,7 +412,7 @@ function M.meteor_smash(go_url,enemyCasted)
 			enemyModel.addBuff(buffs.STUN,5)
 		end
 	end)
-	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, original_pos.x, go.EASING_LINEAR, 0.2, 0.35)
+	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, original_pos.x, go.EASING_LINEAR, duration, duration+duration*0.75)
 end
 
 function M.berserk(go_url,enemyCasted)
@@ -295,10 +421,10 @@ function M.berserk(go_url,enemyCasted)
 	events.trigger(gameEvents.SHAKE_EFFECT,0.2,20)	
 	M.addCd(skills.BERSERK,enemyCasted)
 	if enemyCasted then
-		enemyModel.addBuff(buffs.BERSERK,5)
+		enemyModel.addBuff(buffs.BERSERK,6)
 	else
 		events.trigger(gameEvents.PLAY_SFX,"#sahur_ulti")
-		playerModel.addBuff(buffs.BERSERK,5)
+		playerModel.addBuff(buffs.BERSERK,6)
 	end
 end
 
@@ -307,7 +433,7 @@ function M.dark_patapim(sprite_url,enemyCasted)
 	
 	events.trigger(gameEvents.SHAKE_EFFECT,0.1,15)	
 	events.trigger(gameEvents.PLAY_SFX,"#explosion_long")
-	events.trigger(gameEvents.FLASH_EFFECT)
+	events.trigger(gameEvents.FLASH_EFFECT, vmath.vector4(0.2,0,0.2,0))
 	sprite.play_flipbook(sprite_url, "darkpatapim")
 	events.trigger(gameEvents.PLAY_PARTICLE_ON_PLAYER,"#dark")
 	
@@ -342,8 +468,8 @@ function M.boneca_ulti(go_url,enemyCasted)
 		events.trigger(gameEvents.PLAY_SFX,"#whoosh3")
 
 		timer.delay(0.125, false, function() 
-			local dmg = M.calculate_damage(skills.EMPTY,enemyCasted)
-			events.trigger(gameEvents.getHurtEvent(enemyCasted),dmg,hitType.VFX.BASIC, hitType.SFX.BASIC)
+			local dmg = {dmg = 15, crit = false}
+			events.trigger(gameEvents.getHurtEvent(enemyCasted),dmg,hitType.VFX.BASIC, hitType.SFX.CRITONLY)
 		end)
 
 		go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos.x, go.EASING_LINEAR, 0.25, 0, function()
@@ -353,6 +479,55 @@ function M.boneca_ulti(go_url,enemyCasted)
 			go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, original_pos.x, go.EASING_OUTSINE, 0.5, 0)
 		end)
 	end
+end
+
+function M.giga_punch(go_url)
+	local original_pos = go.get_position(go_url)
+	local targetX = 680
+	local target_pos = vmath.vector3(targetX, original_pos.y, original_pos.z)
+
+	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos.x, go.EASING_LINEAR, 0.2, 0, function()
+		local dmg = M.calculate_damage(skills.GIGA_PUNCH,true)
+		events.trigger(gameEvents.PLAYER_HURT,dmg,hitType.VFX.BASIC, hitType.SFX.BASIC)
+		events.trigger(gameEvents.PLAY_SFX,"#explosion1")
+		events.trigger(gameEvents.SHAKE_EFFECT,0.4,30)	
+		if not playerModel.hasBuff(buffs.SHIELD) then
+			playerModel.addBuff(buffs.STUN,1)
+		end
+		go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, original_pos.x, go.EASING_LINEAR, 0.2)
+	end)
+end
+
+function M.fire_punch(go_url, enemyCasted)
+	local original_pos = go.get_position(go_url)
+	local targetX = -100
+	local target_pos = vmath.vector3(targetX, original_pos.y, original_pos.z)
+
+	events.trigger(gameEvents.PLAY_SFX,"#whoosh3")
+
+	timer.delay(0.125, false, function() 
+		
+		events.trigger(gameEvents.getHurtEvent(enemyCasted),M.calculate_damage(skills.FIRE_PUNCH,enemyCasted),hitType.VFX.FLASHING, hitType.SFX.NONE)
+		events.trigger(gameEvents.PLAY_SFX,"#explosion1")
+		events.trigger(gameEvents.SHAKE_EFFECT,0.4,30)	
+	end)
+
+	events.trigger(gameEvents.PLAY_EFFECT_ON_ENEMY,"fire_punch",0,0,0,1.3, false, 0.28)
+
+	go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos.x, go.EASING_LINEAR, 0.25, 0, function()
+		local rightSideTransPos = vmath.vector3(1380,original_pos.y,original_pos.z)
+		go.set_position(rightSideTransPos,go_url)
+		print("pos",original_pos.x)
+		go.animate(go_url, "position.x", go.PLAYBACK_ONCE_FORWARD, original_pos.x, go.EASING_OUTSINE, 0.5, 0)
+	end)
+end
+
+function M.kame_hame(go_url,enemyCasted)
+	events.trigger(gameEvents.PLAY_SFX,"#laser4")
+	events.trigger(gameEvents.PLAY_EFFECT_ON_ENEMY,"kame_hame",-220,30,90,1.4, false, 0.5, 0, 0.7)
+	events.trigger(gameEvents.FLASH_EFFECT,vmath.vector4(0.4,0.4,1,0))
+	events.trigger(gameEvents.PLAY_SFX,"#explosion2")
+	events.trigger(gameEvents.getHurtEvent(enemyCasted),M.calculate_damage(skills.KAME_HAME, enemyCasted),hitType.VFX.FLASHING, hitType.SFX.CRITONLY)
 end
 
 return M

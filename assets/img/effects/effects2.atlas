@@ -1,3 +1,6 @@
+images {
+  image: "/assets/img/effects/shot/shot.png"
+}
 animations {
   id: "fire_bolt"
   images {
@@ -64,5 +67,73 @@ animations {
     image: "/assets/img/effects/frost/frost (5).png"
   }
   fps: 15
+}
+animations {
+  id: "rocket"
+  images {
+    image: "/assets/img/effects/rocket/rocket (1).png"
+  }
+  images {
+    image: "/assets/img/effects/rocket/rocket (2).png"
+  }
+  images {
+    image: "/assets/img/effects/rocket/rocket (3).png"
+  }
+  images {
+    image: "/assets/img/effects/rocket/rocket (4).png"
+  }
+  images {
+    image: "/assets/img/effects/rocket/rocket (5).png"
+  }
+  images {
+    image: "/assets/img/effects/rocket/rocket (6).png"
+  }
+  images {
+    image: "/assets/img/effects/rocket/rocket (7).png"
+  }
+  images {
+    image: "/assets/img/effects/rocket/rocket (8).png"
+  }
+  images {
+    image: "/assets/img/effects/rocket/rocket (9).png"
+  }
+  images {
+    image: "/assets/img/effects/rocket/rocket (10).png"
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+}
+animations {
+  id: "rocket2"
+  images {
+    image: "/assets/img/effects/rocket2/rocket2 (1).png"
+  }
+  images {
+    image: "/assets/img/effects/rocket2/rocket2 (2).png"
+  }
+  images {
+    image: "/assets/img/effects/rocket2/rocket2 (3).png"
+  }
+  images {
+    image: "/assets/img/effects/rocket2/rocket2 (4).png"
+  }
+  images {
+    image: "/assets/img/effects/rocket2/rocket2 (5).png"
+  }
+  images {
+    image: "/assets/img/effects/rocket2/rocket2 (6).png"
+  }
+  images {
+    image: "/assets/img/effects/rocket2/rocket2 (7).png"
+  }
+  images {
+    image: "/assets/img/effects/rocket2/rocket2 (8).png"
+  }
+  images {
+    image: "/assets/img/effects/rocket2/rocket2 (9).png"
+  }
+  images {
+    image: "/assets/img/effects/rocket2/rocket2 (10).png"
+  }
+  playback: PLAYBACK_LOOP_FORWARD
 }
 extrude_borders: 2

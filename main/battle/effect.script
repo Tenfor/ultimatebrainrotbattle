@@ -6,6 +6,9 @@ go.property("xOffset", 0)
 go.property("yOffset", 0)
 go.property("target", hash("enemy"))
 go.property("flip", false)
+go.property("lifespan", 0)
+go.property("alphaIn", 0)
+go.property("scaleY", 1)
 
 local function onDone(self)
 	go.delete()
@@ -15,10 +18,25 @@ function init(self)
 	sprite.play_flipbook("#sprite", hash(self.animName), onDone)
 	sprite.set_hflip("#sprite", self.flip)
 
+	local scale = go.get_scale()
+	scale.y = self.scaleY
+	go.set_scale(scale)
+
 	if self.animName == hash("hit1") then
 		go.set("#sprite", "tint", vmath.vector4(1, 1, 0, 1))
 	end
---	events.subscribe(self.doneEvent, callback, callback_context)
+	--	events.subscribe(self.doneEvent, callback, callback_context)
+
+	if self.alphaIn > 0 then 
+		go.set("#sprite", "tint.w", 0)
+		go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_LINEAR, self.alphaIn)
+	end
+
+	if self.lifespan > 0 then
+		timer.delay(self.lifespan, false, function() 
+			onDone(self)
+		end)
+	end
 end
 
 function final(self)

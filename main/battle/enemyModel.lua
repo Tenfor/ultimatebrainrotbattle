@@ -1,15 +1,23 @@
 local buffs = require("main/battle/buffs")
 local skills = require("main/battle/skills")
+local enemy_data = require("main/battle/enemy_data")
+
+local enemies = {
+	BONECA = "BONECA",
+	LIRILI = "LIRILI",
+	DINDIN = "DINDIN",
+	TRALLALERO = "TRALLALERO",
+}
 
 local M = {
+	name = "boneca",
 	critPercent = 3,
 	critDmg = 2,
-	spd = 2,
-	minDmg = 3,
-	maxDmg = 7,
-	mag = 1,
-	hp = 50,
-	maxHp = 50,	
+	spd = 1.5,
+	minDmg = 2,
+	maxDmg = 5,
+	hp = 80,
+	maxHp = 80,	
 	buffs = {
 		BERSERK = 0,
 		FROST = 0,
@@ -28,7 +36,15 @@ local M = {
 		skills.BONECA_ULTI,
 		skills.BONECA_TRANSFORM_BACK,
 	},
-	mod = 1
+	mod = 1,
+	mocks = {
+		"GG EZ!",
+		"Let me give you an advice: GIT GUD!",
+		"HAHA! Boneca Ambalagu is the best!"
+	},
+	startPos = {1530,276,0},
+	enterPos = {830,276,0},
+	scale = {1,1,0}
 }
 
 function M.setSpd(val)
@@ -43,13 +59,6 @@ function M.setHp(val)
 	M.hp = val
 end
 
-function M.loadEnemyModel(stats)
-	M.spd = stats.spd or 1
-	M.str = stats.str or 1
-	M.mag = stats.mag or 1
-	M.maxHp = stats.maxHp or 100
-	M.hp = M.maxHp
-end
 
 function M.updateBuffs(dt)
 	for name, duration in pairs(M.buffs) do
@@ -74,6 +83,36 @@ function M.removeBuff(buff)
 	if M.buffs[buff] ~= nil then 
 		M.buffs[buff] = 0
 	end
+end
+
+function M.loadEnemyModel(enemyName)
+	local data = enemy_data.list[enemyName]
+	if not data then 
+		error("Enemy type not found: " .. tostring(enemyName))
+	end
+	M.name = data.name
+	M.displayName = data.displayName
+	M.sprite = data.sprite
+	M.critPercent = data.critPercent
+	M.critDmg = data.critDmg
+	M.spd = data.spd
+	M.minDmg = data.minDmg
+	M.maxDmg = data.maxDmg
+	M.hp = data.hp
+	M.maxHp = data.hp
+	M.buffs = {
+		BERSERK = 0,
+		FROST = 0,
+		SHIELD = 0,
+		STUN = 0
+	}
+	M.mod = 1
+	M.pattern = data.pattern
+	M.mocks = data.mocks	
+	M.startPos = data.startPos
+	M.enterPos = data.enterPos
+	M.scale = data.scale
+	M.castBarPos = data.castBarPos
 end
 
 return M

@@ -5,7 +5,6 @@ local gameEvents = require("main/events/gameEvents")
 local gameModel = require("main/battle/gameModel")
 
 local function on_load_sahur(self)
-	print("loadsah")
 	sprite.play_flipbook("player#sprite", "sahur")
 	playerModel.loadSahurStats()
 	events.trigger(gameEvents.CHARACTER_LOADED)
@@ -18,24 +17,30 @@ local function on_load_patapim(self)
 end
 
 local function on_load_cappucino(self)
-	sprite.play_flipbook("player#sprite", "cappucino")
+	sprite.play_flipbook("player#sprite", "cappuccino")
 	playerModel.loadCappucinoStats()
 	events.trigger(gameEvents.CHARACTER_LOADED)
+end
+
+local function enemyEnter()
+	events.trigger(gameEvents.ENEMY_ENTER)
 end
 
 function init(self)
 	on_load_sahur(self)
 	gameModel.isGameOver = false
+	gameModel.enemyEntered = false
 	msg.post(".", "acquire_input_focus")
 	enemyModel.setHp(enemyModel.maxHp)
 	events.subscribe(gameEvents.LOAD_SAHUR, on_load_sahur,self)
 	events.subscribe(gameEvents.LOAD_PATAPIM, on_load_patapim,self)
 	events.subscribe(gameEvents.LOAD_CAPPUCINO, on_load_cappucino,self)
-	print("init")
-	--TODO ENEMY BETÖLTÉSE EGY BEUGRÓ ANIMMAL
+	enemyModel.loadEnemyModel("boneca")
+
+	print(enemyModel.startPos[1],enemyModel.enterPos[1])
+
 	timer.delay(0.5, false, function()
-		print("wee")
-		events.trigger(gameEvents.PLAY_SFX,"#boneca")
+		enemyEnter()
 	end)
 
 end

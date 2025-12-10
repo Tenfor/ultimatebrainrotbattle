@@ -11,7 +11,7 @@ local characters = {
 }
 
 local M = {
-	currentCharacter = characters.CAPPUCCINO,
+	currentCharacter = characters.SAHUR,
 	critPercent = 1,
 	critDmg = 1.5,
 	spd = 1,
@@ -118,21 +118,22 @@ end
 
 function M.loadSahurStats()
 	M.currentCharacter = characters.SAHUR
-	M.critPercent = 3
-	M.critDmg = 1.5
-	M.spd = upgradesModel.sahur.spd.lvl
-	M.minDmg = upgradesModel.sahur.str.values[upgradesModel.sahur.str.lvl][1]
-	M.maxDmg = upgradesModel.sahur.str.values[upgradesModel.sahur.str.lvl][2]
+	M.critPercent = upgradesModel.sahur.crit.values[upgradesModel.sahur.crit.lvl+1][1]
+	M.critDmg = upgradesModel.sahur.crit.values[upgradesModel.sahur.crit.lvl+1][2]
+	M.spd =  upgradesModel.sahur.spd.values[upgradesModel.sahur.spd.lvl + 1]
+	M.minDmg = upgradesModel.sahur.str.values[upgradesModel.sahur.str.lvl+1][1]
+	M.maxDmg = upgradesModel.sahur.str.values[upgradesModel.sahur.str.lvl+1][2]
 	M.mag = 1
-	M.hp = 20 + (upgradesModel.sahur.hp.lvl * 10)
-	M.maxHp = 10 + (upgradesModel.sahur.hp.lvl * 10)
+	M.maxHp = upgradesModel.sahur.hp.values[upgradesModel.sahur.hp.lvl + 1]
+	M.hp = M.maxHp
+	
 	M.attackType = attackType.MELEE
 	M.skills = {
-		{skillName = skills.LION_STRIKE, cd = 0, maxCd = 0, locked = upgradesModel.sahur.},
-		{skillName = skills.METEOR_SMASH, cd = 0, maxCd = 0},
-		{skillName = skills.ENRAGE, cd = 0, maxCd = 0},
-		{skillName = skills.SHIELD, cd = 0, maxCd = 0},
-		{skillName = skills.BERSERK, cd = 0, maxCd = 0},
+		{skillName = skills.LION_STRIKE, cd = 0, maxCd = 0, locked = upgradesModel.sahur.skill1.lvl == 0},
+		{skillName = skills.METEOR_SMASH, cd = 0, maxCd = 0, locked = upgradesModel.sahur.skill2.lvl == 0},
+		{skillName = skills.ENRAGE, cd = 0, maxCd = 0, locked = upgradesModel.sahur.skill3.lvl == 0},
+		{skillName = skills.SHIELD, cd = 0, maxCd = 0, locked = upgradesModel.sahur.skill4.lvl == 0},
+		{skillName = skills.BERSERK, cd = 0, maxCd = 0, locked = upgradesModel.sahur.skill5.lvl == 0},
 	}
 	M.globalCd = 0
 	M.buffs = {
@@ -143,7 +144,7 @@ function M.loadSahurStats()
 		DARK_PATAPIM = 0
 	}
 	M.resourceType = resourceType.RAGE
-	M.rage = 0
+	M.rage = upgradesModel.sahur.rage.values[upgradesModel.sahur.rage.lvl + 1]
 	M.maxRage = 100
 	M.mana = 0
 	M.maxMana = 0

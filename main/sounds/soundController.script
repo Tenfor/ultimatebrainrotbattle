@@ -22,16 +22,33 @@ local sounds = {
 	"#cast",
 	"#thunder",
 	"#powerup4",
+	"#powerup4",
 	"#laser",
+	"#laser4",
 	"#swordhit",
 	"#sahur_ulti",
 	"#boneca",
+	"#lirili",
+	"#dindin",
+	"#patapim",
+	"#cappuccino",
+	"#bombardiro",
+	"#whoosh",
 	"#whoosh3",
-	"#poof"
+	"#poof",
+	"#thud",
+	"#boing",
+	"#frigo",
+	"#wind",
+	"#coin_cling",
+	"#buy",
+	"#teleport",
+	"#dialogrev1",
+	"#dialogrev2",
+	"#dialogrev3"
 }
 
 local function onPlaySfx(self,sfxUrl)
-	print("onplaysfx")
 	local play_id = #self.sfxPlaying + 1
 	msg.post(sfxUrl,"play_sound",{play_id = play_id})
 	table.insert(self.sfxPlaying,play_id)
@@ -45,6 +62,18 @@ end
 
 local function onStopCast(self)
 	sound.stop("#cast")
+end
+
+local function onplayChat(self)
+	print("onplaycht")
+	local play_id = #self.sfxPlaying + 1
+	msg.post("#dialogrev3","play_sound",{play_id = play_id})
+	table.insert(self.sfxPlaying,play_id)
+end
+
+local function onStopChat(self)
+	print("onstopchat")
+	sound.stop("#dialogrev3")
 end
 
 
@@ -79,6 +108,8 @@ function init(self)
 	msg.post(".", "toggle_sounds")
 
 	events.subscribe(gameEvents.PLAY_SFX, onPlaySfx, self)
+	events.subscribe(gameEvents.PLAY_CHAT_SFX, onplayChat, self)
+	events.subscribe(gameEvents.STOP_CHAT_SFX, onStopChat, self)
 	events.subscribe(gameEvents.PLAY_CAST, onPlayCast, self)
 	events.subscribe(gameEvents.STOP_CAST, onStopCast, self)
 	events.subscribe(gameEvents.PLAY_MUSIC, onPlayMusic, self)
@@ -125,5 +156,7 @@ function final(self)
 	events.unsubscribe(gameEvents.STOP_MUSIC, onStopMusic, self)
 	events.unsubscribe(gameEvents.PLAY_CAST, onPlayCast, self)
 	events.unsubscribe(gameEvents.STOP_CAST, onStopCast, self)
+	events.unsubscribe(gameEvents.PLAY_CHAT_SFX, onplayChat, self)
+	events.unsubscribe(gameEvents.STOP_CHAT_SFX, onStopChat, self)
 	
 end

@@ -128,9 +128,15 @@ embedded_instances {
   "    w: 0.70710677\n"
   "  }\n"
   "}\n"
+  "embedded_components {\n"
+  "  id: \"enemyEffectFactory3\"\n"
+  "  type: \"factory\"\n"
+  "  data: \"prototype: \\\"/main/battle/effect3.go\\\"\\n"
+  "\"\n"
+  "}\n"
   ""
   position {
-    x: 830.0
+    x: 1530.0
     y: 276.0
   }
 }
@@ -230,6 +236,12 @@ embedded_instances {
   "    z: -0.70710677\n"
   "    w: 0.70710677\n"
   "  }\n"
+  "}\n"
+  "embedded_components {\n"
+  "  id: \"playerEffectFactory3\"\n"
+  "  type: \"factory\"\n"
+  "  data: \"prototype: \\\"/main/battle/effect3.go\\\"\\n"
+  "\"\n"
   "}\n"
   ""
   position {

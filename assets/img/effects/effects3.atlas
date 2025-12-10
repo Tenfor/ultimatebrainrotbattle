@@ -70,3 +70,26 @@ animations {
   }
   fps: 20
 }
+animations {
+  id: "wind"
+  images {
+    image: "/assets/img/effects/wind/wind00.png"
+  }
+  images {
+    image: "/assets/img/effects/wind/wind01.png"
+  }
+  images {
+    image: "/assets/img/effects/wind/wind02.png"
+  }
+  images {
+    image: "/assets/img/effects/wind/wind03.png"
+  }
+  images {
+    image: "/assets/img/effects/wind/wind04.png"
+  }
+  images {
+    image: "/assets/img/effects/wind/wind05.png"
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 15
+}

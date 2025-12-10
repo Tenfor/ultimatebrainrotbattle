@@ -6,8 +6,10 @@ local skills = require("main/battle/skills")
 local enemyModel = require("main/battle/enemyModel")
 local resourceType = require("main/battle/resourceType")
 local buffs = require("main/battle/buffs")
+local chats = require("main/battle/chats")
 local gameModel = require("main/battle/gameModel")
 local hitType = require("main/battle/hitType")
+local dtypewriter = require "dtypewriter.dtypewriter"
 
 local function truncate(num, decimals)
 	local mult = 10 ^ decimals
@@ -21,7 +23,6 @@ local function onPlayerDie(self)
 		events.trigger(gameEvents.LOAD_SCENE,"gameOver")
 		events.trigger(gameEvents.UNLOAD_SCENE,"main")
 	end)
-	
 end
 
 local function updateCds(self)
@@ -75,7 +76,6 @@ end
 
 local function finishEnemyCasting(self)
 	events.trigger(gameEvents.STOP_CAST)
-
 	gui.set_enabled(self.enemyCastNode,false)
 	events.trigger(gameEvents.ENEMY_FINISH_CASTING, self.enemyCastSkill)
 	self.enemyCastCountTarget = 0
@@ -114,11 +114,23 @@ local function updateEnemyCast(self, dt)
 end
 
 local function loadButtons(self)
-	gui.play_flipbook(self.skillBtn1Node, playerModel.skills[1].skillName)
-	gui.play_flipbook(self.skillBtn2Node,playerModel.skills[2].skillName)
-	gui.play_flipbook(self.skillBtn3Node,playerModel.skills[3].skillName)
-	gui.play_flipbook(self.skillBtn4Node,playerModel.skills[4].skillName)
-	gui.play_flipbook(self.skillBtn5Node,playerModel.skills[5].skillName)
+	self.buttonLocks = {
+		playerModel.skills[1].locked,
+		playerModel.skills[2].locked,
+		playerModel.skills[3].locked,
+		playerModel.skills[4].locked,
+		playerModel.skills[5].locked
+	}
+
+	for i = 1, 5 do
+		self["skillBtn"..i]:set_enabled(not self.buttonLocks[i])
+	end
+	
+	gui.play_flipbook(self.skillBtn1Node, self.buttonLocks[1] and "EMPTY" or playerModel.skills[1].skillName)
+	gui.play_flipbook(self.skillBtn2Node, self.buttonLocks[2] and "EMPTY" or playerModel.skills[2].skillName)
+	gui.play_flipbook(self.skillBtn3Node, self.buttonLocks[3] and "EMPTY" or playerModel.skills[3].skillName)
+	gui.play_flipbook(self.skillBtn4Node, self.buttonLocks[4] and "EMPTY" or playerModel.skills[4].skillName)
+	gui.play_flipbook(self.skillBtn5Node, self.buttonLocks[5] and "EMPTY" or playerModel.skills[5].skillName)
 end
 
 local function updateButtons(self)
@@ -137,12 +149,18 @@ local function updateButtons(self)
 		if resource < cost then 
 			color = disabledColor
 		end
+		if self.buttonLocks[i] then
+			color = enabledColor
+		end
 		gui.set_color(btnNode, color)
 	end
 end
 
-local function onFlashEffect(self)
+local function onFlashEffect(self,color)
 	print("onFlashEffect")
+	color["w"] = 0
+	gui.set_color(self.flashEffectNode, color)
+	
 	gui.animate(self.flashEffectNode, "color.w", 1, gui.EASING_LINEAR, 0.1, 0,function() 
 		gui.set(self.flashEffectNode, "color.w", 0)
 	end)
@@ -214,9 +232,9 @@ end
 
 local function onCharacterLoaded(self)
 	print("onCharacterLoaded")
+	loadButtons(self)
 	updatePlayerHpText(self)
 	updateResourceBar(self)
-	loadButtons(self)
 end
 
 local function onEnemyHurt(self,dmg)
@@ -224,6 +242,13 @@ local function onEnemyHurt(self,dmg)
 		enemyModel.setHp(enemyModel.hp-dmg.dmg)
 		gameModel.setDamageDone(gameModel.damageDone + dmg.dmg)
 		updateEnemyHpText(self)
+		if enemyModel.hp <= 0 then
+			events.trigger(gameEvents.ENEMY_DIE)
+			onInterruptPlayerCasting(self)
+			onInterruptEnemyCasting(self)
+			--gameModel.setIsGameOver(true)
+			gameModel.setEnemyEntered(false)
+		end
 	end
 end
 
@@ -238,8 +263,19 @@ local function onPlayerHurt(self,dmg)
 			onInterruptPlayerCasting(self)
 			onInterruptEnemyCasting(self)
 			gameModel.setIsGameOver(true)
+			gameModel.setEnemyEntered(false)
 		end
 	end
+end
+
+local function onPlayerHeal(self,amount)
+	if playerModel.hp+amount >= playerModel.maxHp then
+		playerModel.setHp(playerModel.maxHp)	
+	else
+		playerModel.setHp(playerModel.hp+amount)
+	end
+	
+	updatePlayerHpText(self)
 end
 
 local function onMenuBtn(self)
@@ -263,6 +299,8 @@ local function onSkillBtn(self, skillIndex)
 	and not playerModel.hasBuff(buffs.STUN)
 	and self.playerCastCountTarget == 0
 	and not gameModel.isGameOver
+	and not self.buttonLocks[skillIndex]
+	and gameModel.enemyEntered
 	then 
 		events.trigger(gameEvents.TRIGGER_SKILL,playerModel.skills[skillIndex].skillName)
 	else 
@@ -297,10 +335,59 @@ local function onPlayerHpMinusBtn(self)
 	events.trigger(gameEvents.PLAYER_HURT,{dmg=10, crit=false},hitType.VFX.NONE,hitType.SFX.NONE)
 end
 
+local function onEnemyHpMinusBtn(self)
+	events.trigger(gameEvents.ENEMY_HURT,{dmg=10, crit=false},hitType.VFX.NONE,hitType.SFX.NONE)
+end
+
+local function onEnemyHpMinusBtn2(self)
+	events.trigger(gameEvents.ENEMY_HURT,{dmg=500, crit=false},hitType.VFX.NONE,hitType.SFX.NONE)
+end
+
+
 local function initGui(self)
-	updatePlayerHpText(self)
-	updateResourceBar(self)
 	loadButtons(self)
+	updatePlayerHpText(self)
+	updateEnemyHpText(self)
+	updateResourceBar(self)
+end
+
+local function onEnemyEnter(self)
+	local castBarPos = vmath.vector4(830,453,0,0)
+	local chatBoxPos = vmath.vector4(830,529,0,0)
+	if(enemyModel.castBarPos) then
+		castBarPos.x = enemyModel.castBarPos[1]
+		castBarPos.y = enemyModel.castBarPos[2]
+		castBarPos.z = enemyModel.castBarPos[3]
+
+		chatBoxPos.x = enemyModel.castBarPos[1]
+	end
+	
+	gui.set_position(self.enemyCastNode,castBarPos)
+	gui.set_position(self.chatBoxNode,chatBoxPos)
+	updateEnemyHpText(self)
+end
+
+local function onStartChat(self,dialogName, dialogIndex)
+	if chats[dialogName] and chats[dialogName].seen == false then
+		local di = dialogIndex or 1 
+		local dialogs = chats[dialogName].en
+		if di <= #dialogs then 
+			events.trigger(gameEvents.PLAY_CHAT_SFX)
+			dtypewriter.clear()
+			dtypewriter.load(dialogs[di])
+			dtypewriter.start()
+			timer.delay(4, false, function() 
+				onStartChat(self, dialogName, di+1)
+			end)
+		else 
+			--events.trigger(gameEvents.play,"#dialogrev1")
+			dtypewriter.clear()
+			chats[dialogName].seen = true
+			events.trigger(gameEvents.END_CHAT,dialogName)
+		end
+	else
+		events.trigger(gameEvents.END_CHAT,dialogName)
+	end
 end
 
 function init(self)
@@ -314,6 +401,8 @@ function init(self)
 	self.allCritBtn = self.druid:new_button("allCritBtn", onAllCritBtn)
 	self.slowMoBtn = self.druid:new_button("slowMoBtn", onSlowMoBtn)
 	self.playerHpMinusBtn = self.druid:new_button("playerHpMinusBtn",onPlayerHpMinusBtn)
+	self.enemyHpMinusBtn = self.druid:new_button("enemyHpMinusBtn",onEnemyHpMinusBtn)
+	self.enemyHpMinusBtn2 = self.druid:new_button("enemyHpMinusBtn2",onEnemyHpMinusBtn2)
 
 	self.playerMod = ""
 
@@ -333,6 +422,7 @@ function init(self)
 	events.subscribe(gameEvents.CHARACTER_LOADED, onCharacterLoaded, self)
 	events.subscribe(gameEvents.ENEMY_HURT, onEnemyHurt, self)
 	events.subscribe(gameEvents.PLAYER_HURT, onPlayerHurt, self)
+	events.subscribe(gameEvents.PLAYER_HEAL, onPlayerHeal, self)
 	events.subscribe(gameEvents.ADD_RAGE, onAddRage,self)
 	events.subscribe(gameEvents.ADD_CP, onAddCp,self)
 	events.subscribe(gameEvents.PAY_RESOURCE_COST, updateResourceBar,self)
@@ -342,6 +432,9 @@ function init(self)
 	events.subscribe(gameEvents.INTERRUPT_ENEMY_CASTING, onInterruptEnemyCasting, self)
 	events.subscribe(gameEvents.FLASH_EFFECT, onFlashEffect, self)
 	events.subscribe(gameEvents.PLAYER_DIE, onPlayerDie, self)
+	events.subscribe(gameEvents.ENEMY_ENTER, onEnemyEnter, self)
+	events.subscribe(gameEvents.START_CHAT, onStartChat, self)
+	
 
 	self.playerHpBar = self.druid:new_progress("playerHpBar", "x")
 	self.playerHpBar:set_to(1)
@@ -364,6 +457,8 @@ function init(self)
 	self.playerCastBar = self.druid:new_progress("playerCastBar", "x")
 	self.playerCastNode = gui.get_node("playerCast")
 
+	self.chatBoxNode = gui.get_node("chatBox")
+
 	self.enemyCastBar = self.druid:new_progress("enemyCastBar", "x")
 	self.enemyCastNode = gui.get_node("enemyCast")
 
@@ -373,8 +468,7 @@ function init(self)
 	self.enemyCastCountTarget = 0
 	self.enemyCastCount = 0
 
-	loadButtons(self)
-	updateResourceBar(self)
+	dtypewriter.init("chatBox", "game", -400, 0, 800, 100, 1,"")
 
 	initGui(self)
 end
@@ -385,6 +479,7 @@ function final(self)
 	events.unsubscribe(gameEvents.CHARACTER_LOADED, onCharacterLoaded, self)
 	events.unsubscribe(gameEvents.ENEMY_HURT, onEnemyHurt, self)
 	events.unsubscribe(gameEvents.PLAYER_HURT, onPlayerHurt, self)
+	events.unsubscribe(gameEvents.PLAYER_HEAL, onPlayerHeal, self)
 	events.unsubscribe(gameEvents.ADD_RAGE, onAddRage,self)
 	events.unsubscribe(gameEvents.PAY_RESOURCE_COST, updateResourceBar,self)
 	events.unsubscribe(gameEvents.SET_PLAYER_MOD, onSetPlayerMod,self)
@@ -394,6 +489,8 @@ function final(self)
 	events.unsubscribe(gameEvents.INTERRUPT_ENEMY_CASTING, onInterruptEnemyCasting, self)
 	events.unsubscribe(gameEvents.FLASH_EFFECT, onFlashEffect, self)
 	events.unsubscribe(gameEvents.PLAYER_DIE, onPlayerDie, self)
+	events.unsubscribe(gameEvents.ENEMY_ENTER, onEnemyEnter, self)
+	events.unsubscribe(gameEvents.START_CHAT, onStartChat, self)
 end
 
 function update(self, dt)
@@ -407,6 +504,9 @@ end
 
 function on_message(self, message_id, message, sender)
 	self.druid:on_message(message_id, message, sender)
+	if message_id == hash("complete") then
+		events.trigger(gameEvents.STOP_CHAT_SFX)
+	end
 end
 
 function on_input(self, action_id, action)

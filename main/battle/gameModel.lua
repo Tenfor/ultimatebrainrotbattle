@@ -1,9 +1,14 @@
 local M = {
 	isGameOver = false,
+	enemyEntered = false,
 	damageDone = 0,
 	damageTaken = 0,
 	enemiesDefeated = 0,
 }
+
+function M.setEnemyEntered(val)
+	M.enemyEntered = val
+end
 
 function M.setIsGameOver(val)
 	M.isGameOver = val
@@ -25,6 +30,7 @@ function M.reset()
 	M.isGameOver = false;
 	M.damageDone = 0;
 	M.damageTaken = 0;
+	M.enemiesDefeated = 0;
 end
 
 return M

@@ -35,6 +35,9 @@ local function onEnrage(self)
 	go.animate("#sprite", "tint", go.PLAYBACK_ONCE_PINGPONG, vmath.vector4(1,0.2,0,2,0.5), go.EASING_LINEAR, 0.2)
 end
 
+local function onPlayerHeal(self,dmg)
+end
+
 local function onPlayerHurt(self,dmg, vfxType, sfxType)
 	--sprite.play_flipbook("hit_effect#sprite", "hit")
 	local pos = go.get_position()
@@ -82,18 +85,23 @@ local function onShootProjectile(self,projectileUrl,x,y,rot,scale,flip)
 	scale)
 end
 
-local function onPlayEffect(self,effectUrl,x, y, rot,scale, flip)
+local function onPlayEffect(self, effectUrl, x, y, rot,scale, flip, lifespan, alphaIn,scaleY)
 	local xOffset = x or 0
 	local yOffset = y or 0
+	local duration = lifespan or 0
+	local alphaDur = alphaIn or 0
 
 	local rotation = rot and vmath.quat_rotation_z(math.rad(rot)) or vmath.quat()
 	local pos = go.get_position("#root")
 	pos.x = pos.x + xOffset
 	pos.y = pos.y + yOffset
 	local scale = scale or 1
+	local scale = scale or 1
+	local scaleY = scaleY or scale
 	local factoryName = "#playerEffectFactory"..effectFactoryFinder.getFactoryPostFix(effectUrl)
 	factory.create(factoryName, pos, rotation, 
-	{animName=hash(effectUrl),xOffset = xOffset, yOffset = yOffset, target=hash("player"), flip=flip}, 
+	{animName=hash(effectUrl),xOffset = xOffset, yOffset = yOffset, target=hash("player"), flip=flip, alphaIn = alphaDur, 
+	lifespan = duration, scaleY = scaleY}, 
 	scale)
 end
 
@@ -217,6 +225,7 @@ function init(self)
 	events.subscribe(gameEvents.PLAYER_START_CASTING,onStartCasting,self)
 	events.subscribe(gameEvents.PLAYER_FINISH_CASTING,onFinishCasting,self)
 	events.subscribe(gameEvents.PLAYER_HURT, onPlayerHurt,self)
+	events.subscribe(gameEvents.PLAYER_HEAL, onPlayerHeal,self)
 	events.subscribe(gameEvents.TRIGGER_SKILL, onSkillTrigger, self)
 	events.subscribe(gameEvents.PLAY_EFFECT_ON_PLAYER, onPlayEffect,self)
 	events.subscribe(gameEvents.PLAYER_SHOOT_PROJECTILE,onShootProjectile, self)
@@ -227,8 +236,9 @@ end
 
 function final(self)
 	events.unsubscribe(gameEvents.PLAYER_START_CASTING,onStartCasting,self)
-	events.subscribe(gameEvents.PLAYER_FINISH_CASTING,onFinishCasting,self)
+	events.unsubscribe(gameEvents.PLAYER_FINISH_CASTING,onFinishCasting,self)
 	events.unsubscribe(gameEvents.PLAYER_HURT, onPlayerHurt,self)
+	events.unsubscribe(gameEvents.PLAYER_HEAL, onPlayerHeal,self)
 	events.unsubscribe(gameEvents.TRIGGER_SKILL, onSkillTrigger, self)
 	events.unsubscribe(gameEvents.PLAY_EFFECT_ON_PLAYER, onPlayEffect,self)
 	events.unsubscribe(gameEvents.PLAYER_SHOOT_PROJECTILE,onShootProjectile, self)
@@ -246,15 +256,15 @@ function update(self, dt)
 	if playerModel.hasBuff(buffs.FROST) then 
 		extra = extra / 3
 	end
-	if(playerModel.attackType == attackType.MELEE) and not playerModel.hasBuff(buffs.STUN) and not gameModel.isGameOver then
+	if(playerModel.attackType == attackType.MELEE) and not playerModel.hasBuff(buffs.STUN) and not gameModel.isGameOver and gameModel.enemyEntered then
 		self.counter = self.counter + (dt*playerModel.spd) * extra
 	end
 	if self.counter >= 3 then
 		attack(self)
-		--local time = os.date("*t")
-		--print(string.format("Most: %04d-%02d-%02d %02d:%02d:%02d",
-		--time.year, time.month, time.day,
-		--time.hour, time.min, time.sec))
+		local time = os.date("*t")
+		print(string.format("Most: %04d-%02d-%02d %02d:%02d:%02d",
+		time.year, time.month, time.day,
+		time.hour, time.min, time.sec))
 		self.counter = 0
 	end
 	-- Add update code here

@@ -1015,5 +1015,78 @@ nodes {
   parent: "playerHpMinusBtn"
   inherit_alpha: true
 }
+nodes {
+  position {
+    x: 884.0
+    y: 671.0
+  }
+  scale {
+    x: 0.3
+    y: 0.4
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "enemyHpMinusBtn"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "-10"
+  font: "game"
+  id: "enemyHpMinusText"
+  parent: "enemyHpMinusBtn"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 884.0
+    y: 607.0
+  }
+  scale {
+    x: 0.3
+    y: 0.4
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "enemyHpMinusBtn2"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "-500"
+  font: "game"
+  id: "enemyHpMinusText1"
+  parent: "enemyHpMinusBtn2"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 830.0
+    y: 529.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "chatBox"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT

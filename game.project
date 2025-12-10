@@ -25,6 +25,7 @@ title = Ultimate Brainrot Battle
 dependencies#0 = https://github.com/Insality/druid/archive/refs/tags/1.1.5.zip
 dependencies#1 = https://github.com/Insality/defold-event/archive/refs/tags/12.zip
 dependencies#2 = https://github.com/Insality/defold-tweener/archive/refs/tags/5.zip
+dependencies#3 = https://github.com/whiteboxdev/library-defold-typewriter/archive/main.zip
 
 [graphics]
 default_texture_min_filter = linear_mipmap_linear
@@ -32,4 +33,7 @@ default_texture_min_filter = linear_mipmap_linear
 [engine]
 fixed_update_frequency = 30
 max_time_step = 0.33
+
+[sound]
+max_component_count = 64
 

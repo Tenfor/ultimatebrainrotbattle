@@ -2,40 +2,110 @@ local druid = require("druid.druid")
 local events = require("event.events")
 local gameEvents = require("main/events/gameEvents")
 local gameModel = require("main/battle/gameModel")
+local enemyModel = require("main/battle/enemyModel")
 local upgradesModel = require("main/upgrades/upgradesModel")
+local dtypewriter = require "dtypewriter.dtypewriter"
 
 local function setUpTexts(self)
-	print(gameModel.damageDone,gameModel.damageTaken)
-	local dmgDealt = math.floor(gameModel.damageDone/5)
-	local dmgTaken = math.floor(gameModel.damageTaken/10)
-	local enemiesDefeated = gameModel.enemiesDefeated * 100
-	local total = dmgDealt+dmgTaken+enemiesDefeated
+	local dmgDealt = math.floor(gameModel.damageDone/3)
+	local dmgTaken = math.floor(gameModel.damageTaken/5)
+	local enemiesDefeated = gameModel.enemiesDefeated * 20
+	local incomeBonus = upgradesModel.sahur.income.values[upgradesModel.sahur.income.lvl+1]
+	local total = math.floor((dmgDealt+dmgTaken+enemiesDefeated) * incomeBonus)
 	upgradesModel.setGold(upgradesModel.gold + total)
 	gui.set_text(self.dmgDoneTextNode,"Damage Done: "..tostring(dmgDealt).." Gold")
 	gui.set_text(self.dmgTakenTextNode,"Damage Taken: "..tostring(dmgTaken).." Gold")
-	gui.set_text(self.enemyTextNode,"enemiesDefeated: "..tostring(enemiesDefeated).." Gold")
+	gui.set_text(self.enemyTextNode,"Enemies Defeated: "..tostring(enemiesDefeated).." Gold")
+	gui.set_text(self.incomeTextNode, "Income Bonus: "..tostring(incomeBonus).."X" )
 	gui.set_text(self.totalTextNode, "Total: "..tostring(total).." Gold")
 
+	gui.play_flipbook(self.enemyNode, enemyModel.sprite)
+
 	--TODO: SAVE HERE
+end
+
+local function showTexts(self)
+	self.timer0 = timer.delay(.5, false, function() 
+		local mockIndex = math.random(1,3)
+		events.trigger(gameEvents.PLAY_CHAT_SFX)
+
+		dtypewriter.load(enemyModel.mocks[mockIndex])
+		dtypewriter.start()
+	end)
 	
+	self.timer1 = timer.delay(1, false, function() 
+		gui.set_enabled(self.continueBtnNode, true)
+		gui.set_visible(self.dmgDoneTextNode, true)
+		events.trigger(gameEvents.PLAY_SFX,"#coin_cling")
+	end)
+	self.timer2 = timer.delay(1.8, false, function() 
+		gui.set_visible(self.dmgTakenTextNode, true)
+		events.trigger(gameEvents.PLAY_SFX,"#coin_cling")
+	end)
+	self.timer3 = timer.delay(2.6, false, function() 
+		gui.set_visible(self.enemyTextNode, true)
+		events.trigger(gameEvents.PLAY_SFX,"#coin_cling")
+	end)
+	self.timer4 = timer.delay(3.4, false, function() 
+		gui.set_visible(self.incomeTextNode, true)
+		events.trigger(gameEvents.PLAY_SFX,"#coin_cling")
+	end)
+	self.timer5 = timer.delay(4.2, false, function() 
+		gui.set_visible(self.totalTextNode, true)
+		events.trigger(gameEvents.PLAY_SFX,"#coin_cling")
+		self.textShowDone = true
+	end)
+end
+
+local function skipTexts(self)
+	self.textShowDone = true
+
+	timer.cancel(self.timer0)
+	timer.cancel(self.timer1)
+	timer.cancel(self.timer2)
+	timer.cancel(self.timer3)
+	timer.cancel(self.timer4)
+	timer.cancel(self.timer5)
+
+	gui.set_visible(self.dmgDoneTextNode, true)
+	gui.set_visible(self.dmgTakenTextNode, true)
+	gui.set_visible(self.enemyTextNode, true)
+	gui.set_visible(self.incomeTextNode, true)
+	gui.set_visible(self.totalTextNode, true)
+
+	events.trigger(gameEvents.PLAY_SFX,"#coin_cling")
+
+	dtypewriter.skip()
 end
 
 local function onContinueBtn(self)
-	events.trigger(gameEvents.LOAD_SCENE,"upgrades")
-	events.trigger(gameEvents.UNLOAD_SCENE,"gameOver")
+	if self.textShowDone then 		
+		events.trigger(gameEvents.LOAD_SCENE,"upgrades")
+		events.trigger(gameEvents.UNLOAD_SCENE,"gameOver")
+		dtypewriter.clear()
+	else
+		skipTexts(self)
+	end
 end
 
 function init(self)
 	self.druid = druid.new(self)
+	dtypewriter.init("chatBox", "game", -400, 0, 800, 100, 1,"")
 	self.dmgDoneTextNode = gui.get_node("dmgDoneText")
 	self.dmgTakenTextNode = gui.get_node("dmgTakenText")
 	self.enemyTextNode = gui.get_node("enemyText")
 	self.incomeTextNode = gui.get_node("incomeBonusText")
 	self.totalTextNode = gui.get_node("totalText")
 
+	self.enemyNode = gui.get_node("character")
 	self.continueBtn = self.druid:new_button("continueBtn", onContinueBtn)
+	self.continueBtnNode = gui.get_node("continueBtn")
+
+	self.textShowDone = false
 
 	setUpTexts(self)
+
+	showTexts(self)
 end
 
 function final(self)
@@ -48,6 +118,10 @@ end
 
 function on_message(self, message_id, message, sender)
 	self.druid:on_message(message_id, message, sender)
+
+	if message_id == hash("complete") then
+		events.trigger(gameEvents.STOP_CHAT_SFX)
+	end
 end
 
 function on_input(self, action_id, action)

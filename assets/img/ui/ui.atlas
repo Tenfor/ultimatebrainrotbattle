@@ -85,4 +85,37 @@ images {
 images {
   image: "/assets/img/skillIcons/DARK_PATAPIM.png"
 }
+images {
+  image: "/assets/img/ui/textTable.png"
+}
+images {
+  image: "/assets/img/ui/table.png"
+}
+images {
+  image: "/assets/img/ui/window.png"
+}
+images {
+  image: "/assets/img/skillIcons/spd.png"
+}
+images {
+  image: "/assets/img/skillIcons/str.png"
+}
+images {
+  image: "/assets/img/skillIcons/crit.png"
+}
+images {
+  image: "/assets/img/skillIcons/income.png"
+}
+images {
+  image: "/assets/img/skillIcons/mana.png"
+}
+images {
+  image: "/assets/img/skillIcons/rage.png"
+}
+images {
+  image: "/assets/img/skillIcons/hp.png"
+}
+images {
+  image: "/assets/img/ui/window2.png"
+}
 extrude_borders: 2

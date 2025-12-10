@@ -24,6 +24,15 @@ local function onImpact(self)
 		if self.animName == hash("frost_bolt") then
 			battleController.frost_bolt_impact(self.enemyCasted)
 		end
+		if self.animName == hash("shot") then
+			battleController.shot_impact(self.enemyCasted)
+		end
+		if self.animName == hash("rocket") then
+			battleController.rocket_impact(self.enemyCasted)
+		end
+		if self.animName == hash("rocket2") then
+			battleController.rocket_big_impact(self.enemyCasted)
+		end
 	else
 		events.trigger(gameEvents.PLAY_SFX,"#swordhit")
 	end

@@ -8,7 +8,7 @@ images {
   image: "/assets/img/characters/lirili.png"
 }
 images {
-  image: "/assets/img/characters/bombardino.png"
+  image: "/assets/img/characters/bombardiro.png"
 }
 images {
   image: "/assets/img/characters/boneca.png"
@@ -17,7 +17,7 @@ images {
   image: "/assets/img/characters/patapim.png"
 }
 images {
-  image: "/assets/img/characters/cappucino.png"
+  image: "/assets/img/characters/cappuccino.png"
 }
 images {
   image: "/assets/img/characters/dindin.png"
@@ -36,5 +36,8 @@ images {
 }
 images {
   image: "/assets/img/characters/kerek.png"
+}
+images {
+  image: "/assets/img/characters/superdindin.png"
 }
 extrude_borders: 2

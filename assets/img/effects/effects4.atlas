@@ -1,0 +1,86 @@
+images {
+  image: "/assets/img/effects/shot/shotBase.png"
+}
+animations {
+  id: "fire_punch"
+  images {
+    image: "/assets/img/effects/firepunch/firepunch (4).png"
+  }
+  images {
+    image: "/assets/img/effects/firepunch/firepunch (6).png"
+  }
+  images {
+    image: "/assets/img/effects/firepunch/firepunch (8).png"
+  }
+  images {
+    image: "/assets/img/effects/firepunch/firepunch (10).png"
+  }
+  images {
+    image: "/assets/img/effects/firepunch/firepunch (12).png"
+  }
+  images {
+    image: "/assets/img/effects/firepunch/firepunch (14).png"
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 40
+}
+animations {
+  id: "kame_hame"
+  images {
+    image: "/assets/img/effects/kamehame/kamehame0.png"
+  }
+  images {
+    image: "/assets/img/effects/kamehame/kamehame1.png"
+  }
+  images {
+    image: "/assets/img/effects/kamehame/kamehame2.png"
+  }
+  images {
+    image: "/assets/img/effects/kamehame/kamehame3.png"
+  }
+  images {
+    image: "/assets/img/effects/kamehame/kamehame4.png"
+  }
+  images {
+    image: "/assets/img/effects/kamehame/kamehame5.png"
+  }
+  images {
+    image: "/assets/img/effects/kamehame/kamehame6.png"
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 15
+}
+animations {
+  id: "explosion_big"
+  images {
+    image: "/assets/img/effects/explosion_big/explosion_big00.png"
+  }
+  images {
+    image: "/assets/img/effects/explosion_big/explosion_big01.png"
+  }
+  images {
+    image: "/assets/img/effects/explosion_big/explosion_big02.png"
+  }
+  images {
+    image: "/assets/img/effects/explosion_big/explosion_big04.png"
+  }
+  images {
+    image: "/assets/img/effects/explosion_big/explosion_big05.png"
+  }
+  images {
+    image: "/assets/img/effects/explosion_big/explosion_big06.png"
+  }
+  images {
+    image: "/assets/img/effects/explosion_big/explosion_big07.png"
+  }
+  images {
+    image: "/assets/img/effects/explosion_big/explosion_big08.png"
+  }
+  images {
+    image: "/assets/img/effects/explosion_big/explosion_big09.png"
+  }
+  images {
+    image: "/assets/img/effects/explosion_big/explosion_big10.png"
+  }
+  fps: 20
+}

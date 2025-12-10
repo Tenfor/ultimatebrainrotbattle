@@ -16,15 +16,24 @@ local function setInfo(self,name)
 	if infoObj ~= nil then 
 		gui.set_text(self.titleNode, infoObj.title)
 		gui.set_text(self.descNode, infoObj.description)
-		gui.set_text(self.priceNode,infoObj.prices[infoObj.lvl])
-		gui.set_text(self.lvlNode,  "Level: "..(infoObj.lvl-1).."/"..#infoObj.prices)
+	
+		
+		if infoObj.lvl >= #infoObj.prices then
+			gui.set_text(self.lvlNode,  "Max Level")
+			if gui.is_enabled(self.buyBtnNode) then 
+				gui.set_enabled(self.buyBtnNode, false)
+			end
+		else
+			if not gui.is_enabled(self.buyBtnNode) then 
+				gui.set_enabled(self.buyBtnNode, true)
+			end
+			gui.set_text(self.priceNode,infoObj.prices[infoObj.lvl+1])
+			gui.set_text(self.lvlNode,  "Level: "..(infoObj.lvl).."/"..#infoObj.prices)
+		end
 	end
 end
 
 local function onUpgradeSelect(self,name)
-	if not gui.is_enabled(self.buyBtnNode) then 
-		gui.set_enabled(self.buyBtnNode, true)
-	end
 	self.selectedUpgrade = name
 	setInfo(self,name)
 end
@@ -34,9 +43,33 @@ local function onContinueBtn(self)
 	events.trigger(gameEvents.UNLOAD_SCENE,"upgrades")
 end
 
-local function onBuyBtn(self)
-	print("buy"..self.selectedUpgrade)
+local function updateTexts(self)
+	for i = 1, 6 do
+		local stat = upgradesModel[playerModel.currentCharacter].listedStats[i]
+		local lvl = upgradesModel[playerModel.currentCharacter][stat].lvl
+		local maxLvl = #upgradesModel[playerModel.currentCharacter][stat].prices
+		gui.set_text(self["stat"..i.."Lvl"], lvl.."/"..maxLvl)
+		if lvl == maxLvl or upgradesModel.gold >= upgradesModel[playerModel.currentCharacter][stat].prices[lvl+1] then
+			gui.set_color(self["stat"..i.."Node"], vmath.vector4(1,1,1,1))
+		else
+			gui.set_color(self["stat"..i.."Node"], vmath.vector4(0.2,0.2,0.2,1))
+		end
+	end
 
+	gui.set_text(self.goldTextNode, "Gold: "..upgradesModel.gold)
+
+	for i = 1, 5 do
+		local lvl = upgradesModel[playerModel.currentCharacter]["skill"..i].lvl
+		gui.set_text(self["skill"..i.."Lvl"], lvl.."/"..1)
+		if upgradesModel.gold >= upgradesModel[playerModel.currentCharacter]["skill"..i].prices[1] or lvl == 1 then
+			gui.set_color(self["skill"..i.."Node"], vmath.vector4(1,1,1,1))
+		else
+			gui.set_color(self["skill"..i.."Node"], vmath.vector4(0.2,0.2,0.2,1))
+		end
+	end
+end
+
+local function onBuyBtn(self)
 	local infoObj = upgradesModel.sahur[self.selectedUpgrade]
 
 	if playerModel.currentCharacter == "patapim" then
@@ -46,27 +79,45 @@ local function onBuyBtn(self)
 	end
 
 	if infoObj ~= nil then 
-		if upgradesModel.gold >= infoObj.prices[infoObj.lvl] then
-			upgradesModel.gold = upgradesModel.gold - infoObj.prices[infoObj.lvl]
+		if upgradesModel.gold >= infoObj.prices[infoObj.lvl+1] then
+			upgradesModel.gold = upgradesModel.gold - infoObj.prices[infoObj.lvl+1]
 			infoObj.lvl = infoObj.lvl + 1
+			events.trigger(gameEvents.PLAY_SFX,"#buy")
 			setInfo(self, self.selectedUpgrade)
-			gui.set_text(self.goldTextNode, "Gold: "..upgradesModel.gold)
+			updateTexts(self)
 		else
-			print("not enough gold")
+			events.trigger(gameEvents.PLAY_SFX,"#buttonlocked")
 		end
 	end
 end
 
+local function onAddGoldBtn(self)
+	upgradesModel.setGold(upgradesModel.gold + 1000)
+	updateTexts(self)
+end
+
 function init(self)
 	self.druid = druid.new(self)
-	self.strBtn = self.druid:new_button("strBtn", onUpgradeSelect, "str")
-	self.speedBtn = self.druid:new_button("spdBtn", onUpgradeSelect, "spd")
-	self.hpBtn = self.druid:new_button("hpBtn", onUpgradeSelect, "hp")
-	self.critBtn = self.druid:new_button("critBtn", onUpgradeSelect, "crit")
-	self.rageBtn = self.druid:new_button("rageBtn", onUpgradeSelect, "rage")
-	self.incomeBtn = self.druid:new_button("incomeBtn", onUpgradeSelect, "income")
-	self.buyBtn = self.druid:new_button("buyBtn", onBuyBtn)
+	print(playerModel.currentCharacter)
+	print(upgradesModel[playerModel.currentCharacter])
+	for i = 1, 6 do
+		local stat = upgradesModel[playerModel.currentCharacter].listedStats[i]
+		self["stat"..i.."Btn"] = self.druid:new_button("stat"..i.."Btn", onUpgradeSelect, stat)
+		self["stat"..i.."Lvl"] = gui.get_node("stat"..i.."Lvl")
+		self["stat"..i.."Node"] = gui.get_node("stat"..i.."Btn")
+		gui.play_flipbook(self["stat"..i.."Node"], stat)
+	end
 
+	for i = 1, 5 do
+		local sprite = upgradesModel[playerModel.currentCharacter]["skill"..i].sprite
+		self["skill"..i.."Btn"] = self.druid:new_button("skill"..i.."Btn", onUpgradeSelect, "skill"..i)
+		self["skill"..i.."Lvl"] = gui.get_node("skill"..i.."Lvl")
+		self["skill"..i.."Node"] = gui.get_node("skill"..i.."Btn")
+		gui.play_flipbook(gui.get_node("skill"..i.."Btn"), sprite)
+	end
+	
+	self.buyBtn = self.druid:new_button("buyBtn", onBuyBtn)
+	self.addGoldBtn = self.druid:new_button("addGold", onAddGoldBtn)
 	self.buyBtnNode = gui.get_node("buyBtn")
 
 	self.continueBtn = self.druid:new_button("continueBtn", onContinueBtn)
@@ -76,8 +127,9 @@ function init(self)
 	self.descNode = gui.get_node("desc")
 	self.priceNode = gui.get_node("price")
 	self.goldTextNode = gui.get_node("goldText")
-
-	gui.set_text(self.goldTextNode, "Gold: "..upgradesModel.gold)
+	
+	--createBoxes(self)
+	updateTexts(self)
 end
 
 function final(self)
