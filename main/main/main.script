@@ -27,7 +27,14 @@ local function enemyEnter()
 end
 
 function init(self)
-	on_load_sahur(self)
+	if playerModel.currentCharacter == "sahur" then
+		on_load_sahur(self)
+	elseif playerModel.currentCharacter == "patapim" then
+		on_load_patapim(self)
+	elseif playerModel.currentCharacter == "cappuccino" then
+		on_load_cappucino(self)
+	end
+	
 	gameModel.isGameOver = false
 	gameModel.enemyEntered = false
 	msg.post(".", "acquire_input_focus")
@@ -39,10 +46,14 @@ function init(self)
 
 	print(enemyModel.startPos[1],enemyModel.enterPos[1])
 
+	--events.trigger(gameEvents.STOP_MUSIC,"#menuMusic")
+	events.trigger(gameEvents.PLAY_MUSIC,"#battleMusic")
+
+	events.trigger(gameEvents.RESUME)
+
 	timer.delay(0.5, false, function()
 		enemyEnter()
 	end)
-
 end
 
 function final(self)
@@ -73,11 +84,7 @@ function on_message(self, message_id, message, sender)
 end
 
 function on_input(self, action_id, action)
-	if action_id == hash("slowmo") then
-		if action.pressed then
-			events.trigger(gameEvents.SLOW_MOTION,"main")
-		end
-	end
+	
 end
 
 function on_reload(self)

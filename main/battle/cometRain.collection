@@ -1,0 +1,266 @@
+name: "cometRain"
+scale_along_z: 0
+embedded_instances {
+  id: "cometRain"
+  children: "comet1"
+  children: "comet2"
+  children: "comet3"
+  children: "comet4"
+  data: "components {\n"
+  "  id: \"cometRain\"\n"
+  "  component: \"/main/battle/cometRain.script\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "comet1"
+  children: "meteor"
+  data: "embedded_components {\n"
+  "  id: \"sprite\"\n"
+  "  type: \"sprite\"\n"
+  "  data: \"default_animation: \\\"fire_punch\\\"\\n"
+  "material: \\\"/builtins/materials/sprite.material\\\"\\n"
+  "size {\\n"
+  "  x: 420.0\\n"
+  "  y: 250.0\\n"
+  "}\\n"
+  "textures {\\n"
+  "  sampler: \\\"texture_sampler\\\"\\n"
+  "  texture: \\\"/assets/img/effects/effects4.atlas\\\"\\n"
+  "}\\n"
+  "\"\n"
+  "  position {\n"
+  "    z: 0.3\n"
+  "  }\n"
+  "  scale {\n"
+  "    y: 1.5\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 530.0
+    y: 988.0
+  }
+  rotation {
+    z: 0.8580391
+    w: 0.5135844
+  }
+  scale3 {
+    x: 0.6
+    y: 0.6
+  }
+}
+embedded_instances {
+  id: "comet2"
+  children: "meteor1"
+  data: "embedded_components {\n"
+  "  id: \"sprite\"\n"
+  "  type: \"sprite\"\n"
+  "  data: \"default_animation: \\\"fire_punch\\\"\\n"
+  "material: \\\"/builtins/materials/sprite.material\\\"\\n"
+  "size {\\n"
+  "  x: 420.0\\n"
+  "  y: 250.0\\n"
+  "}\\n"
+  "textures {\\n"
+  "  sampler: \\\"texture_sampler\\\"\\n"
+  "  texture: \\\"/assets/img/effects/effects4.atlas\\\"\\n"
+  "}\\n"
+  "\"\n"
+  "  position {\n"
+  "    z: 0.3\n"
+  "  }\n"
+  "  scale {\n"
+  "    y: 1.5\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 1575.0
+    y: 962.0
+  }
+  rotation {
+    z: 0.46527866
+    w: 0.88516426
+  }
+  scale3 {
+    x: 0.65
+    y: 0.65
+  }
+}
+embedded_instances {
+  id: "comet4"
+  children: "meteor2"
+  data: "embedded_components {\n"
+  "  id: \"sprite\"\n"
+  "  type: \"sprite\"\n"
+  "  data: \"default_animation: \\\"fire_punch\\\"\\n"
+  "material: \\\"/builtins/materials/sprite.material\\\"\\n"
+  "size {\\n"
+  "  x: 420.0\\n"
+  "  y: 250.0\\n"
+  "}\\n"
+  "textures {\\n"
+  "  sampler: \\\"texture_sampler\\\"\\n"
+  "  texture: \\\"/assets/img/effects/effects4.atlas\\\"\\n"
+  "}\\n"
+  "\"\n"
+  "  position {\n"
+  "    z: 0.3\n"
+  "  }\n"
+  "  scale {\n"
+  "    y: 1.5\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 1023.0
+    y: 988.0
+  }
+  rotation {
+    z: 0.70710677
+    w: 0.70710677
+  }
+}
+embedded_instances {
+  id: "comet3"
+  children: "meteor3"
+  data: "embedded_components {\n"
+  "  id: \"sprite\"\n"
+  "  type: \"sprite\"\n"
+  "  data: \"default_animation: \\\"fire_punch\\\"\\n"
+  "material: \\\"/builtins/materials/sprite.material\\\"\\n"
+  "size {\\n"
+  "  x: 420.0\\n"
+  "  y: 250.0\\n"
+  "}\\n"
+  "textures {\\n"
+  "  sampler: \\\"texture_sampler\\\"\\n"
+  "  texture: \\\"/assets/img/effects/effects4.atlas\\\"\\n"
+  "}\\n"
+  "\"\n"
+  "  position {\n"
+  "    z: 0.3\n"
+  "  }\n"
+  "  scale {\n"
+  "    y: 1.5\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 713.0
+    y: 978.0
+  }
+  rotation {
+    z: 0.86419094
+    w: 0.5031641
+  }
+  scale3 {
+    x: 0.5
+    y: 0.5
+  }
+}
+embedded_instances {
+  id: "meteor"
+  data: "components {\n"
+  "  id: \"comet1\"\n"
+  "  component: \"/main/battle/comet.script\"\n"
+  "}\n"
+  "embedded_components {\n"
+  "  id: \"sprite\"\n"
+  "  type: \"sprite\"\n"
+  "  data: \"default_animation: \\\"comet1\\\"\\n"
+  "material: \\\"/builtins/materials/sprite.material\\\"\\n"
+  "size {\\n"
+  "  x: 240.0\\n"
+  "  y: 240.0\\n"
+  "}\\n"
+  "textures {\\n"
+  "  sampler: \\\"texture_sampler\\\"\\n"
+  "  texture: \\\"/assets/img/effects/effects4.atlas\\\"\\n"
+  "}\\n"
+  "\"\n"
+  "  position {\n"
+  "    z: 0.2\n"
+  "  }\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "meteor1"
+  data: "components {\n"
+  "  id: \"comet1\"\n"
+  "  component: \"/main/battle/comet.script\"\n"
+  "}\n"
+  "embedded_components {\n"
+  "  id: \"sprite\"\n"
+  "  type: \"sprite\"\n"
+  "  data: \"default_animation: \\\"comet1\\\"\\n"
+  "material: \\\"/builtins/materials/sprite.material\\\"\\n"
+  "size {\\n"
+  "  x: 240.0\\n"
+  "  y: 240.0\\n"
+  "}\\n"
+  "textures {\\n"
+  "  sampler: \\\"texture_sampler\\\"\\n"
+  "  texture: \\\"/assets/img/effects/effects4.atlas\\\"\\n"
+  "}\\n"
+  "\"\n"
+  "  position {\n"
+  "    z: 0.2\n"
+  "  }\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "meteor2"
+  data: "components {\n"
+  "  id: \"comet1\"\n"
+  "  component: \"/main/battle/comet.script\"\n"
+  "}\n"
+  "embedded_components {\n"
+  "  id: \"sprite\"\n"
+  "  type: \"sprite\"\n"
+  "  data: \"default_animation: \\\"comet1\\\"\\n"
+  "material: \\\"/builtins/materials/sprite.material\\\"\\n"
+  "size {\\n"
+  "  x: 240.0\\n"
+  "  y: 240.0\\n"
+  "}\\n"
+  "textures {\\n"
+  "  sampler: \\\"texture_sampler\\\"\\n"
+  "  texture: \\\"/assets/img/effects/effects4.atlas\\\"\\n"
+  "}\\n"
+  "\"\n"
+  "  position {\n"
+  "    z: 0.2\n"
+  "  }\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "meteor3"
+  data: "components {\n"
+  "  id: \"comet1\"\n"
+  "  component: \"/main/battle/comet.script\"\n"
+  "}\n"
+  "embedded_components {\n"
+  "  id: \"sprite\"\n"
+  "  type: \"sprite\"\n"
+  "  data: \"default_animation: \\\"comet1\\\"\\n"
+  "material: \\\"/builtins/materials/sprite.material\\\"\\n"
+  "size {\\n"
+  "  x: 240.0\\n"
+  "  y: 240.0\\n"
+  "}\\n"
+  "textures {\\n"
+  "  sampler: \\\"texture_sampler\\\"\\n"
+  "  texture: \\\"/assets/img/effects/effects4.atlas\\\"\\n"
+  "}\\n"
+  "\"\n"
+  "  position {\n"
+  "    z: 0.2\n"
+  "  }\n"
+  "}\n"
+  ""
+}

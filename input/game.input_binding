@@ -1,6 +1,58 @@
 key_trigger {
-  input: KEY_O
-  action: "slowmo"
+  input: KEY_1
+  action: "hotkey_1"
+}
+key_trigger {
+  input: KEY_2
+  action: "hotkey_2"
+}
+key_trigger {
+  input: KEY_3
+  action: "hotkey_3"
+}
+key_trigger {
+  input: KEY_4
+  action: "hotkey_4"
+}
+key_trigger {
+  input: KEY_5
+  action: "hotkey_5"
+}
+key_trigger {
+  input: KEY_6
+  action: "hotkey_6"
+}
+key_trigger {
+  input: KEY_Q
+  action: "hotkey_Q"
+}
+key_trigger {
+  input: KEY_W
+  action: "hotkey_W"
+}
+key_trigger {
+  input: KEY_E
+  action: "hotkey_E"
+}
+key_trigger {
+  input: KEY_R
+  action: "hotkey_R"
+}
+key_trigger {
+  input: KEY_T
+  action: "hotkey_T"
+}
+key_trigger {
+  input: KEY_Y
+  action: "hotkey_Y"
+}
+key_trigger {
+  input: KEY_A
+  action: "hotkey_A"
+}
+key_trigger {
+  input: KEY_Z
+  action: "hotkey_Z"
 }
 mouse_trigger {
   input: MOUSE_BUTTON_1

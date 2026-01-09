@@ -1,0 +1,28 @@
+name: "gameover"
+instances {
+  id: "soundController"
+  prototype: "/main/sounds/soundController.go"
+}
+scale_along_z: 0
+embedded_instances {
+  id: "victoryGui"
+  data: "components {\n"
+  "  id: \"gameover\"\n"
+  "  component: \"/main/victory/victory.gui\"\n"
+  "}\n"
+  ""
+}
+embedded_instances {
+  id: "rocketFactory"
+  data: "components {\n"
+  "  id: \"rocketFactoryScript\"\n"
+  "  component: \"/main/victory/rocketFactory.script\"\n"
+  "}\n"
+  "embedded_components {\n"
+  "  id: \"rocketFactory\"\n"
+  "  type: \"factory\"\n"
+  "  data: \"prototype: \\\"/main/victory/rocket.go\\\"\\n"
+  "\"\n"
+  "}\n"
+  ""
+}

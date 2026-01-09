@@ -19,7 +19,7 @@ function final(self)
 end
 
 function update(self, dt)
-	if self.shake_duration > 0 then
+	if self.shake_duration > 0 and dt > 0 then
 		self.shake_duration = self.shake_duration - dt
 		local offset = vmath.vector3(
 		(math.random() - 0.5) * 2 * self.shake_magnitude,

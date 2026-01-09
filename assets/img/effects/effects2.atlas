@@ -1,6 +1,9 @@
 images {
   image: "/assets/img/effects/shot/shot.png"
 }
+images {
+  image: "/assets/img/effects/dagger/dagger.png"
+}
 animations {
   id: "fire_bolt"
   images {

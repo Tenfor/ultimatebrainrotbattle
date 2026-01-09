@@ -22,6 +22,7 @@ cssfile = /builtins/manifests/web/dark_theme.css
 
 [project]
 title = Ultimate Brainrot Battle
+minimum_log_level = 0
 dependencies#0 = https://github.com/Insality/druid/archive/refs/tags/1.1.5.zip
 dependencies#1 = https://github.com/Insality/defold-event/archive/refs/tags/12.zip
 dependencies#2 = https://github.com/Insality/defold-tweener/archive/refs/tags/5.zip
@@ -29,6 +30,8 @@ dependencies#3 = https://github.com/whiteboxdev/library-defold-typewriter/archiv
 
 [graphics]
 default_texture_min_filter = linear_mipmap_linear
+opengl_version_hint = 40
+default_texture_mag_filter = linear
 
 [engine]
 fixed_update_frequency = 30
@@ -36,4 +39,14 @@ max_time_step = 0.33
 
 [sound]
 max_component_count = 64
+use_linear_gain = 1
+
+[gui]
+max_count = 128
+
+[label]
+max_count = 128
+
+[physics]
+world_count = 8
 

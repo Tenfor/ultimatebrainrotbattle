@@ -2,37 +2,74 @@ local druid = require("druid.druid")
 local events = require("event.events")
 local gameEvents = require("main/events/gameEvents")
 local gameModel = require("main/battle/gameModel")
+local settingsModel = require("main/settings/settingsModel")
+
+local function updateHotkeyText(self)
+	gui.set_text(self.hotkeysText, settingsModel.hotkeys)
+end
+
+local function onHotkeyPrev(self)
+	self.hotkeyIndex = self.hotkeyIndex > 1 and self.hotkeyIndex - 1 or 3
+	settingsModel.setHotkeys(self.hotkeys[self.hotkeyIndex])
+	updateHotkeyText(self)
+end
+
+local function onHotkeyNext(self)
+	self.hotkeyIndex = self.hotkeyIndex < 3 and self.hotkeyIndex + 1 or 1
+	settingsModel.setHotkeys(self.hotkeys[self.hotkeyIndex])
+	updateHotkeyText(self)
+end
 
 local function onPlayBtn(self)
 	gameModel.reset()
-	events.trigger(gameEvents.LOAD_SCENE,"main")
-	events.trigger(gameEvents.UNLOAD_SCENE,"menu")
+	events.trigger(gameEvents.CHANGE_SCENE,"menu","characterSelect")
 end
 
 local function onSandboxBtn(self)
-	events.trigger(gameEvents.LOAD_SCENE,"main")
-	events.trigger(gameEvents.UNLOAD_SCENE,"menu")
+	events.trigger(gameEvents.CHANGE_SCENE,"menu","main")
 end
 
 local function onUpgradesBtn(self)
-	events.trigger(gameEvents.LOAD_SCENE,"upgrades")
-	events.trigger(gameEvents.UNLOAD_SCENE,"menu")
+	events.trigger(gameEvents.CHANGE_SCENE,"menu","upgrades")
 end
 
-local function onSfxBtn(self)
-	print("onSfxBtn")
+local function updateSoundButtons(self)
+	gui.play_flipbook(self.musicBtnNode, settingsModel.music and "button_music" or "button_music_off")
+	gui.play_flipbook(self.soundBtnNode, settingsModel.sound and "button_sound" or "button_sound_off")
+	gui.play_flipbook(self.settingsSoundBtnNode, settingsModel.sound and "button_sound" or "button_sound_off")
+	gui.play_flipbook(self.settingsMusicBtnNode, settingsModel.music and "button_music" or "button_music_off")
+end
+
+local function onSoundBtn(self)
+	settingsModel.setSound(not settingsModel.sound)
+	events.trigger(settingsModel.sound and gameEvents.ENABLE_SFX or gameEvents.DISABLE_SFX)
+	updateSoundButtons(self)
 end
 
 local function onMusicBtn(self)
-	print("onMusicBtn")
+	settingsModel.setMusic(not settingsModel.music)
+	events.trigger(settingsModel.music and gameEvents.ENABLE_MUSIC or gameEvents.DISABLE_MUSIC)
+	updateSoundButtons(self)
+end
+
+local function onCreditsHomeBtn(self)
+	gui.set_enabled(self.creditsNode, false)
+	gui.set_enabled(self.menuNode, true)
+end
+
+local function onHomeBtn(self)
+	gui.set_enabled(self.menuNode, true)
+	gui.set_enabled(self.settingsNode, false)
 end
 
 local function onSettingsBtn(self)
-	print("onSettingsBtn")
+	gui.set_enabled(self.menuNode, false)
+	gui.set_enabled(self.settingsNode, true)
 end
 
 local function onInfoBtn(self)
-	print("onInfoBtn")
+	gui.set_enabled(self.creditsNode, true)
+	gui.set_enabled(self.menuNode, false)
 end
 
 function init(self)
@@ -41,10 +78,36 @@ function init(self)
 	self.sandboxBtn = self.druid:new_button("sandboxBtn", onSandboxBtn)
 	self.playBtn = self.druid:new_button("playBtn", onPlayBtn)
 	self.upgradesBtn = self.druid:new_button("upgradesBtn", onUpgradesBtn)
-	self.sfxBtn = self.druid:new_button("sfxBtn", onSfxBtn)
+	self.soundBtn = self.druid:new_button("soundBtn", onSoundBtn)
 	self.musicBtn = self.druid:new_button("musicBtn", onMusicBtn)
 	self.settingsBtn = self.druid:new_button("settingsBtn", onSettingsBtn)
 	self.infoBtn = self.druid:new_button("infoBtn", onInfoBtn)
+
+	self.soundBtnNode = gui.get_node("soundBtn")
+	self.musicBtnNode = gui.get_node("musicBtn")
+
+	self.menuNode = gui.get_node("menu")
+	self.settingsNode = gui.get_node("settings")
+	self.creditsNode = gui.get_node("credits")
+
+	self.settingsSoundBtn = self.druid:new_button("settingsSoundBtn", onSoundBtn)
+	self.settingsMusicBtn = self.druid:new_button("settingsMusicBtn", onMusicBtn)
+	self.settingsSoundBtnNode = gui.get_node("settingsSoundBtn")
+	self.settingsMusicBtnNode = gui.get_node("settingsMusicBtn")
+	self.homeBtn = self.druid:new_button("homeBtn", onHomeBtn)
+
+	self.creditsHomeBtn = self.druid:new_button("creditsHomeBtn", onCreditsHomeBtn)
+
+	self.hotkeyPrevBtn = self.druid:new_button("hotkeyPrev", onHotkeyPrev)
+	self.hotkeyNextBtn = self.druid:new_button("hotkeyNext", onHotkeyNext)
+	self.hotkeysText = gui.get_node("hotkeysText")
+	self.hotkeys = {"123456","QWERTY","AZERTY"}
+	self.hotkeyIndex = 1
+	--TODO: call initHotkey here 
+
+	timer.delay(0.4, false, function() 
+		events.trigger(gameEvents.PLAY_MUSIC,"#menuMusic")
+	end)
 end
 
 function final(self)

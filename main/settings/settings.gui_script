@@ -1,0 +1,69 @@
+local druid = require("druid.druid")
+local events = require("event.events")
+local gameEvents = require("main/events/gameEvents")
+local settingsModel = require("main/settings/settingsModel")
+
+local function updateSoundButtons(self)
+	gui.play_flipbook(self.musicBtnNode, settingsModel.music and "button_music" or "button_music_off")
+	gui.play_flipbook(self.soundBtnNode, settingsModel.sound and "button_sound" or "button_sound_off")
+end
+
+local function onMusicBtn(self)
+	settingsModel.setMusic(not settingsModel.music)
+	events.trigger(settingsModel.music and gameEvents.ENABLE_MUSIC or gameEvents.DISABLE_MUSIC)
+	updateSoundButtons(self)
+end
+
+local function onSoundBtn(self)
+	settingsModel.setSound(not settingsModel.sound)
+	events.trigger(settingsModel.music and gameEvents.ENABLE_SFX or gameEvents.DISABLE_SFX)
+	updateSoundButtons(self)
+end
+
+
+local function onHomeBtn(self)
+	
+end
+
+local function onYesBtn(self)
+
+end
+
+local function onNoBtn(self)
+	
+end
+
+function init(self)
+	self.druid = druid.new(self)
+
+	self.homeBtn = self.druid:new_button("homeBtn", onHomeBtn)
+	self.soundBtn = self.druid:new_button("soundBtn", onSoundBtn)
+	self.musicBtn = self.druid:new_button("musicBtn", onMusicBtn)
+
+	self.confirmPanel = gui.get_node("confirmPanel")
+	self.yesBtn = self.druid:new_button("yesBtn", onYesBtn)
+	self.noBtn = self.druid:new_button("noBtn", onNoBtn)
+
+	self.musicBtnNode = gui.get_node("musicBtn")
+	self.soundBtnNode = gui.get_node("soundBtn")
+end
+
+function final(self)
+	self.druid:final()
+end
+
+function update(self, dt)
+	self.druid:update(dt)
+end
+
+function on_message(self, message_id, message, sender)
+	self.druid:on_message(message_id, message, sender)
+end
+
+function on_input(self, action_id, action)
+	return self.druid:on_input(action_id, action)
+end
+
+function on_reload(self)
+
+end

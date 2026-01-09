@@ -1,0 +1,552 @@
+script: "/main/characterSelect/characterSelect.gui_script"
+fonts {
+  name: "game"
+  font: "/assets/font/game.font"
+}
+textures {
+  name: "ui"
+  texture: "/assets/img/ui/ui.atlas"
+}
+textures {
+  name: "characters"
+  texture: "/assets/img/characters/characters.atlas"
+}
+nodes {
+  position {
+    x: 640.0
+    y: 360.0
+  }
+  scale {
+    x: 1.1
+  }
+  type: TYPE_BOX
+  texture: "ui/table"
+  id: "bg"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 300.0
+    y: 415.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "characterBox1"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  scale {
+    x: 0.85
+    y: 0.8
+  }
+  type: TYPE_BOX
+  texture: "ui/window2"
+  id: "character1Bg"
+  parent: "characterBox1"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.85
+    y: 0.8
+  }
+  color {
+    x: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  blend_mode: BLEND_MODE_ADD
+  texture: "ui/window2"
+  id: "character1BgSelected"
+  parent: "characterBox1"
+  inherit_alpha: true
+  alpha: 0.7
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    y: 159.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  size {
+    x: 500.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Tung Tung Tung Sahur"
+  font: "game"
+  id: "character1Name"
+  line_break: true
+  parent: "characterBox1"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: -10.0
+  }
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  type: TYPE_BOX
+  texture: "characters/sahur"
+  id: "character1Sprite"
+  parent: "characterBox1"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: -176.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "character1Btn"
+  parent: "characterBox1"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Select\n"
+  ""
+  font: "game"
+  id: "text"
+  parent: "character1Btn"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: -173.0
+  }
+  scale {
+    x: 0.7
+    y: 0.7
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Selected"
+  font: "game"
+  id: "character1SelectedText"
+  parent: "characterBox1"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  position {
+    x: 640.0
+    y: 415.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "characterBox2"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  scale {
+    x: 0.85
+    y: 0.8
+  }
+  type: TYPE_BOX
+  texture: "ui/window2"
+  id: "character2Bg"
+  parent: "characterBox2"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.85
+    y: 0.8
+  }
+  color {
+    x: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  blend_mode: BLEND_MODE_ADD
+  texture: "ui/window2"
+  id: "character2BgSelected"
+  parent: "characterBox2"
+  inherit_alpha: true
+  alpha: 0.7
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    y: 159.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  size {
+    x: 500.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Locked"
+  font: "game"
+  id: "character2Name"
+  line_break: true
+  parent: "characterBox2"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: -10.0
+  }
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  texture: "characters/patapim"
+  id: "character2Sprite"
+  parent: "characterBox2"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: -176.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "character2Btn"
+  parent: "characterBox2"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Select"
+  font: "game"
+  id: "text1"
+  parent: "character2Btn"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: -173.0
+  }
+  scale {
+    x: 0.7
+    y: 0.7
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Selected"
+  font: "game"
+  id: "character2SelectedText"
+  parent: "characterBox2"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  position {
+    y: -174.0
+  }
+  scale {
+    x: 0.4
+    y: 0.4
+  }
+  size {
+    x: 700.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Die 10 times to unlock\n"
+  "0/10"
+  font: "game"
+  id: "character2UnlockText"
+  parent: "characterBox2"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 980.0
+    y: 415.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "characterBox3"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  scale {
+    x: 0.85
+    y: 0.8
+  }
+  type: TYPE_BOX
+  texture: "ui/window2"
+  id: "character3Bg"
+  parent: "characterBox3"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.85
+    y: 0.8
+  }
+  color {
+    x: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  blend_mode: BLEND_MODE_ADD
+  texture: "ui/window2"
+  id: "character3BgSelected"
+  parent: "characterBox3"
+  inherit_alpha: true
+  alpha: 0.7
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    y: 159.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  size {
+    x: 500.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Locked"
+  font: "game"
+  id: "character3Name"
+  line_break: true
+  parent: "characterBox3"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: -16.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  texture: "characters/cappuccino"
+  id: "character3Sprite"
+  parent: "characterBox3"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: -176.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "character3Btn"
+  parent: "characterBox3"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Select"
+  font: "game"
+  id: "text2"
+  parent: "character3Btn"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: -173.0
+  }
+  scale {
+    x: 0.7
+    y: 0.7
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Selected"
+  font: "game"
+  id: "character3SelectedText"
+  parent: "characterBox3"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  position {
+    y: -174.0
+  }
+  scale {
+    x: 0.4
+    y: 0.4
+  }
+  size {
+    x: 700.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Defeat Udindindindun to unlock"
+  font: "game"
+  id: "character3UnlockText"
+  line_break: true
+  parent: "characterBox3"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 930.0
+    y: 50.0
+  }
+  scale {
+    x: 0.7
+    y: 0.7
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "battleBtn"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Battle"
+  font: "game"
+  id: "text3"
+  parent: "battleBtn"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 700.0
+    y: 50.0
+  }
+  scale {
+    x: 0.7
+    y: 0.7
+  }
+  color {
+    x: 0.0
+    y: 0.0
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "menuBtn"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.7
+    y: 0.7
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Back to Menu"
+  font: "game"
+  id: "text4"
+  parent: "menuBtn"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 314.0
+    y: 54.0
+  }
+  scale {
+    x: 0.7
+    y: 0.7
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "unlockBtn"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "unlockall\n"
+  ""
+  font: "game"
+  id: "text5"
+  parent: "unlockBtn"
+  inherit_alpha: true
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

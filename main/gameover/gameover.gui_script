@@ -3,16 +3,17 @@ local events = require("event.events")
 local gameEvents = require("main/events/gameEvents")
 local gameModel = require("main/battle/gameModel")
 local enemyModel = require("main/battle/enemyModel")
+local playerModel = require("main/battle/playerModel")
 local upgradesModel = require("main/upgrades/upgradesModel")
-local dtypewriter = require "dtypewriter.dtypewriter"
+local dtypewriter = require ("main/utils/dtypewriter")
 
 local function setUpTexts(self)
 	local dmgDealt = math.floor(gameModel.damageDone/3)
 	local dmgTaken = math.floor(gameModel.damageTaken/5)
 	local enemiesDefeated = gameModel.enemiesDefeated * 20
-	local incomeBonus = upgradesModel.sahur.income.values[upgradesModel.sahur.income.lvl+1]
+	local incomeBonus = upgradesModel[playerModel.currentCharacter].income.values[upgradesModel[playerModel.currentCharacter].income.lvl+1]
 	local total = math.floor((dmgDealt+dmgTaken+enemiesDefeated) * incomeBonus)
-	upgradesModel.setGold(upgradesModel.gold + total)
+	upgradesModel[playerModel.currentCharacter].gold = upgradesModel[playerModel.currentCharacter].gold + total
 	gui.set_text(self.dmgDoneTextNode,"Damage Done: "..tostring(dmgDealt).." Gold")
 	gui.set_text(self.dmgTakenTextNode,"Damage Taken: "..tostring(dmgTaken).." Gold")
 	gui.set_text(self.enemyTextNode,"Enemies Defeated: "..tostring(enemiesDefeated).." Gold")
@@ -80,9 +81,8 @@ end
 
 local function onContinueBtn(self)
 	if self.textShowDone then 		
-		events.trigger(gameEvents.LOAD_SCENE,"upgrades")
-		events.trigger(gameEvents.UNLOAD_SCENE,"gameOver")
 		dtypewriter.clear()
+		events.trigger(gameEvents.CHANGE_SCENE,"gameOver","upgrades")
 	else
 		skipTexts(self)
 	end

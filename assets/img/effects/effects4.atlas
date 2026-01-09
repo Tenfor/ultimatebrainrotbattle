@@ -1,6 +1,12 @@
 images {
   image: "/assets/img/effects/shot/shotBase.png"
 }
+images {
+  image: "/assets/img/effects/comet/comet1.png"
+}
+images {
+  image: "/assets/img/effects/comet/comet2.png"
+}
 animations {
   id: "fire_punch"
   images {

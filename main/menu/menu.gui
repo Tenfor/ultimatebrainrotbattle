@@ -7,18 +7,45 @@ textures {
   name: "ui"
   texture: "/assets/img/ui/ui.atlas"
 }
+textures {
+  name: "bg"
+  texture: "/assets/img/bg/bg.atlas"
+}
+nodes {
+  position {
+    x: 640.0
+    y: 360.0
+  }
+  type: TYPE_BOX
+  texture: "bg/menu_bg"
+  id: "bg"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "menu"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
 nodes {
   position {
     x: 629.0
-    y: 522.0
+    y: 429.0
   }
   scale {
-    x: 1.098786
-    y: 1.143112
+    x: 0.8
+    y: 0.8
   }
   type: TYPE_BOX
   texture: "ui/button1"
   id: "playBtn"
+  parent: "menu"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
 }
@@ -53,6 +80,7 @@ nodes {
   type: TYPE_BOX
   texture: "ui/button1"
   id: "sandboxBtn"
+  parent: "menu"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
 }
@@ -75,15 +103,16 @@ nodes {
 nodes {
   position {
     x: 629.0
-    y: 338.0
+    y: 283.0
   }
   scale {
-    x: 0.87565
-    y: 0.848246
+    x: 0.8
+    y: 0.8
   }
   type: TYPE_BOX
   texture: "ui/button1"
   id: "upgradesBtn"
+  parent: "menu"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
 }
@@ -118,8 +147,9 @@ nodes {
     y: 0.9
   }
   type: TYPE_BOX
-  texture: "ui/button_music"
-  id: "sfxBtn"
+  texture: "ui/button_sound"
+  id: "soundBtn"
+  parent: "menu"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
 }
@@ -133,23 +163,9 @@ nodes {
     y: 0.9
   }
   type: TYPE_BOX
-  texture: "ui/button_sound"
+  texture: "ui/button_music"
   id: "musicBtn"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 737.0
-    y: 119.0
-  }
-  scale {
-    x: 0.9
-    y: 0.9
-  }
-  type: TYPE_BOX
-  texture: "ui/button_settings"
-  id: "settingsBtn"
+  parent: "menu"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
 }
@@ -165,8 +181,378 @@ nodes {
   type: TYPE_BOX
   texture: "ui/button_info"
   id: "infoBtn"
+  parent: "menu"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 737.0
+    y: 119.0
+  }
+  scale {
+    x: 0.9
+    y: 0.9
+  }
+  type: TYPE_BOX
+  texture: "ui/button_settings"
+  id: "settingsBtn"
+  parent: "menu"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "settings"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  position {
+    x: 670.0
+    y: 396.0
+  }
+  scale {
+    x: 0.7
+    y: 0.7
+  }
+  type: TYPE_BOX
+  texture: "ui/table"
+  id: "settingsPanel"
+  parent: "settings"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 668.0
+    y: 578.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Settings"
+  font: "game"
+  id: "settingsTitle"
+  parent: "settings"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 670.0
+    y: 105.0
+  }
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  type: TYPE_BOX
+  texture: "ui/button_restart"
+  id: "homeBtn"
+  parent: "settings"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 753.0
+    y: 493.0
+  }
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  type: TYPE_BOX
+  texture: "ui/button_sound"
+  id: "settingsSoundBtn"
+  parent: "settings"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 583.0
+    y: 493.0
+  }
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  type: TYPE_BOX
+  texture: "ui/button_music"
+  id: "settingsMusicBtn"
+  parent: "settings"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 509.0
+    y: 394.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Skill hotkeys"
+  font: "game"
+  id: "hotkeysTitle"
+  parent: "settings"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 509.0
+    y: 334.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "123456"
+  font: "game"
+  id: "hotkeysText"
+  parent: "settings"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 401.0
+    y: 333.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "ui/button_l"
+  id: "hotkeyPrev"
+  parent: "settings"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 614.0
+    y: 333.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "ui/button_r"
+  id: "hotkeyNext"
+  parent: "settings"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 821.0
+    y: 393.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Language"
+  font: "game"
+  id: "langTitle"
+  parent: "settings"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 821.0
+    y: 333.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "English"
+  font: "game"
+  id: "langText"
+  parent: "settings"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 713.0
+    y: 332.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "ui/button_l"
+  id: "langPrev"
+  parent: "settings"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 926.0
+    y: 332.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "ui/button_r"
+  id: "langNext"
+  parent: "settings"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 670.0
+    y: 240.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "resetDataBtn"
+  parent: "settings"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Reset Data"
+  font: "game"
+  id: "resetDataBtnText"
+  parent: "resetDataBtn"
+  inherit_alpha: true
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "credits"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  position {
+    x: 670.0
+    y: 396.0
+  }
+  scale {
+    x: 0.7
+    y: 0.7
+  }
+  type: TYPE_BOX
+  texture: "ui/table"
+  id: "creditsPanel"
+  parent: "credits"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 670.0
+    y: 578.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Credits"
+  font: "game"
+  id: "creditsTitle"
+  parent: "credits"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 670.0
+    y: 105.0
+  }
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  type: TYPE_BOX
+  texture: "ui/button_restart"
+  id: "creditsHomeBtn"
+  parent: "credits"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 670.0
+    y: 368.0
+  }
+  scale {
+    x: 0.7
+    y: 0.7
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Graphic design by Kar\303\241di Vikt\303\263ria\n"
+  "\n"
+  "Assets from Craftpix\n"
+  "\n"
+  "Made by Tenfor\n"
+  ""
+  font: "game"
+  id: "creditsText"
+  parent: "credits"
+  inherit_alpha: true
 }
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT

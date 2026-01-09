@@ -103,12 +103,12 @@ nodes {
     y: -18.0
   }
   scale {
-    x: 0.5
-    y: 0.5
+    x: 0.4
+    y: 0.4
   }
   size {
-    x: 600.0
-    y: 400.0
+    x: 750.0
+    y: 500.0
   }
   type: TYPE_TEXT
   text: "Select an upgrade for more info"
@@ -170,35 +170,26 @@ nodes {
 }
 nodes {
   position {
-    x: 932.0
-    y: 57.0
+    y: -18.0
   }
   scale {
-    x: 0.8
-    y: 0.8
-  }
-  type: TYPE_BOX
-  texture: "ui/button1"
-  id: "continueBtn"
-  parent: "sahurUpgrades"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  scale {
-    x: 0.7
-    y: 0.7
+    x: 0.5
+    y: 0.5
   }
   size {
-    x: 200.0
-    y: 100.0
+    x: 600.0
+    y: 400.0
   }
   type: TYPE_TEXT
-  text: "Back to Menu"
+  text: "Current: 12-15\n"
+  "Next: 8% - 2.5X dmg"
   font: "game"
-  id: "buyBtnLabel1"
-  parent: "continueBtn"
+  id: "desc1"
+  line_break: true
+  parent: "infos"
   inherit_alpha: true
+  enabled: false
+  visible: false
 }
 nodes {
   size {
@@ -714,6 +705,53 @@ nodes {
 }
 nodes {
   position {
+    x: 775.0
+    y: 277.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "skill6Box"
+  parent: "skills"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  size {
+    x: 100.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  texture: "ui/LION_STRIKE"
+  id: "skill6Btn"
+  parent: "skill6Box"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: -75.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 200.0
+    y: 60.0
+  }
+  type: TYPE_TEXT
+  text: "1/1"
+  font: "game"
+  id: "skill6Lvl"
+  parent: "skill6Box"
+  inherit_alpha: true
+}
+nodes {
+  position {
     x: 479.0
     y: 615.0
   }
@@ -724,8 +762,72 @@ nodes {
   type: TYPE_TEXT
   text: "Sahur Upgrades"
   font: "game"
-  id: "text"
+  id: "header"
   parent: "sahurUpgrades"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 700.0
+    y: 50.0
+  }
+  scale {
+    x: 0.7
+    y: 0.7
+  }
+  color {
+    x: 0.0
+    y: 0.0
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "menuBtn"
+  parent: "sahurUpgrades"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.7
+    y: 0.7
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Back to Menu"
+  font: "game"
+  id: "text4"
+  parent: "menuBtn"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 930.0
+    y: 50.0
+  }
+  scale {
+    x: 0.7
+    y: 0.7
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "battleBtn"
+  parent: "sahurUpgrades"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Battle"
+  font: "game"
+  id: "text3"
+  parent: "battleBtn"
   inherit_alpha: true
 }
 nodes {
@@ -745,7 +847,7 @@ nodes {
 }
 nodes {
   position {
-    x: 685.0
+    x: 256.0
     y: 123.0
   }
   scale {

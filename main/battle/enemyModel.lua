@@ -11,7 +11,7 @@ local enemies = {
 
 local M = {
 	name = "boneca",
-	critPercent = 3,
+	critPercent = 2,
 	critDmg = 2,
 	spd = 1.5,
 	minDmg = 2,
@@ -22,7 +22,9 @@ local M = {
 		BERSERK = 0,
 		FROST = 0,
 		SHIELD = 0,
-		STUN = 0
+		STUN = 0,
+		POISON = 0,
+		EVASION = 0,
 	},
 	pattern = {
 		skills.EMPTY,
@@ -104,7 +106,9 @@ function M.loadEnemyModel(enemyName)
 		BERSERK = 0,
 		FROST = 0,
 		SHIELD = 0,
-		STUN = 0
+		STUN = 0,
+		POISON = 0,
+		EVASION = 0,
 	}
 	M.mod = 1
 	M.pattern = data.pattern

@@ -24,7 +24,7 @@ animations {
   fps: 20
 }
 animations {
-  id: "hit1"
+  id: "poison_cloud"
   images {
     image: "/assets/img/effects/hit1/hittry (2).png"
   }

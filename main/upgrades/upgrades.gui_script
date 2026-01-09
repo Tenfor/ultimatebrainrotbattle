@@ -4,18 +4,118 @@ local playerModel = require("main/battle/playerModel")
 local events = require("event.events")
 local gameEvents = require("main/events/gameEvents")
 
+local function setDescription(infoObj)
+	if infoObj.name == "precision" then
+		return infoObj.description
+	end
+	if infoObj.name == "str" then 
+		local strObj = upgradesModel[playerModel.currentCharacter].str
+		local curr = tostring(strObj.values[strObj.lvl + 1][1]).." - "..tostring(strObj.values[strObj.lvl + 1][2])
+		local next = strObj.lvl < #strObj.prices and tostring(strObj.values[strObj.lvl + 2][1]).." - "..tostring(strObj.values[strObj.lvl + 2][2]) or ""
+		local nextDesc = strObj.lvl >= #strObj.prices and "Max Level" or infoObj.descriptionNext
+		local newDescription = infoObj.description.."\n"..nextDesc
+		newDescription = string.gsub(newDescription,"{curr}",curr)
+		newDescription = string.gsub(newDescription,"{next}",next)
+		return newDescription
+	end
+	if infoObj.name == "pow" then 
+		local powObj = upgradesModel[playerModel.currentCharacter].pow
+		local curr = tostring(powObj.values[powObj.lvl + 1][1]).." - "..tostring(powObj.values[powObj.lvl + 1][2])
+		local next = powObj.lvl < #powObj.prices and tostring(powObj.values[powObj.lvl + 2][1]).." - "..tostring(powObj.values[powObj.lvl + 2][2]) or ""
+		local nextDesc = powObj.lvl >= #powObj.prices and "Max Level" or infoObj.descriptionNext
+		local newDescription = infoObj.description.."\n"..nextDesc
+		newDescription = string.gsub(newDescription,"{curr}",curr)
+		newDescription = string.gsub(newDescription,"{next}",next)
+		return newDescription
+	end
+	if infoObj.name == "hp" then 
+		local hpObj = upgradesModel[playerModel.currentCharacter].hp
+		local curr = tostring(hpObj.values[hpObj.lvl + 1])
+		local next = hpObj.lvl < #hpObj.prices and tostring(hpObj.values[hpObj.lvl + 2]) or ""
+		local nextDesc = hpObj.lvl >= #hpObj.prices and "Max Level" or infoObj.descriptionNext
+		local newDescription = infoObj.description.."\n"..nextDesc
+		newDescription = string.gsub(newDescription,"{curr}",curr)
+		newDescription = string.gsub(newDescription,"{next}",next)
+		return newDescription
+	end
+	if infoObj.name == "mana" then 
+		local manaObj = upgradesModel[playerModel.currentCharacter].mana
+		local curr = tostring(manaObj.values[manaObj.lvl + 1])
+		local next = manaObj.lvl < #manaObj.prices and tostring(manaObj.values[manaObj.lvl + 2]) or ""
+		local nextDesc = manaObj.lvl >= #manaObj.prices and "Max Level" or infoObj.descriptionNext
+		local newDescription = infoObj.description.."\n"..nextDesc
+		newDescription = string.gsub(newDescription,"{curr}",curr)
+		newDescription = string.gsub(newDescription,"{next}",next)
+		return newDescription
+	end
+	if infoObj.name == "crit" then 
+		local critObj = upgradesModel[playerModel.currentCharacter].crit
+		local curr = tostring(critObj.values[critObj.lvl + 1][1]).."%% - "..tostring(critObj.values[critObj.lvl + 1][2].."X")
+		local next = critObj.lvl < #critObj.prices and tostring(critObj.values[critObj.lvl + 2][1]).."%% - "..tostring(critObj.values[critObj.lvl + 2][2].."X") or ""
+		local nextDesc = critObj.lvl >= #critObj.prices and "Max Level" or infoObj.descriptionNext
+		local newDescription = infoObj.description.."\n"..nextDesc
+		newDescription = string.gsub(newDescription,"{curr}",curr)
+		newDescription = string.gsub(newDescription,"{next}",next)
+		return newDescription
+	end
+	if infoObj.name == "cdr" then 
+		local cdrObj = upgradesModel[playerModel.currentCharacter].cdr
+		local curr = tostring(cdrObj.values[cdrObj.lvl + 1])
+		local next = cdrObj.lvl < #cdrObj.prices and tostring(cdrObj.values[cdrObj.lvl + 2]) or ""
+		local nextDesc = cdrObj.lvl >= #cdrObj.prices and "Max Level" or infoObj.descriptionNext
+		local newDescription = infoObj.description.."\n"..nextDesc
+		newDescription = string.gsub(newDescription,"{curr}",curr)
+		newDescription = string.gsub(newDescription,"{next}",next)
+		return newDescription
+	end
+	if infoObj.name == "spd" then 
+		local spdObj = upgradesModel[playerModel.currentCharacter].spd
+		local curr = string.format("%.1f",spdObj.values[spdObj.lvl + 1]/3)
+		local next = spdObj.lvl < #spdObj.prices and string.format("%.1f",spdObj.values[spdObj.lvl + 2]/3) or ""
+		local nextDesc = spdObj.lvl >= #spdObj.prices and "Max Level" or infoObj.descriptionNext
+		local newDescription = infoObj.description.."\n"..nextDesc
+		newDescription = string.gsub(newDescription,"{curr}",curr)
+		newDescription = string.gsub(newDescription,"{next}",next)
+		return newDescription
+	end
+	if infoObj.name == "income" then 
+		local incomeObj = upgradesModel[playerModel.currentCharacter].income
+		local curr = tostring(incomeObj.values[incomeObj.lvl + 1])
+		local next = incomeObj.lvl < #incomeObj.prices and tostring(incomeObj.values[incomeObj.lvl + 2]) or ""
+		local nextDesc = incomeObj.lvl >= #incomeObj.prices and "Max Level" or infoObj.descriptionNext
+		local newDescription = infoObj.description.."\n"..nextDesc
+		newDescription = string.gsub(newDescription,"{curr}",curr)
+		newDescription = string.gsub(newDescription,"{next}",next)
+		return newDescription
+	end
+	if infoObj.name == "rage" then 
+		local rageObj = upgradesModel[playerModel.currentCharacter].rage
+		local curr = tostring(rageObj.values[rageObj.lvl + 1])
+		local next = rageObj.lvl < #rageObj.prices and tostring(rageObj.values[rageObj.lvl + 2]) or ""
+		local nextDesc = rageObj.lvl >= #rageObj.prices and "Max Level" or infoObj.descriptionNext
+		local newDescription = infoObj.description.."\n"..nextDesc
+		newDescription = string.gsub(newDescription,"{curr}",curr)
+		newDescription = string.gsub(newDescription,"{next}",next)
+		return newDescription
+	end
+	return infoObj.description
+end
+
 local function setInfo(self,name)
 	local infoObj = upgradesModel.sahur[name]
 	
 	if playerModel.currentCharacter == "patapim" then
 		infoObj = upgradesModel.patapim[name]
-	elseif playerModel.currentCharacter == "cappucino" then
-		infoObj = upgradesModel.cappucino[name]
+	elseif playerModel.currentCharacter == "cappuccino" then
+		infoObj = upgradesModel.cappuccino[name]
 	end
 	
 	if infoObj ~= nil then 
 		gui.set_text(self.titleNode, infoObj.title)
-		gui.set_text(self.descNode, infoObj.description)
+
+		local description = setDescription(infoObj)
+		
+		gui.set_text(self.descNode, description)
 	
 		
 		if infoObj.lvl >= #infoObj.prices then
@@ -38,9 +138,12 @@ local function onUpgradeSelect(self,name)
 	setInfo(self,name)
 end
 
-local function onContinueBtn(self)
-	events.trigger(gameEvents.LOAD_SCENE,"menu")
-	events.trigger(gameEvents.UNLOAD_SCENE,"upgrades")
+local function onMenuBtn(self)
+	events.trigger(gameEvents.CHANGE_SCENE,"upgrades","menu")
+end
+
+local function onBattleBtn(self)
+	events.trigger(gameEvents.CHANGE_SCENE,"upgrades","main")
 end
 
 local function updateTexts(self)
@@ -49,22 +152,32 @@ local function updateTexts(self)
 		local lvl = upgradesModel[playerModel.currentCharacter][stat].lvl
 		local maxLvl = #upgradesModel[playerModel.currentCharacter][stat].prices
 		gui.set_text(self["stat"..i.."Lvl"], lvl.."/"..maxLvl)
-		if lvl == maxLvl or upgradesModel.gold >= upgradesModel[playerModel.currentCharacter][stat].prices[lvl+1] then
+		if lvl == maxLvl or upgradesModel[playerModel.currentCharacter].gold >= upgradesModel[playerModel.currentCharacter][stat].prices[lvl+1] then
 			gui.set_color(self["stat"..i.."Node"], vmath.vector4(1,1,1,1))
 		else
 			gui.set_color(self["stat"..i.."Node"], vmath.vector4(0.2,0.2,0.2,1))
 		end
 	end
 
-	gui.set_text(self.goldTextNode, "Gold: "..upgradesModel.gold)
+	gui.set_text(self.goldTextNode, "Gold: "..upgradesModel[playerModel.currentCharacter].gold)
 
 	for i = 1, 5 do
 		local lvl = upgradesModel[playerModel.currentCharacter]["skill"..i].lvl
 		gui.set_text(self["skill"..i.."Lvl"], lvl.."/"..1)
-		if upgradesModel.gold >= upgradesModel[playerModel.currentCharacter]["skill"..i].prices[1] or lvl == 1 then
+		if upgradesModel[playerModel.currentCharacter].gold >= upgradesModel[playerModel.currentCharacter]["skill"..i].prices[1] or lvl == 1 then
 			gui.set_color(self["skill"..i.."Node"], vmath.vector4(1,1,1,1))
 		else
 			gui.set_color(self["skill"..i.."Node"], vmath.vector4(0.2,0.2,0.2,1))
+		end
+	end
+
+	if playerModel.currentCharacter == "patapim" then
+		local lvl = upgradesModel[playerModel.currentCharacter]["skill6"].lvl
+		gui.set_text(self["skill6Lvl"], lvl.."/"..1)
+		if upgradesModel[playerModel.currentCharacter].gold >= upgradesModel[playerModel.currentCharacter]["skill6"].prices[1] or lvl == 1 then
+			gui.set_color(self["skill6Node"], vmath.vector4(1,1,1,1))
+		else
+			gui.set_color(self["skill6Node"], vmath.vector4(0.2,0.2,0.2,1))
 		end
 	end
 end
@@ -74,13 +187,13 @@ local function onBuyBtn(self)
 
 	if playerModel.currentCharacter == "patapim" then
 		infoObj = upgradesModel.patapim[self.selectedUpgrade]
-	elseif playerModel.currentCharacter == "cappucino" then
-		infoObj = upgradesModel.cappucino[self.selectedUpgrade]
+	elseif playerModel.currentCharacter == "cappuccino" then
+		infoObj = upgradesModel.cappuccino[self.selectedUpgrade]
 	end
 
 	if infoObj ~= nil then 
-		if upgradesModel.gold >= infoObj.prices[infoObj.lvl+1] then
-			upgradesModel.gold = upgradesModel.gold - infoObj.prices[infoObj.lvl+1]
+		if upgradesModel[playerModel.currentCharacter].gold >= infoObj.prices[infoObj.lvl+1] then
+			upgradesModel[playerModel.currentCharacter].gold = upgradesModel[playerModel.currentCharacter].gold - infoObj.prices[infoObj.lvl+1]
 			infoObj.lvl = infoObj.lvl + 1
 			events.trigger(gameEvents.PLAY_SFX,"#buy")
 			setInfo(self, self.selectedUpgrade)
@@ -92,14 +205,29 @@ local function onBuyBtn(self)
 end
 
 local function onAddGoldBtn(self)
-	upgradesModel.setGold(upgradesModel.gold + 1000)
+	upgradesModel[playerModel.currentCharacter].gold = upgradesModel[playerModel.currentCharacter].gold + 1000
 	updateTexts(self)
+end
+
+local function showPatapimSkills(self)
+	self["skill6Btn"] = self.druid:new_button("skill6Btn", onUpgradeSelect, "skill6")
+	self["skill6Lvl"] = gui.get_node("skill6Lvl")
+	self["skill6Node"] = gui.get_node("skill6Btn")
+
+	for i = 1, 5 do
+		local node = gui.get_node("skill"..i.."Box")
+		local pos = gui.get_position(node)
+		pos.x = 175 + (i-1) * 120
+		gui.set_position(node, pos)
+	end
+
+	gui.play_flipbook(gui.get_node("skill6Btn"), "COMET_RAIN")
+	gui.set_enabled(gui.get_node("skill6Box"), true)
 end
 
 function init(self)
 	self.druid = druid.new(self)
-	print(playerModel.currentCharacter)
-	print(upgradesModel[playerModel.currentCharacter])
+	
 	for i = 1, 6 do
 		local stat = upgradesModel[playerModel.currentCharacter].listedStats[i]
 		self["stat"..i.."Btn"] = self.druid:new_button("stat"..i.."Btn", onUpgradeSelect, stat)
@@ -115,12 +243,17 @@ function init(self)
 		self["skill"..i.."Node"] = gui.get_node("skill"..i.."Btn")
 		gui.play_flipbook(gui.get_node("skill"..i.."Btn"), sprite)
 	end
+
+	if playerModel.currentCharacter == "patapim" then
+		showPatapimSkills(self)
+	end
 	
 	self.buyBtn = self.druid:new_button("buyBtn", onBuyBtn)
 	self.addGoldBtn = self.druid:new_button("addGold", onAddGoldBtn)
 	self.buyBtnNode = gui.get_node("buyBtn")
 
-	self.continueBtn = self.druid:new_button("continueBtn", onContinueBtn)
+	self.menuBtn = self.druid:new_button("menuBtn", onMenuBtn)
+	self.battleBtn = self.druid:new_button("battleBtn", onBattleBtn)
 
 	self.titleNode = gui.get_node("title")
 	self.lvlNode = gui.get_node("lvl")
@@ -130,6 +263,17 @@ function init(self)
 	
 	--createBoxes(self)
 	updateTexts(self)
+
+	self.header = gui.get_node("header")
+	if playerModel.currentCharacter == "sahur" then 
+		gui.set_text(self.header, "Sahur Upgrades")
+	elseif playerModel.currentCharacter == "patapim" then
+		gui.set_text(self.header, "Patapim Upgrades")
+	elseif playerModel.currentCharacter == "cappuccino" then
+		gui.set_text(self.header, "Cappuccino Upgrades")
+	end
+
+	events.trigger(gameEvents.PLAY_MUSIC,"#menuMusic")
 end
 
 function final(self)

@@ -1,17 +1,19 @@
 local events = require("event.events")
 local gameEvents = require("main/events/gameEvents")
---local gameSettings = require "main/gameSettings"
+local settingsModel = require "main/settings/settingsModel"
 --local gameModel = require "main/game/gameModel"
---local musics = {
---	"#bgMusic",
---	"#menuMusic",
---}
+local musics = {
+	"#battleMusic",
+	"#menuMusic",
+}
 local sounds = {
 	"#hit_1",
 	"#hit_2",
 	"#hit_3",
 	"#explosion1",
 	"#explosion2",
+	"#explosion3",
+	"#explosion4",
 	"#swoosh",
 	"#swoosh2",
 	"#swoosh3",
@@ -22,19 +24,25 @@ local sounds = {
 	"#cast",
 	"#thunder",
 	"#powerup4",
-	"#powerup4",
 	"#laser",
+	"#laser2",
+	"#laser3",
+	"#laser32",
 	"#laser4",
 	"#swordhit",
 	"#sahur_ulti",
+	"#patapim_ulti",
+	"#cappuccino_ulti",
 	"#boneca",
 	"#lirili",
 	"#dindin",
 	"#patapim",
 	"#cappuccino",
 	"#bombardiro",
+	"#sahur",
 	"#whoosh",
 	"#whoosh3",
+	"#whoosh4",
 	"#poof",
 	"#thud",
 	"#boing",
@@ -45,19 +53,56 @@ local sounds = {
 	"#teleport",
 	"#dialogrev1",
 	"#dialogrev2",
-	"#dialogrev3"
+	"#dialogrev3",
+	"#rocket",
 }
 
+local function onPause(self)
+	for i = 1, #sounds, 1 do
+		sound.pause(sounds[i], true)
+	end
+	for j = 1, #musics, 1 do
+		sound.pause(musics[j], true)
+	end
+end
+
+local function onResume(self)
+	for i = 1, #sounds, 1 do
+		sound.pause(sounds[i], false)
+	end
+	for j = 1, #musics, 1 do
+		sound.pause(musics[j], false)
+	end
+end
+
+local function onEnableSfx(self)
+	sound.set_group_gain("sfx", 1)
+end
+
+local function onDisableSfx(self)
+	sound.set_group_gain("sfx", 0)
+end
+
+local function onEnableMusic(self)
+	sound.set_group_gain("music", 1)
+end
+
+local function onDisableMusic(self)
+	sound.set_group_gain("music", 0)
+end
+
 local function onPlaySfx(self,sfxUrl)
-	local play_id = #self.sfxPlaying + 1
-	msg.post(sfxUrl,"play_sound",{play_id = play_id})
-	table.insert(self.sfxPlaying,play_id)
+	sound.play(sfxUrl)
+---	local play_id = #self.sfxPlaying + 1
+--	msg.post(sfxUrl,"play_sound",{play_id = play_id})
+	--table.insert(self.sfxPlaying,play_id)
 end
 
 local function onPlayCast(self)
-	local play_id = #self.sfxPlaying + 1
-	msg.post("#cast","play_sound",{play_id = play_id})
-	table.insert(self.sfxPlaying,play_id)
+--	local play_id = #self.sfxPlaying + 1
+	--msg.post("#cast","play_sound",{play_id = play_id})
+	--	table.insert(self.sfxPlaying,play_id)
+	sound.play("#cast")
 end
 
 local function onStopCast(self)
@@ -65,48 +110,57 @@ local function onStopCast(self)
 end
 
 local function onplayChat(self)
-	print("onplaycht")
-	local play_id = #self.sfxPlaying + 1
-	msg.post("#dialogrev3","play_sound",{play_id = play_id})
-	table.insert(self.sfxPlaying,play_id)
+	--	local play_id = #self.sfxPlaying + 1
+	sound.play("#dialogrev1")
+	--msg.post("#dialogrev1","play_sound",{play_id = play_id})
+	--table.insert(self.sfxPlaying,play_id)
 end
 
 local function onStopChat(self)
-	print("onstopchat")
-	sound.stop("#dialogrev3")
+	sound.stop("#dialogrev1")
 end
 
-
-local function onPlayMusic(self,musicUrl)
-	--if gameSettings.music
-		if musicUrl == "#menuMusic" and not self.menuMusicPlaying then 
-			self.menuMusicPlaying = true
-			sound.play(musicUrl)
-		elseif musicUrl == "#bgMusic" and not self.bgMusicPlaying then
-			self.bgMusicPlaying = true
-			sound.play(musicUrl)
-		end
-	--end
-end
-
-local function onStopMusic(self,musicUrl) 
-	if musicUrl == "#menuMusic" then 
-		self.menuMusicPlaying = false
-	elseif musicUrl == "#bgMusic" then
-		self.bgMusicPlaying = false
-	end
+local function onStopMusic(self,musicUrl)
 	sound.stop(musicUrl)
 end
 
+local function onPlayMusic(self,musicUrl)
+	--if gameSettings.music
+	if self.currentTrack ~= musicUrl then
+		print("stop music",self.currentTrack)
+		sound.stop(self.currentTrack)
+		timer.delay(0.1, false, function()
+			go.set(musicUrl, "gain", musicUrl == "#menuMusic" and 0.1 or 0.4)
+			sound.play(musicUrl)
+			self.currentTrack = musicUrl
+			print("play music",self.currentTrack)
+		end)
+	end
+		--if musicUrl == "#menuMusic" and not self.menuMusicPlaying then 
+	--		self.menuMusicPlaying = true
+	--		sound.play(musicUrl)
+--		elseif musicUrl == "#battleMusic" and not self.battleMusicPlaying then
+--			go.set(musicUrl, "gain", 0.5)
+		--	self.battleMusicPlaying = true
+	--		sound.play(musicUrl)
+	--	end
+	--end
+end
+
+local function onBackToMenu(self)
+	for i = 1, #sounds, 1 do
+		sound.stop(sounds[i])
+	end
+	sound.stop("#battleMusic")
+	print("music stop")
+end
+
+local function onFadeOutMusic(self,musicUrl)
+	go.animate(musicUrl, "gain", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, 1, 0)
+end
+
 function init(self)
-	self.bgMusicPlaying = false
-	self.menuMusicPlaying = false
-
-	self.sfxPlaying = {}
-
-	msg.post(".", "toggle_musics")
-	msg.post(".", "toggle_sounds")
-
+	self.currentTrack = ""
 	events.subscribe(gameEvents.PLAY_SFX, onPlaySfx, self)
 	events.subscribe(gameEvents.PLAY_CHAT_SFX, onplayChat, self)
 	events.subscribe(gameEvents.STOP_CHAT_SFX, onStopChat, self)
@@ -114,40 +168,19 @@ function init(self)
 	events.subscribe(gameEvents.STOP_CAST, onStopCast, self)
 	events.subscribe(gameEvents.PLAY_MUSIC, onPlayMusic, self)
 	events.subscribe(gameEvents.STOP_MUSIC, onStopMusic, self)
+	events.subscribe(gameEvents.FADE_OUT_MUSIC, onFadeOutMusic, self)
+	events.subscribe(gameEvents.ENABLE_SFX, onEnableSfx, self)
+	events.subscribe(gameEvents.DISABLE_SFX, onDisableSfx, self)
+	events.subscribe(gameEvents.ENABLE_MUSIC, onEnableMusic, self)
+	events.subscribe(gameEvents.DISABLE_MUSIC, onDisableMusic, self)
+	events.subscribe(gameEvents.PAUSE, onPause, self)
+	events.subscribe(gameEvents.RESUME, onResume, self)
+	events.subscribe(gameEvents.BACK_TO_MENU, onBackToMenu, self)
 end
 
 
 
 function on_message(self, message_id, message)
-	--if message_id == hash("show_game_over") then
-	--	sound.stop("#bgMusic")
-	--end
-
-	if message_id == hash("sound_done") then
-		table.remove(self.sfxPlaying,message.play_id)
-	end
-	--if message_id == hash("toggle_pause") then
-	--	for i = 1, #sounds, 1 do
-	--		sound.pause(sounds[i], gameModel.isPaused)
-	--	end
-	--	for j = 1, #sounds, 1 do
-	--		sound.pause(musics[j], gameModel.isPaused)
-	--	end
-	--end
-	--if message_id == hash("toggle_sounds") then
-	--	local gain = 0
-	--	if gameSettings.sounds then 
-	--		gain = 1
-	--	end
-	--	sound.set_group_gain("sfx", gain)
-	--end
-	--if message_id == hash("toggle_musics") then
-	--	local gain = 0
-	--	if gameSettings.music then 
-	--		gain = 1
-	--	end
-	--	sound.set_group_gain("music", gain)
-	--end
 end
 
 function final(self)
@@ -158,5 +191,13 @@ function final(self)
 	events.unsubscribe(gameEvents.STOP_CAST, onStopCast, self)
 	events.unsubscribe(gameEvents.PLAY_CHAT_SFX, onplayChat, self)
 	events.unsubscribe(gameEvents.STOP_CHAT_SFX, onStopChat, self)
+	events.unsubscribe(gameEvents.FADE_OUT_MUSIC, onFadeOutMusic, self)
+	events.unsubscribe(gameEvents.ENABLE_SFX, onEnableSfx, self)
+	events.unsubscribe(gameEvents.DISABLE_SFX, onDisableSfx, self)
+	events.unsubscribe(gameEvents.ENABLE_MUSIC, onEnableMusic, self)
+	events.unsubscribe(gameEvents.DISABLE_MUSIC, onDisableMusic, self)
+	events.unsubscribe(gameEvents.PAUSE, onPause, self)
+	events.unsubscribe(gameEvents.RESUME, onResume, self)
+	events.unsubscribe(gameEvents.BACK_TO_MENU, onBackToMenu, self)
 	
 end

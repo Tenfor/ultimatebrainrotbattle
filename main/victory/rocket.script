@@ -1,0 +1,47 @@
+local events = require("event.events")
+local gameEvents = require("main/events/gameEvents")
+
+local target_y = 0
+local speed = 1000  -- rakéta sebessége (pixel/sec)
+
+local function poof(self)
+	local sfxs = {"#explosion3","#explosion4"}
+	events.trigger(gameEvents.PLAY_SFX,sfxs[math.random(1,#sfxs)])
+	
+	local particles = {
+		"#redParticle","#greenParticle","#blueParticle",
+		"#yellowParticle","#purpleParticle","#cyanParticle"
+	}
+	local index = math.random(1, #particles)
+	particlefx.play(particles[index])
+
+	go.delete()
+end
+
+function init(self)
+	local pos = go.get_position()
+
+	pos.x = math.random(40, 1240)
+	pos.y = -125	
+	target_y = math.random(280, 660)
+
+	go.set_position(pos)
+end
+
+function update(self, dt)
+	local pos = go.get_position()
+
+	-- ha a cél fölött/alatt vagyunk, mozogjunk felé
+	if pos.y <= target_y then
+		local dir = 1
+		if target_y < pos.y then
+			dir = -1
+		end
+
+		pos.y = pos.y + dir * speed * dt
+		go.set_position(pos)
+	else
+		-- elértük a célt
+		poof()
+	end
+end

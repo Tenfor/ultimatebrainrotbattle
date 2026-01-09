@@ -21,6 +21,7 @@ nodes {
   id: "sahurBtn"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
+  enabled: false
 }
 nodes {
   size {
@@ -49,6 +50,7 @@ nodes {
   id: "patapimBtn"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
+  enabled: false
 }
 nodes {
   size {
@@ -77,6 +79,7 @@ nodes {
   id: "cappucinoBtn"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
+  enabled: false
 }
 nodes {
   size {
@@ -92,7 +95,7 @@ nodes {
 }
 nodes {
   position {
-    x: 180.0
+    x: 325.0
     y: 670.0
   }
   scale {
@@ -154,7 +157,7 @@ nodes {
 }
 nodes {
   position {
-    x: 180.0
+    x: 325.0
     y: 610.0
   }
   scale {
@@ -216,336 +219,7 @@ nodes {
 }
 nodes {
   position {
-    x: 1092.0
-    y: 674.0
-  }
-  scale {
-    x: 0.25
-    y: 0.4
-  }
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  type: TYPE_BOX
-  id: "enemyHp"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  type: TYPE_BOX
-  texture: "ui/progressbarback"
-  id: "enemyHpBg"
-  parent: "enemyHp"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 605.0
-  }
-  size {
-    x: 1210.0
-    y: 87.0
-  }
-  color {
-    x: 0.028
-    y: 0.852
-    z: 0.0
-  }
-  type: TYPE_BOX
-  texture: "ui/progressbarfront2"
-  id: "enemyHpBar"
-  pivot: PIVOT_E
-  parent: "enemyHp"
-  inherit_alpha: true
-}
-nodes {
-  scale {
-    x: 2.0
-    y: 1.25
-  }
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  type: TYPE_TEXT
-  text: "100/100"
-  font: "game"
-  id: "enemyHpText"
-  parent: "enemyHp"
-  inherit_alpha: true
-}
-nodes {
-  position {
-    x: 652.0
-    y: 667.0
-  }
-  scale {
-    x: 0.6
-    y: 0.6
-  }
-  type: TYPE_BOX
-  texture: "ui/button1"
-  id: "menuBtn"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  scale {
-    x: 0.8
-    y: 0.8
-  }
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  type: TYPE_TEXT
-  text: "menu"
-  font: "game"
-  id: "menuText"
-  parent: "menuBtn"
-  inherit_alpha: true
-}
-nodes {
-  position {
-    x: 99.0
-    y: 48.0
-  }
-  scale {
-    x: 0.33
-    y: 0.33
-  }
-  type: TYPE_BOX
-  texture: "ui/LION_STRIKE"
-  id: "skillBtn1"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: -10.0
-    y: -1.666667
-  }
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  type: TYPE_TEXT
-  text: "1"
-  font: "game"
-  id: "skillBtnText1"
-  parent: "skillBtn1"
-  inherit_alpha: true
-}
-nodes {
-  size {
-    x: 256.0
-    y: 256.0
-  }
-  color {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "cd1"
-  parent: "skillBtn1"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-  enabled: false
-}
-nodes {
-  position {
-    x: 193.0
-    y: 48.0
-  }
-  scale {
-    x: 0.33
-    y: 0.33
-  }
-  type: TYPE_BOX
-  texture: "ui/EMPTY"
-  id: "skillBtn2"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    y: -1.666667
-  }
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  type: TYPE_TEXT
-  text: "2"
-  font: "game"
-  id: "skillBtnText2"
-  parent: "skillBtn2"
-  inherit_alpha: true
-}
-nodes {
-  size {
-    x: 256.0
-    y: 256.0
-  }
-  color {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "cd2"
-  parent: "skillBtn2"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-  enabled: false
-}
-nodes {
-  position {
-    x: 290.0
-    y: 48.0
-  }
-  scale {
-    x: 0.33
-    y: 0.33
-  }
-  type: TYPE_BOX
-  texture: "ui/EMPTY"
-  id: "skillBtn3"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    y: -1.666667
-  }
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  type: TYPE_TEXT
-  text: "3"
-  font: "game"
-  id: "skillBtnText3"
-  parent: "skillBtn3"
-  inherit_alpha: true
-}
-nodes {
-  size {
-    x: 256.0
-    y: 256.0
-  }
-  color {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "cd3"
-  parent: "skillBtn3"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-  enabled: false
-}
-nodes {
-  position {
-    x: 388.0
-    y: 48.0
-  }
-  scale {
-    x: 0.33
-    y: 0.33
-  }
-  type: TYPE_BOX
-  texture: "ui/EMPTY"
-  id: "skillBtn4"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    y: -1.666667
-  }
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  type: TYPE_TEXT
-  text: "4"
-  font: "game"
-  id: "skillBtnText4"
-  parent: "skillBtn4"
-  inherit_alpha: true
-}
-nodes {
-  size {
-    x: 256.0
-    y: 256.0
-  }
-  color {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "cd4"
-  parent: "skillBtn4"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-  enabled: false
-}
-nodes {
-  position {
-    x: 485.0
-    y: 48.0
-  }
-  scale {
-    x: 0.33
-    y: 0.33
-  }
-  type: TYPE_BOX
-  texture: "ui/EMPTY"
-  id: "skillBtn5"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    y: -1.666667
-  }
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  type: TYPE_TEXT
-  text: "5"
-  font: "game"
-  id: "skillBtnText5"
-  parent: "skillBtn5"
-  inherit_alpha: true
-}
-nodes {
-  size {
-    x: 256.0
-    y: 256.0
-  }
-  color {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-  }
-  type: TYPE_BOX
-  id: "cd5"
-  parent: "skillBtn5"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-  enabled: false
-}
-nodes {
-  position {
-    x: 182.0
+    x: 325.0
     y: 604.0
   }
   size {
@@ -772,7 +446,546 @@ nodes {
 }
 nodes {
   position {
-    x: 387.0
+    x: 955.0
+    y: 670.0
+  }
+  scale {
+    x: 0.25
+    y: 0.4
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "enemyHp"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  type: TYPE_BOX
+  texture: "ui/progressbarback"
+  id: "enemyHpBg"
+  parent: "enemyHp"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 605.0
+  }
+  size {
+    x: 1210.0
+    y: 87.0
+  }
+  color {
+    x: 0.028
+    y: 0.852
+    z: 0.0
+  }
+  type: TYPE_BOX
+  texture: "ui/progressbarfront2"
+  id: "enemyHpBar"
+  pivot: PIVOT_E
+  parent: "enemyHp"
+  inherit_alpha: true
+}
+nodes {
+  scale {
+    x: 2.0
+    y: 1.25
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "100/100"
+  font: "game"
+  id: "enemyHpText"
+  parent: "enemyHp"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 652.0
+    y: 667.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "menuBtn"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+}
+nodes {
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "menu"
+  font: "game"
+  id: "menuText"
+  parent: "menuBtn"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 100.0
+    y: 48.0
+  }
+  scale {
+    x: 0.33
+    y: 0.33
+  }
+  type: TYPE_BOX
+  texture: "ui/LION_STRIKE"
+  id: "skillBtn1"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 110.0
+    y: 78.0
+  }
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "1"
+  font: "game"
+  id: "skillBtnText1"
+  pivot: PIVOT_E
+  parent: "skillBtn1"
+  inherit_alpha: true
+}
+nodes {
+  size {
+    x: 256.0
+    y: 256.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "cd1"
+  parent: "skillBtn1"
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+}
+nodes {
+  position {
+    x: -110.0
+    y: -78.0
+  }
+  scale {
+    x: 1.1
+    y: 1.1
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "1"
+  font: "game"
+  id: "hotkeyText1"
+  pivot: PIVOT_W
+  parent: "skillBtn1"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 195.0
+    y: 48.0
+  }
+  scale {
+    x: 0.33
+    y: 0.33
+  }
+  type: TYPE_BOX
+  texture: "ui/EMPTY"
+  id: "skillBtn2"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 120.0
+    y: 78.0
+  }
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "2"
+  font: "game"
+  id: "skillBtnText2"
+  pivot: PIVOT_E
+  parent: "skillBtn2"
+  inherit_alpha: true
+}
+nodes {
+  size {
+    x: 256.0
+    y: 256.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "cd2"
+  parent: "skillBtn2"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+}
+nodes {
+  position {
+    x: -110.0
+    y: -78.0
+  }
+  scale {
+    x: 1.1
+    y: 1.1
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "2"
+  font: "game"
+  id: "hotkeyText2"
+  pivot: PIVOT_W
+  parent: "skillBtn2"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 290.0
+    y: 48.0
+  }
+  scale {
+    x: 0.33
+    y: 0.33
+  }
+  type: TYPE_BOX
+  texture: "ui/EMPTY"
+  id: "skillBtn3"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 110.0
+    y: 78.0
+  }
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "3"
+  font: "game"
+  id: "skillBtnText3"
+  pivot: PIVOT_E
+  parent: "skillBtn3"
+  inherit_alpha: true
+}
+nodes {
+  size {
+    x: 256.0
+    y: 256.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "cd3"
+  parent: "skillBtn3"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+}
+nodes {
+  position {
+    x: -110.0
+    y: -78.0
+  }
+  scale {
+    x: 1.1
+    y: 1.1
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "3"
+  font: "game"
+  id: "hotkeyText3"
+  pivot: PIVOT_W
+  parent: "skillBtn3"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 385.0
+    y: 48.0
+  }
+  scale {
+    x: 0.33
+    y: 0.33
+  }
+  type: TYPE_BOX
+  texture: "ui/EMPTY"
+  id: "skillBtn4"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 110.0
+    y: 78.0
+  }
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "4"
+  font: "game"
+  id: "skillBtnText4"
+  pivot: PIVOT_E
+  parent: "skillBtn4"
+  inherit_alpha: true
+}
+nodes {
+  size {
+    x: 256.0
+    y: 256.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "cd4"
+  parent: "skillBtn4"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+}
+nodes {
+  position {
+    x: -110.0
+    y: -78.0
+  }
+  scale {
+    x: 1.1
+    y: 1.1
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "4\t"
+  font: "game"
+  id: "hotkeyText4"
+  pivot: PIVOT_W
+  parent: "skillBtn4"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 480.0
+    y: 48.0
+  }
+  scale {
+    x: 0.33
+    y: 0.33
+  }
+  type: TYPE_BOX
+  texture: "ui/EMPTY"
+  id: "skillBtn5"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 110.0
+    y: 78.0
+  }
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "5"
+  font: "game"
+  id: "skillBtnText5"
+  pivot: PIVOT_E
+  parent: "skillBtn5"
+  inherit_alpha: true
+}
+nodes {
+  size {
+    x: 256.0
+    y: 256.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "cd5"
+  parent: "skillBtn5"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+}
+nodes {
+  position {
+    x: -110.0
+    y: -78.0
+  }
+  scale {
+    x: 1.1
+    y: 1.1
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "5\t"
+  font: "game"
+  id: "hotkeyText5"
+  pivot: PIVOT_W
+  parent: "skillBtn5"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 575.0
+    y: 48.0
+  }
+  scale {
+    x: 0.33
+    y: 0.33
+  }
+  type: TYPE_BOX
+  texture: "ui/EMPTY"
+  id: "skillBtn6"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+}
+nodes {
+  position {
+    x: 110.0
+    y: 78.0
+  }
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "6\n"
+  ""
+  font: "game"
+  id: "skillBtnText6"
+  pivot: PIVOT_E
+  parent: "skillBtn6"
+  inherit_alpha: true
+}
+nodes {
+  size {
+    x: 256.0
+    y: 256.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "cd6"
+  parent: "skillBtn6"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+}
+nodes {
+  position {
+    x: -110.0
+    y: -78.0
+  }
+  scale {
+    x: 1.1
+    y: 1.1
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "1"
+  font: "game"
+  id: "hotkeyText6"
+  pivot: PIVOT_W
+  parent: "skillBtn6"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 534.0
     y: 603.0
   }
   scale {
@@ -784,6 +997,7 @@ nodes {
   id: "resourceMaxBtn"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
+  enabled: false
 }
 nodes {
   size {
@@ -799,7 +1013,7 @@ nodes {
 }
 nodes {
   position {
-    x: 389.0
+    x: 534.0
     y: 671.0
   }
   scale {
@@ -811,6 +1025,7 @@ nodes {
   id: "playerHpMaxBtn"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
+  enabled: false
 }
 nodes {
   size {
@@ -838,6 +1053,7 @@ nodes {
   id: "allCritBtn"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
+  enabled: false
 }
 nodes {
   scale {
@@ -868,6 +1084,7 @@ nodes {
   id: "slowMoBtn"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
+  enabled: false
 }
 nodes {
   scale {
@@ -970,27 +1187,221 @@ nodes {
 }
 nodes {
   position {
-    x: 640.0
-    y: 360.0
+    x: 1190.0
+    y: 640.0
   }
   size {
-    x: 1280.0
-    y: 720.0
-  }
-  color {
-    x: 0.2
-    y: 0.0
-    z: 0.2
+    x: 200.0
+    y: 100.0
   }
   type: TYPE_BOX
-  id: "flashEffect"
+  id: "bossIndicator"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    y: -72.0
+  }
+  scale {
+    x: 0.18
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "ui/line"
+  id: "line"
+  parent: "bossIndicator"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -68.0
+    y: -72.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "ui/dot2"
+  id: "dot1"
+  parent: "bossIndicator"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -23.0
+    y: -72.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "ui/dot2"
+  id: "dot2"
+  parent: "bossIndicator"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 23.0
+    y: -72.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "ui/dot2"
+  id: "dot3"
+  parent: "bossIndicator"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 68.0
+    y: -72.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "ui/dot2"
+  id: "dot4"
+  parent: "bossIndicator"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -68.0
+    y: -72.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "ui/dot1"
+  id: "dot1Active"
+  parent: "bossIndicator"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -23.0
+    y: -72.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "ui/dot1"
+  id: "dot2Active"
+  parent: "bossIndicator"
   inherit_alpha: true
   alpha: 0.0
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
   position {
-    x: 481.0
+    x: 23.0
+    y: -72.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "ui/dot1"
+  id: "dot3Active"
+  parent: "bossIndicator"
+  inherit_alpha: true
+  alpha: 0.0
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 68.0
+    y: -72.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "ui/dot1"
+  id: "dot4Active"
+  parent: "bossIndicator"
+  inherit_alpha: true
+  alpha: 0.0
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "ui/boneca_circle"
+  id: "bossCurr"
+  parent: "bossIndicator"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "ui/boneca_circle"
+  id: "bossNext"
+  parent: "bossIndicator"
+  inherit_alpha: true
+  alpha: 0.0
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 753.0
+    y: 607.0
+  }
+  scale {
+    x: 0.3
+    y: 0.4
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "enemyHpMinusBtn2"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "-500"
+  font: "game"
+  id: "enemyHpMinusText1"
+  parent: "enemyHpMinusBtn2"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 622.0
     y: 671.0
   }
   scale {
@@ -1002,6 +1413,7 @@ nodes {
   id: "playerHpMinusBtn"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
+  enabled: false
 }
 nodes {
   size {
@@ -1017,7 +1429,7 @@ nodes {
 }
 nodes {
   position {
-    x: 884.0
+    x: 753.0
     y: 671.0
   }
   scale {
@@ -1029,6 +1441,7 @@ nodes {
   id: "enemyHpMinusBtn"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
+  enabled: false
 }
 nodes {
   size {
@@ -1040,33 +1453,6 @@ nodes {
   font: "game"
   id: "enemyHpMinusText"
   parent: "enemyHpMinusBtn"
-  inherit_alpha: true
-}
-nodes {
-  position {
-    x: 884.0
-    y: 607.0
-  }
-  scale {
-    x: 0.3
-    y: 0.4
-  }
-  type: TYPE_BOX
-  texture: "ui/button1"
-  id: "enemyHpMinusBtn2"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  type: TYPE_TEXT
-  text: "-500"
-  font: "game"
-  id: "enemyHpMinusText1"
-  parent: "enemyHpMinusBtn2"
   inherit_alpha: true
 }
 nodes {
@@ -1087,6 +1473,41 @@ nodes {
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
   visible: false
+}
+nodes {
+  position {
+    x: 90.0
+    y: 640.0
+  }
+  scale {
+    x: -0.5
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "ui/sahur_circle"
+  id: "playerIndicator"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 640.0
+    y: 360.0
+  }
+  size {
+    x: 1280.0
+    y: 720.0
+  }
+  color {
+    x: 0.2
+    y: 0.0
+    z: 0.2
+  }
+  type: TYPE_BOX
+  id: "flashEffect"
+  inherit_alpha: true
+  alpha: 0.0
+  size_mode: SIZE_MODE_AUTO
 }
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT

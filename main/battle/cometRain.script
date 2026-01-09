@@ -1,0 +1,100 @@
+local enemyModel = require("main/battle/enemyModel")
+local playerModel = require("main/battle/playerModel")
+local events = require("event.events")
+local gameEvents = require("main/events/gameEvents")
+local battleController = require("main/battle/battleController")
+local skills = require("main/battle/skills")
+local hitType = require("main/battle/hitType")
+local buffs = require("main/battle/buffs")
+
+go.property("enemyCasted", false)
+
+local MOVE_TIME = 0.35
+
+local function comet_impact(self,id)
+	--local url = msg.url(nil, "comet1", nil)
+	events.trigger(gameEvents.PLAY_SFX,"#explosion1")
+	--delete and hide will lead to a warning for some weird and unknown reason so I'll just hide them by setting the position
+	go.set_position(vmath.vector3(-1000,-1000,-1000), id)
+
+	events.trigger(gameEvents.getEffectEvent(self.enemyCasted),"explosion",0,0,0,1,self.enemyCasted)
+	local dmg = battleController.calculate_damage(skills.COMET_RAIN)
+	dmg.dmg = math.floor(dmg.dmg/2)
+	events.trigger(gameEvents.getHurtEvent(self.enemyCasted),dmg,hitType.VFX.FLASHING, hitType.SFX.NONE)
+	--events.trigger(gameEvents.FLASH_EFFECT, vmath.vector4(1,1,1,0))
+end
+
+local function final_comet_impact(self,id)
+	events.trigger(gameEvents.PLAY_SFX,"#explosion_long")
+	go.set_position(vmath.vector3(-1000,-1000,-1000), id)
+
+	events.trigger(gameEvents.getEffectEvent(self.enemyCasted),"explosion_big",0,0,0,1.5,self.enemyCasted)
+	events.trigger(gameEvents.FLASH_EFFECT, vmath.vector4(1,1,1,0))
+	events.trigger(gameEvents.SHAKE_EFFECT,0.4,30)	
+	local dmg = battleController.calculate_damage(skills.COMET_RAIN)
+	dmg.dmg = math.floor(dmg.dmg*4)
+
+	if self.enemyCasted and not playerModel.hasBuff(buffs.SHIELD) then
+		events.trigger(gameEvents.INTERRUPT_PLAYER_CASTING)
+		playerModel.addBuff(buffs.STUN,3)
+	end
+	if not self.enemyCasted and not enemyModel.hasBuff(buffs.SHIELD) then
+		events.trigger(gameEvents.INTERRUPT_ENEMY_CASTING)
+		enemyModel.addBuff(buffs.STUN,3)
+	end
+	
+	events.trigger(gameEvents.getHurtEvent(self.enemyCasted),dmg,hitType.VFX.FLASHING, hitType.SFX.NONE)
+end
+
+local function move_comet(self,id)
+	go.animate(
+	id,
+	"position",
+	go.PLAYBACK_ONCE_FORWARD,
+	self.targetPos,
+	go.EASING_LINEAR,
+	MOVE_TIME,
+	0,
+	function() 
+		if id == "comet4" then 
+			final_comet_impact(self,id)
+		else
+			comet_impact(self,id)
+		end
+	end
+)
+end
+
+function init(self)
+
+	self.comet1StartPos = go.get_position("comet1")
+	self.comet2StartPos = go.get_position("comet2")
+	self.comet3StartPos = go.get_position("comet3")
+	self.comet4StartPos = go.get_position("comet4")
+
+	battleController.addCd(skills.COMET_RAIN,self.enemyCasted)
+	
+	self.targetPos = vmath.vector3(enemyModel.enterPos[1],enemyModel.enterPos[2],enemyModel.enterPos[3])
+	-- comet1: 0.3 mp után
+	events.trigger(gameEvents.PLAY_SFX,"#whoosh4")
+	events.trigger(gameEvents.PLAY_SFX,"#patapim_ulti")
+	move_comet(self,"comet1")
+
+	-- comet2: 0.6 mp után
+	timer.delay(0.3, false, function()
+		events.trigger(gameEvents.PLAY_SFX,"#whoosh4")
+		move_comet(self,"comet2")
+	end)
+
+	-- comet3: 0.9 mp után
+	timer.delay(0.6, false, function()
+		events.trigger(gameEvents.PLAY_SFX,"#whoosh4")
+		move_comet(self,"comet3")
+	end)
+
+	timer.delay(0.9, false, function()
+		events.trigger(gameEvents.PLAY_SFX,"#whoosh4")
+		move_comet(self,"comet4")
+	end)
+end
+

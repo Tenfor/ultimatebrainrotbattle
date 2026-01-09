@@ -9,24 +9,92 @@ local buffs = require("main/battle/buffs")
 local chats = require("main/battle/chats")
 local gameModel = require("main/battle/gameModel")
 local hitType = require("main/battle/hitType")
-local dtypewriter = require "dtypewriter.dtypewriter"
+local dtypewriter = require ("main/utils/dtypewriter")
+local settingsModel = require ("main/settings/settingsModel")
+local achievements = require("main/achievements/achievements")
+
+local function onPause(self)
+	self.input_enabled = false
+end
+
+local function onResume(self)
+	self.input_enabled = true
+end
 
 local function truncate(num, decimals)
 	local mult = 10 ^ decimals
 	return math.floor(num * mult) / mult
 end
 
+local function hideDot(self,dotNum)
+	print("hidedot",dotNum)
+	print(self["dot1"])
+	gui.animate(self["dot"..dotNum], "color.w", 0, gui.EASING_LINEAR, 0.8)
+end
+
+local function showDot(self,dotNum)
+	gui.animate(self["dot"..dotNum], "color.w", 1, gui.EASING_LINEAR, 0.8,0.2)
+end
+
+local function changeFace(self,bossCurr,bossNext)
+	gui.play_flipbook(self.bossCurr,bossCurr)
+	gui.play_flipbook(self.bossNext,bossNext)
+	gui.set_alpha(self.bossNext, 0)
+	gui.set_alpha(self.bossCurr, 1)
+
+	gui.animate(self.bossCurr, "color.w", 0, gui.EASING_LINEAR, 1)
+	gui.animate(self.bossNext, "color.w", 1, gui.EASING_LINEAR, 1)
+end
+
+local function updateBossIndicator(self)
+	print("updateBossIndicator",self.dot1)
+	if enemyModel.name == "boneca" then 
+		hideDot(self,1)
+		showDot(self,2)
+		changeFace(self,"boneca_circle","frigo_circle")
+	elseif enemyModel.name == "frigo" then
+		hideDot(self,2)
+		showDot(self,3)
+		changeFace(self,"frigo_circle","dindin_circle")
+	elseif enemyModel.name == "superDindin" then
+		hideDot(self,3)
+		showDot(self,4)
+		changeFace(self,"dindin_circle","bombardiro_circle")
+	elseif enemyModel.name == "patapim" then
+		changeFace(self,"patapim_circle","bombardiro_circle")
+	elseif enemyModel.name == "cappuccino" then
+		changeFace(self,"cappuccino_circle","bombardiro_circle")
+	end
+end
+
+local function onEnemyDie(self)
+	updateBossIndicator(self)
+	if enemyModel.name == "superDindin" then 
+		achievements.setDindinDefeated(true)
+	end
+	if enemyModel.name == "bombardiro" then 
+		timer.delay(1.5, false, function() 
+			gui.set_color(self.flashEffectNode, vmath.vector4(0, 0, 0, 1))
+			gui.set_alpha(self.flashEffectNode, 0)
+			gui.animate(self.flashEffectNode, "color.w", 1, gui.EASING_LINEAR, 1,0,function()
+				events.trigger(gameEvents.CHANGE_SCENE,"main","victory")
+			end)
+		end)
+	end
+end
+
 local function onPlayerDie(self)
 	gui.set_color(self.flashEffectNode, vmath.vector4(0, 0, 0, 1))
 	gui.set_alpha(self.flashEffectNode, 0)
+	achievements.setDeaths(achievements.deaths + 1)
+	events.trigger(gameEvents.FADE_OUT_MUSIC,"#battleMusic")
 	gui.animate(self.flashEffectNode, "color.w", 1, gui.EASING_LINEAR, 1,0,function()
-		events.trigger(gameEvents.LOAD_SCENE,"gameOver")
-		events.trigger(gameEvents.UNLOAD_SCENE,"main")
+		events.trigger(gameEvents.CHANGE_SCENE,"main","gameOver")
 	end)
 end
 
 local function updateCds(self)
-	for i = 1, 5 do
+	for i = 1, 6 do
 		local maxCd = playerModel.skills[i].maxCd
 		local currentCd = playerModel.skills[i].cd
 
@@ -119,18 +187,56 @@ local function loadButtons(self)
 		playerModel.skills[2].locked,
 		playerModel.skills[3].locked,
 		playerModel.skills[4].locked,
-		playerModel.skills[5].locked
+		playerModel.skills[5].locked,
+		playerModel.skills[6].locked
 	}
 
-	for i = 1, 5 do
+	for i = 1, 6 do
 		self["skillBtn"..i]:set_enabled(not self.buttonLocks[i])
+		
+		gui.play_flipbook(self["skillBtn"..i.."Node"], self.buttonLocks[i] and "EMPTY" or playerModel.skills[i].skillName)
+		gui.set_text(self["skillBtnText"..i], self.buttonLocks[i] and "" or skills.getResourceCost(playerModel.skills[i].skillName))
+		local yellow = vmath.vector4(1,1,0,1)
+		local red = vmath.vector4(1,0,0,1)
+		local blue = vmath.vector4(0,0,1,1)
+	--	gui.set_color(self["skillBtnText"..i], red)
+		if playerModel.currentCharacter == "patapim" then 
+			--gui.set_color(self["skillBtnText"..i], blue)
+		end
+		if playerModel.currentCharacter == "cappuccino" then 
+			--gui.set_color(self["skillBtnText"..i], yellow)
+		end
+	end
+
+	if settingsModel.hotkeys == "123456" then 
+		gui.set_text(self.hotkeyText1, "1")
+		gui.set_text(self.hotkeyText2, "2")
+		gui.set_text(self.hotkeyText3, "3")
+		gui.set_text(self.hotkeyText4, "4")
+		gui.set_text(self.hotkeyText5, "5")
+		gui.set_text(self.hotkeyText6, "6")
+	end
+
+	if settingsModel.hotkeys == "QWERTY" then 
+		gui.set_text(self.hotkeyText1, "Q")
+		gui.set_text(self.hotkeyText2, "W")
+		gui.set_text(self.hotkeyText3, "E")
+		gui.set_text(self.hotkeyText4, "R")
+		gui.set_text(self.hotkeyText5, "T")
+		gui.set_text(self.hotkeyText6, "Y")
+	end
+
+	if settingsModel.hotkeys == "AZERTY" then 
+		gui.set_text(self.hotkeyText1, "A")
+		gui.set_text(self.hotkeyText2, "Z")
+		gui.set_text(self.hotkeyText3, "E")
+		gui.set_text(self.hotkeyText4, "R")
+		gui.set_text(self.hotkeyText5, "T")
+		gui.set_text(self.hotkeyText6, "Y")
 	end
 	
-	gui.play_flipbook(self.skillBtn1Node, self.buttonLocks[1] and "EMPTY" or playerModel.skills[1].skillName)
-	gui.play_flipbook(self.skillBtn2Node, self.buttonLocks[2] and "EMPTY" or playerModel.skills[2].skillName)
-	gui.play_flipbook(self.skillBtn3Node, self.buttonLocks[3] and "EMPTY" or playerModel.skills[3].skillName)
-	gui.play_flipbook(self.skillBtn4Node, self.buttonLocks[4] and "EMPTY" or playerModel.skills[4].skillName)
-	gui.play_flipbook(self.skillBtn5Node, self.buttonLocks[5] and "EMPTY" or playerModel.skills[5].skillName)
+	gui.set_enabled(self.skillBtn6Node, playerModel.currentCharacter == "patapim")
+	gui.set_visible(self.skillBtn6Node, playerModel.currentCharacter == "patapim")
 end
 
 local function updateButtons(self)
@@ -139,7 +245,7 @@ local function updateButtons(self)
 	local disabledColor = vmath.vector4(0.15, 0.15, 0.15, 0.8)
 	local activeColor = vmath.vector4(0, 1, 0, 1)
 
-	for i = 1, 5 do
+	for i = 1, 6 do
 		local btnNode = self["skillBtn" .. i .. "Node"]
 		local cost    = skills.getResourceCost(playerModel.skills[i].skillName)
 		local color   = enabledColor
@@ -230,8 +336,13 @@ local function updateEnemyHpText(self)
 	self.enemyHpBar:set_to(enemyModel.hp/enemyModel.maxHp)
 end
 
+local function loadPlayerIndicator(self)
+	print(playerModel.currentCharacter)
+	gui.play_flipbook(self.playerIndicator, playerModel.currentCharacter.."_circle")
+end
+
 local function onCharacterLoaded(self)
-	print("onCharacterLoaded")
+	loadPlayerIndicator(self)
 	loadButtons(self)
 	updatePlayerHpText(self)
 	updateResourceBar(self)
@@ -253,12 +364,12 @@ local function onEnemyHurt(self,dmg)
 end
 
 local function onPlayerHurt(self,dmg)
-	if not playerModel.hasBuff(buffs.SHIELD) then
+	if not playerModel.hasBuff(buffs.SHIELD) and not playerModel.hasBuff(buffs.EVASION) then
 		playerModel.setHp(playerModel.hp-dmg.dmg)
 		gameModel.setDamageTaken(gameModel.damageTaken + dmg.dmg)
 		updatePlayerHpText(self)
 
-		if playerModel.hp <= 0 then
+		if playerModel.hp <= 0 and not gameModel.isGameOver then
 			events.trigger(gameEvents.PLAYER_DIE)
 			onInterruptPlayerCasting(self)
 			onInterruptEnemyCasting(self)
@@ -278,9 +389,19 @@ local function onPlayerHeal(self,amount)
 	updatePlayerHpText(self)
 end
 
+local function onEnemyHeal(self,amount)
+	if enemyModel.hp+amount >= enemyModel.maxHp then
+		enemyModel.setHp(enemyModel.maxHp)	
+	else
+		enemyModel.setHp(enemyModel.hp+amount)
+	end
+
+	updateEnemyHpText(self)
+end
+
+
 local function onMenuBtn(self)
-	events.trigger(gameEvents.LOAD_SCENE,"menu")
-	events.trigger(gameEvents.UNLOAD_SCENE,"main")
+	events.trigger(gameEvents.CHANGE_SCENE,"main","menu")
 end
 
 local function onPlayerHpMaxBtn(self)
@@ -349,6 +470,7 @@ local function initGui(self)
 	updatePlayerHpText(self)
 	updateEnemyHpText(self)
 	updateResourceBar(self)
+	loadPlayerIndicator(self)
 end
 
 local function onEnemyEnter(self)
@@ -365,6 +487,12 @@ local function onEnemyEnter(self)
 	gui.set_position(self.enemyCastNode,castBarPos)
 	gui.set_position(self.chatBoxNode,chatBoxPos)
 	updateEnemyHpText(self)
+
+	if enemyModel.name == "patapim" then
+		changeFace(self,"bombardiro_circle","patapim_circle")
+	elseif enemyModel.name == "cappuccino" then
+		changeFace(self,"bombardiro_circle","cappuccino_circle")
+	end
 end
 
 local function onStartChat(self,dialogName, dialogIndex)
@@ -392,6 +520,7 @@ end
 
 function init(self)
 	self.druid = druid.new(self)
+	self.input_enabled = true -- to handle pause
 	self.sahurBtn = self.druid:new_button("sahurBtn", onSahurBtn)
 	self.patapimBtn = self.druid:new_button("patapimBtn", onPatapimBtn)
 	self.cappucinoBtn = self.druid:new_button("cappucinoBtn", onCappucinoBtn)
@@ -423,6 +552,7 @@ function init(self)
 	events.subscribe(gameEvents.ENEMY_HURT, onEnemyHurt, self)
 	events.subscribe(gameEvents.PLAYER_HURT, onPlayerHurt, self)
 	events.subscribe(gameEvents.PLAYER_HEAL, onPlayerHeal, self)
+	events.subscribe(gameEvents.ENEMY_HEAL, onEnemyHeal, self)
 	events.subscribe(gameEvents.ADD_RAGE, onAddRage,self)
 	events.subscribe(gameEvents.ADD_CP, onAddCp,self)
 	events.subscribe(gameEvents.PAY_RESOURCE_COST, updateResourceBar,self)
@@ -432,8 +562,11 @@ function init(self)
 	events.subscribe(gameEvents.INTERRUPT_ENEMY_CASTING, onInterruptEnemyCasting, self)
 	events.subscribe(gameEvents.FLASH_EFFECT, onFlashEffect, self)
 	events.subscribe(gameEvents.PLAYER_DIE, onPlayerDie, self)
+	events.subscribe(gameEvents.ENEMY_DIE, onEnemyDie, self)
 	events.subscribe(gameEvents.ENEMY_ENTER, onEnemyEnter, self)
 	events.subscribe(gameEvents.START_CHAT, onStartChat, self)
+	events.subscribe(gameEvents.PAUSE, onPause, self)
+	events.subscribe(gameEvents.RESUME, onResume, self)
 	
 
 	self.playerHpBar = self.druid:new_progress("playerHpBar", "x")
@@ -447,10 +580,15 @@ function init(self)
 	self.playerResourceBar:set_to(0)
 	gui.set_text(self.playerResourceTextNode, tostring(playerModel.rage).."/"..tostring(playerModel.maxRage))
 
-	for i = 1, 5 do
+	for i = 1, 6 do
 		self["skillBtn"..i] = self.druid:new_button("skillBtn"..i, onSkillBtn, i)
 		self["skillBtn"..i.."Node"] = gui.get_node("skillBtn"..i)
 		self["cdMarker"..i] = gui.get_node("cd"..i)
+		self["skillBtnText"..i] = gui.get_node("skillBtnText"..i)
+		self["hotkeyText"..i] = gui.get_node("hotkeyText"..i)
+	end
+
+	for i = 1, 5 do
 		self["cpHolder"..i] = gui.get_node("cpFront"..i)
 	end
 
@@ -468,6 +606,14 @@ function init(self)
 	self.enemyCastCountTarget = 0
 	self.enemyCastCount = 0
 
+	for i = 1, 4 do
+		self["dot"..i] = gui.get_node("dot"..i.."Active")
+	end	
+	self.bossCurr = gui.get_node("bossCurr")
+	self.bossNext = gui.get_node("bossNext")
+
+	self.playerIndicator = gui.get_node("playerIndicator")
+	
 	dtypewriter.init("chatBox", "game", -400, 0, 800, 100, 1,"")
 
 	initGui(self)
@@ -480,6 +626,7 @@ function final(self)
 	events.unsubscribe(gameEvents.ENEMY_HURT, onEnemyHurt, self)
 	events.unsubscribe(gameEvents.PLAYER_HURT, onPlayerHurt, self)
 	events.unsubscribe(gameEvents.PLAYER_HEAL, onPlayerHeal, self)
+	events.unsubscribe(gameEvents.ENEMY_HEAL, onEnemyHeal, self)
 	events.unsubscribe(gameEvents.ADD_RAGE, onAddRage,self)
 	events.unsubscribe(gameEvents.PAY_RESOURCE_COST, updateResourceBar,self)
 	events.unsubscribe(gameEvents.SET_PLAYER_MOD, onSetPlayerMod,self)
@@ -489,8 +636,11 @@ function final(self)
 	events.unsubscribe(gameEvents.INTERRUPT_ENEMY_CASTING, onInterruptEnemyCasting, self)
 	events.unsubscribe(gameEvents.FLASH_EFFECT, onFlashEffect, self)
 	events.unsubscribe(gameEvents.PLAYER_DIE, onPlayerDie, self)
+	events.unsubscribe(gameEvents.ENEMY_DIE, onEnemyDie, self)
 	events.unsubscribe(gameEvents.ENEMY_ENTER, onEnemyEnter, self)
 	events.unsubscribe(gameEvents.START_CHAT, onStartChat, self)
+	events.unsubscribe(gameEvents.PAUSE, onPause, self)
+	events.unsubscribe(gameEvents.RESUME, onResume, self)
 end
 
 function update(self, dt)
@@ -510,5 +660,71 @@ function on_message(self, message_id, message, sender)
 end
 
 function on_input(self, action_id, action)
+	if not self.input_enabled then
+		return false
+	end
+	if settingsModel.hotkeys == "123456" then
+		if action_id == hash("hotkey_1") and action.pressed then
+			onSkillBtn(self,1)
+		end
+		if action_id == hash("hotkey_2") and action.pressed then
+			onSkillBtn(self,2)
+		end
+		if action_id == hash("hotkey_3") and action.pressed then
+			onSkillBtn(self,3)
+		end
+		if action_id == hash("hotkey_4") and action.pressed then
+			onSkillBtn(self,4)
+		end
+		if action_id == hash("hotkey_5") and action.pressed then
+			onSkillBtn(self,5)
+		end
+		if action_id == hash("hotkey_6") and action.pressed then
+			onSkillBtn(self,6)
+		end
+	end
+
+	if settingsModel.hotkeys == "QWERTY" then
+		if action_id == hash("hotkey_Q") and action.pressed then
+			onSkillBtn(self,1)
+		end
+		if action_id == hash("hotkey_W") and action.pressed then
+			onSkillBtn(self,2)
+		end
+		if action_id == hash("hotkey_E") and action.pressed then
+			onSkillBtn(self,3)
+		end
+		if action_id == hash("hotkey_R") and action.pressed then
+			onSkillBtn(self,4)
+		end
+		if action_id == hash("hotkey_T") and action.pressed then
+			onSkillBtn(self,5)
+		end
+		if action_id == hash("hotkey_Y") and action.pressed then
+			onSkillBtn(self,6)
+		end
+	end
+
+	if settingsModel.hotkeys == "AZERTY" then
+		if action_id == hash("hotkey_A") and action.pressed then
+			onSkillBtn(self,1)
+		end
+		if action_id == hash("hotkey_Z") and action.pressed then
+			onSkillBtn(self,2)
+		end
+		if action_id == hash("hotkey_E") and action.pressed then
+			onSkillBtn(self,3)
+		end
+		if action_id == hash("hotkey_R") and action.pressed then
+			onSkillBtn(self,4)
+		end
+		if action_id == hash("hotkey_T") and action.pressed then
+			onSkillBtn(self,5)
+		end
+		if action_id == hash("hotkey_Y") and action.pressed then
+			onSkillBtn(self,6)
+		end
+	end
+	
 	return self.druid:on_input(action_id, action)
 end

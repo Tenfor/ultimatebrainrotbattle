@@ -74,9 +74,6 @@ images {
   image: "/assets/img/ui/progressbarfront.png"
 }
 images {
-  image: "/assets/img/skillIcons/GIANT_FIRE_BALL.png"
-}
-images {
   image: "/assets/img/skillIcons/LIGHTNING_BOLT.png"
 }
 images {
@@ -86,13 +83,7 @@ images {
   image: "/assets/img/skillIcons/DARK_PATAPIM.png"
 }
 images {
-  image: "/assets/img/ui/textTable.png"
-}
-images {
   image: "/assets/img/ui/table.png"
-}
-images {
-  image: "/assets/img/ui/window.png"
 }
 images {
   image: "/assets/img/skillIcons/spd.png"
@@ -117,5 +108,68 @@ images {
 }
 images {
   image: "/assets/img/ui/window2.png"
+}
+images {
+  image: "/assets/img/ui/line.png"
+}
+images {
+  image: "/assets/img/ui/dot1.png"
+}
+images {
+  image: "/assets/img/ui/dot2.png"
+}
+images {
+  image: "/assets/img/characters/bombardiro_circle.png"
+}
+images {
+  image: "/assets/img/characters/boneca_circle.png"
+}
+images {
+  image: "/assets/img/characters/dindin_circle.png"
+}
+images {
+  image: "/assets/img/characters/frigo_circle.png"
+}
+images {
+  image: "/assets/img/characters/cappuccino_circle.png"
+}
+images {
+  image: "/assets/img/characters/patapim_circle.png"
+}
+images {
+  image: "/assets/img/characters/sahur_circle.png"
+}
+images {
+  image: "/assets/img/skillIcons/COMET_RAIN.png"
+}
+images {
+  image: "/assets/img/skillIcons/cdr.png"
+}
+images {
+  image: "/assets/img/skillIcons/pow.png"
+}
+images {
+  image: "/assets/img/skillIcons/POISON_DAGGER.png"
+}
+images {
+  image: "/assets/img/skillIcons/EVASION.png"
+}
+images {
+  image: "/assets/img/skillIcons/BLADE_DANCE.png"
+}
+images {
+  image: "/assets/img/skillIcons/precision.png"
+}
+images {
+  image: "/assets/img/ui/tableSmall.png"
+}
+images {
+  image: "/assets/img/ui/button_restart.png"
+}
+images {
+  image: "/assets/img/ui/button_l.png"
+}
+images {
+  image: "/assets/img/ui/button_r.png"
 }
 extrude_borders: 2

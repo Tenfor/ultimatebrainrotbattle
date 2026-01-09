@@ -1,0 +1,270 @@
+script: "/main/pause/pause.gui_script"
+fonts {
+  name: "game"
+  font: "/assets/font/game.font"
+}
+textures {
+  name: "ui"
+  texture: "/assets/img/ui/ui.atlas"
+}
+nodes {
+  position {
+    x: 640.0
+    y: 675.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "ui/button_pause"
+  id: "pauseBtn"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 640.0
+    y: 360.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "pausePanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "ui/table"
+  id: "bg"
+  parent: "pausePanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: 111.0
+  }
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Pause"
+  font: "game"
+  id: "title"
+  parent: "pausePanel"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: -95.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "resumeBtn"
+  parent: "pausePanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Resume"
+  font: "game"
+  id: "resumeBtnText"
+  parent: "resumeBtn"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 170.0
+    y: 16.0
+  }
+  scale {
+    x: 0.9
+    y: 0.9
+  }
+  type: TYPE_BOX
+  texture: "ui/button_restart"
+  id: "homeBtn"
+  parent: "pausePanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: 16.0
+  }
+  scale {
+    x: 0.9
+    y: 0.9
+  }
+  type: TYPE_BOX
+  texture: "ui/button_sound"
+  id: "soundBtn"
+  parent: "pausePanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -170.0
+    y: 16.0
+  }
+  scale {
+    x: 0.9
+    y: 0.9
+  }
+  type: TYPE_BOX
+  texture: "ui/button_music"
+  id: "musicBtn"
+  parent: "pausePanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 640.0
+    y: 360.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "confirmPanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "ui/table"
+  id: "bg1"
+  parent: "confirmPanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: 111.0
+  }
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Back to menu?"
+  font: "game"
+  id: "confirmTitle"
+  parent: "confirmPanel"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: 16.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 900.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "You won\'t recieve any reward for this round"
+  font: "game"
+  id: "confirmDesc"
+  line_break: true
+  parent: "confirmPanel"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -100.0
+    y: -95.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "yesBtn"
+  parent: "confirmPanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Yes"
+  font: "game"
+  id: "yesBtnText"
+  parent: "yesBtn"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 100.0
+    y: -95.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "noBtn"
+  parent: "confirmPanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "No"
+  font: "game"
+  id: "noBtnText"
+  parent: "noBtn"
+  inherit_alpha: true
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

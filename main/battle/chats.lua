@@ -6,7 +6,12 @@ local M = {
 	},
 	bombardiro_to_patapim = {
 		seen = false,
-		en = {"Enough of this nonsense!","Patapim, crush him!"},
+		en = {"Enough of this nonsense!","Patapim, obliterate this fool!"},
+		ru = ""
+	},
+	bombardiro_to_sahur = {
+		seen = false,
+		en = {"Tung Tung Tung Sahur! Crush him!"},
 		ru = ""
 	},
 	bombardiro_to_cappuccino = 

@@ -3,6 +3,7 @@ local tweener = require("tweener.tweener")
 go.property("value", 1)
 go.property("crit", false)
 go.property("createdOnEnemy", true)
+go.property("missed", false)
 --go.property("parentId", hash("enemy"))
 
 function init(self)
@@ -25,7 +26,7 @@ function init(self)
 		go.set("#label", "color", vmath.vector4(1,0.8,0,1))
 	end
 
-	label.set_text("#label", tostring(self.value))
+	label.set_text("#label", self.missed and "Miss" or tostring(self.value))
 
 	local inDur = 0.2
 	local outDur = 0.4

@@ -2,6 +2,24 @@ local event = require("event.event")
 local events = require("event.events")
 local gameEvents = require("main/events/gameEvents")
 
+local function onResume(self)
+	local proxy = "#mainProxy"
+	if self.pause then 
+		self.pause = false
+		msg.post(proxy, "set_time_step", { factor = 1, mode = 0 })
+	end
+
+end
+
+local function onPause(self)
+	local proxy = "#mainProxy"
+	if not self.pause then
+		self.pause = true
+		msg.post(proxy, "set_time_step", { factor = 0, mode = 0 })
+	end
+
+end
+
 local function onSlowMo(self,sceneName)
 	local proxy = "#"..sceneName.."Proxy"
 	if self.slowMo then 
@@ -14,13 +32,40 @@ local function onSlowMo(self,sceneName)
 	
 end
 
+local function changeScene(self,sceneToUnload, sceneToLoad)
+	print("UNLOADSCENE",sceneToUnload)
+	local proxyToUnload = "#"..sceneToUnload.."Proxy"
+	msg.post(proxyToUnload, "disable")
+	msg.post(proxyToUnload, "final")
+	msg.post(proxyToUnload, "unload")
+
+	if sceneToUnload == "main" then
+		local pauseProxy = "#pauseProxy"
+		msg.post(pauseProxy, "disable")
+		msg.post(pauseProxy, "final")
+		msg.post(pauseProxy, "unload")
+	end
+
+	timer.delay(0.01, false, function() 
+		local proxyToLoad = "#"..sceneToLoad.."Proxy"
+		msg.post(proxyToLoad, "load")
+
+		if sceneToLoad == "main" then
+			local pauseProxy = "#pauseProxy"
+			msg.post(pauseProxy, "load")
+		end
+	end)
+end
+
 local function loadScene(self,sceneName)
+	print("LOADSCENE",sceneName)
 	local proxy = "#"..sceneName.."Proxy"
 	msg.post(proxy, "load")
 	--msg.post(proxy, "set_time_step", { factor = 0.1, mode = 0 })
 end
 
 local function unloadScene(self,sceneName)
+	print("UNLOADSCENE",sceneName)
 	local proxy = "#"..sceneName.."Proxy"
 	msg.post(proxy, "disable")
 	msg.post(proxy, "final")
@@ -36,19 +81,26 @@ function init(self)
 	event.set_mode("pcall")
 
 	self.slowMo = false
+	self.pause = false
 
+	events.subscribe(gameEvents.CHANGE_SCENE, changeScene, self)
 	events.subscribe(gameEvents.LOAD_SCENE, loadScene, self)
 	events.subscribe(gameEvents.UNLOAD_SCENE, unloadScene, self)
 	events.subscribe(gameEvents.SLOW_MOTION, onSlowMo, self)
+	events.subscribe(gameEvents.PAUSE, onPause, self)
+	events.subscribe(gameEvents.RESUME, onResume, self)
 
-	events.trigger(gameEvents.LOAD_SCENE,"menu")
-	
+	events.trigger(gameEvents.LOAD_SCENE, "soundController")
+	events.trigger(gameEvents.LOAD_SCENE,"menu")	
 end
 
 function final(self)
+	events.unsubscribe(gameEvents.CHANGE_SCENE, loadScene, self)
 	events.unsubscribe(gameEvents.LOAD_SCENE, loadScene, self)
 	events.unsubscribe(gameEvents.UNLOAD_SCENE, unloadScene, self)
 	events.unsubscribe(gameEvents.SLOW_MOTION, onSlowMo, self)
+	events.unsubscribe(gameEvents.PAUSE, onPause, self)
+	events.subscribe(gameEvents.RESUME, onResume, self)
 end
 
 function update(self, dt)

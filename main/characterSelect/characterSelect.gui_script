@@ -1,0 +1,131 @@
+local druid = require("druid.druid")
+local events = require("event.events")
+local gameEvents = require("main/events/gameEvents")
+local gameModel = require("main/battle/gameModel")
+local playerModel = require("main/battle/playerModel")
+local achievements = require("main/achievements/achievements")
+
+local function checkUnlocks(self)
+	gui.set_color(self.pataSprite, achievements.isPatapimUnlocked() and vmath.vector4(1,1,1,1) or vmath.vector4(0,0,0,1))
+	gui.set_color(self.capSprite, achievements.isCapUnlocked() and vmath.vector4(1,1,1,1) or vmath.vector4(0,0,0,1))
+	gui.set_enabled(self.pataUnlockText, not achievements.isPatapimUnlocked())
+	gui.set_enabled(self.capUnlockText, not achievements.isCapUnlocked())
+	gui.set_enabled(self.select2BtnNode, achievements.isPatapimUnlocked())
+	gui.set_enabled(self.select3BtnNode, achievements.isCapUnlocked())
+
+	gui.set_text(self.pataNameText, achievements.isPatapimUnlocked() and "Brr Brr Patapim" or "Locked")
+	gui.set_text(self.capNameText, achievements.isCapUnlocked() and "Cappuccino Assassino" or "Locked")
+
+	if not achievements.isPatapimUnlocked() then
+		gui.set_text(self.pataUnlockText, "Die 10 times to unlock\n"..achievements.deaths.."/10")
+	end
+end
+
+local function onUnlock(self)
+	achievements.setDeaths(10)
+	achievements.setDindinDefeated(true)
+	checkUnlocks(self)
+end
+
+local function checkSelectedCharacter(self)
+	gui.set_enabled(self.select1BtnNode, playerModel.currentCharacter ~= "sahur")
+	gui.set_visible(self.selectedText1, playerModel.currentCharacter == "sahur")
+	gui.set_visible(self.selectedBg1, playerModel.currentCharacter == "sahur")
+
+	gui.set_enabled(self.select2BtnNode, playerModel.currentCharacter ~= "patapim" and achievements.isPatapimUnlocked())
+	gui.set_visible(self.selectedText2, playerModel.currentCharacter == "patapim" and achievements.isPatapimUnlocked())
+	gui.set_visible(self.selectedBg2, playerModel.currentCharacter == "patapim" and achievements.isPatapimUnlocked())
+
+	gui.set_enabled(self.select3BtnNode, playerModel.currentCharacter ~= "cappuccino" and achievements.isCapUnlocked())
+	gui.set_visible(self.selectedText3, playerModel.currentCharacter == "cappuccino" and achievements.isCapUnlocked())
+	gui.set_visible(self.selectedBg3, playerModel.currentCharacter == "cappuccino" and achievements.isCapUnlocked())
+end 
+
+local function onBattleBtn(self)
+	events.trigger(gameEvents.STOP_MUSIC,"#menuMusic")
+	timer.delay(0.05,false,function()
+		events.trigger(gameEvents.CHANGE_SCENE,"characterSelect","main")
+	end)
+end
+
+local function onMenuBtn(self)
+	events.trigger(gameEvents.CHANGE_SCENE,"characterSelect","menu")
+end
+
+local function onSelectCharacterBtn(self,characterIndex)
+	if characterIndex == 1 then
+		playerModel.currentCharacter = "sahur"
+		events.trigger(gameEvents.PLAY_SFX,"#sahur")
+	elseif characterIndex == 2 then
+		playerModel.currentCharacter = "patapim"
+		events.trigger(gameEvents.PLAY_SFX,"#patapim")
+	elseif characterIndex == 3 then
+		playerModel.currentCharacter = "cappuccino"
+		events.trigger(gameEvents.PLAY_SFX,"#cappuccino")
+	end
+
+	checkSelectedCharacter(self)
+end
+
+function init(self)
+	self.druid = druid.new(self)
+
+	self.select1Btn = self.druid:new_button("character1Btn", onSelectCharacterBtn,1)
+	self.select2Btn = self.druid:new_button("character2Btn", onSelectCharacterBtn,2)
+	self.select3Btn = self.druid:new_button("character3Btn", onSelectCharacterBtn,3)
+
+	self.select1BtnNode = gui.get_node("character1Btn")
+	self.selectedText1 = gui.get_node("character1SelectedText")
+	self.select2BtnNode = gui.get_node("character2Btn")
+	self.selectedText2 = gui.get_node("character2SelectedText")
+	self.select3BtnNode = gui.get_node("character3Btn")
+	self.selectedText3 = gui.get_node("character3SelectedText")
+
+	self.selectedBg1 = gui.get_node("character1BgSelected")
+	self.selectedBg2 = gui.get_node("character2BgSelected")
+	self.selectedBg3 = gui.get_node("character3BgSelected")
+
+	self.battleBtn = self.druid:new_button("battleBtn", onBattleBtn)
+	self.menuBtn = self.druid:new_button("menuBtn", onMenuBtn)
+
+	--TODO remove this btn
+	self.unlockBtn = self.druid:new_button("unlockBtn", onUnlock)
+
+	self.pataSprite = gui.get_node("character2Sprite")
+	self.capSprite = gui.get_node("character3Sprite")
+	self.pataUnlockText = gui.get_node("character2UnlockText")
+	self.capUnlockText = gui.get_node("character3UnlockText")
+	self.pataNameText = gui.get_node("character2Name")
+	self.capNameText = gui.get_node("character3Name")
+
+	checkUnlocks(self)
+
+	--TODO - select the saved character
+	print(playerModel.currentCharacter)
+	local characterIndex = 1
+	if playerModel.currentCharacter == "patapim" then 
+		characterIndex = 2
+	elseif playerModel.currentCharacter == "cappuccino" then 
+		characterIndex = 3
+	end
+	onSelectCharacterBtn(self,characterIndex)
+
+
+	checkSelectedCharacter(self)
+end
+
+function final(self)
+	self.druid:final()
+end
+
+function update(self, dt)
+	self.druid:update(dt)
+end
+
+function on_message(self, message_id, message, sender)
+	self.druid:on_message(message_id, message, sender)
+end
+
+function on_input(self, action_id, action)
+	return self.druid:on_input(action_id, action)
+end

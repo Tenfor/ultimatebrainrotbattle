@@ -33,6 +33,9 @@ local function onImpact(self)
 		if self.animName == hash("rocket2") then
 			battleController.rocket_big_impact(self.enemyCasted)
 		end
+		if self.animName == hash("dagger") then
+			battleController.poison_dagger_impact(self.enemyCasted)
+		end
 	else
 		events.trigger(gameEvents.PLAY_SFX,"#swordhit")
 	end
@@ -49,6 +52,9 @@ function init(self)
 	local target_pos = go.get_position("/enemy")
 	if self.enemyCasted then 
 		target_pos = go.get_position("/player")
+	end
+	if self.animName == hash("dagger") then
+		go.set("#sprite", "tint", vmath.vector4(0.4, 1, 0.4, 1))
 	end
 	go.animate(go.get_id(), "position.x", go.PLAYBACK_ONCE_FORWARD, target_pos.x, go.EASING_LINEAR, 0.3,0,function() 
 		onImpact(self)

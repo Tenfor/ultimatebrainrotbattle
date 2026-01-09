@@ -1,0 +1,90 @@
+local druid = require("druid.druid")
+local events = require("event.events")
+local gameEvents = require("main/events/gameEvents")
+local settingsModel = require("main/settings/settingsModel")
+
+local function onPause(self)
+	gui.set_enabled(self.pauseBtnNode, false)
+	gui.set_enabled(self.pausePanel, true)
+	events.trigger(gameEvents.PAUSE)
+end
+
+local function updateSoundButtons(self)
+	gui.play_flipbook(self.musicBtnNode, settingsModel.music and "button_music" or "button_music_off")
+	gui.play_flipbook(self.soundBtnNode, settingsModel.sound and "button_sound" or "button_sound_off")
+end
+
+local function onMusicBtn(self)
+	settingsModel.setMusic(not settingsModel.music)
+	events.trigger(settingsModel.music and gameEvents.ENABLE_MUSIC or gameEvents.DISABLE_MUSIC)
+	updateSoundButtons(self)
+end
+
+local function onSoundBtn(self)
+	settingsModel.setSound(not settingsModel.sound)
+	events.trigger(settingsModel.music and gameEvents.ENABLE_SFX or gameEvents.DISABLE_SFX)
+	updateSoundButtons(self)
+end
+
+local function onResume(self)
+	gui.set_enabled(self.pauseBtnNode, true)
+	gui.set_enabled(self.pausePanel, false)
+	events.trigger(gameEvents.RESUME)
+end
+
+local function onHomeBtn(self)
+	gui.set_enabled(self.pausePanel, false)
+	gui.set_enabled(self.confirmPanel, true)
+end
+
+local function onYesBtn(self)
+	events.trigger(gameEvents.BACK_TO_MENU)
+	timer.delay(0.05, false, function() 
+		events.trigger(gameEvents.CHANGE_SCENE,"main","menu")
+	end)
+end
+
+local function onNoBtn(self)
+	gui.set_enabled(self.pausePanel, true)
+	gui.set_enabled(self.confirmPanel, false)
+end
+
+function init(self)
+	self.druid = druid.new(self)
+
+	self.homeBtn = self.druid:new_button("homeBtn", onHomeBtn)
+	self.soundBtn = self.druid:new_button("soundBtn", onSoundBtn)
+	self.musicBtn = self.druid:new_button("musicBtn", onMusicBtn)
+	self.resumeBtn = self.druid:new_button("resumeBtn", onResume)
+	self.pauseBtn = self.druid:new_button("pauseBtn", onPause)
+
+	self.pausePanel = gui.get_node("pausePanel")
+	self.pauseBtnNode = gui.get_node("pauseBtn")
+
+	self.confirmPanel = gui.get_node("confirmPanel")
+	self.yesBtn = self.druid:new_button("yesBtn", onYesBtn)
+	self.noBtn = self.druid:new_button("noBtn", onNoBtn)
+
+	self.musicBtnNode = gui.get_node("musicBtn")
+	self.soundBtnNode = gui.get_node("soundBtn")
+end
+
+function final(self)
+	self.druid:final()
+end
+
+function update(self, dt)
+	self.druid:update(dt)
+end
+
+function on_message(self, message_id, message, sender)
+	self.druid:on_message(message_id, message, sender)
+end
+
+function on_input(self, action_id, action)
+	return self.druid:on_input(action_id, action)
+end
+
+function on_reload(self)
+
+end

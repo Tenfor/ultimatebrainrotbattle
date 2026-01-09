@@ -1,0 +1,12 @@
+local angular_speed = math.rad(90) -- 90 fok / mp
+
+function init(self)
+	self.rotation = go.get_rotation()
+end
+
+function update(self, dt)
+	-- növeljük a Z tengely körüli forgást
+	local rot = vmath.quat_rotation_z(angular_speed * dt)
+	self.rotation = rot * self.rotation
+	go.set_rotation(self.rotation)
+end

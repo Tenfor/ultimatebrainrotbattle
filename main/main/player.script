@@ -9,12 +9,39 @@ local hitType = require("main/battle/hitType")
 local effectFactoryFinder = require("main/battle/effectFactoryFinder")
 local gameModel = require("main/battle/gameModel")
 
+local function OnStartPlayerUltiCasting(self)
+	self.ultiCasting = true
+	self.counter = 0
+end
+
+local function OnStartEnemyUltiCasting(self)
+	self.enemyUltiCasting = true
+end
+
+local function OnEndPlayerUltiCasting(self)
+	self.ultiCasting = false
+end
+
+local function OnEndEnemyUltiCasting(self)
+	self.enemyUltiCasting = false
+end
+
 local function removeDarkPatapim(self)
 	go.animate("#sprite", "color_add.w", go.PLAYBACK_ONCE_PINGPONG, 1, go.EASING_LINEAR, 0.1)
 	sprite.play_flipbook("#sprite", "patapim")
 	events.trigger(gameEvents.PLAY_SFX,"#powerup4")
 	particlefx.stop("#dark")
 end
+
+local function removeEvasion(self)
+	if not self.ultiCasting then 
+		go.animate("#sprite", "color_add.w", go.PLAYBACK_ONCE_PINGPONG, 1, go.EASING_LINEAR, 0.1)
+		go.set("#sprite", "tint.w", 1)
+	end
+	particlefx.stop("#evasion")
+	self.counter = 0
+end
+
 
 local function onStartCasting(self)
 	self.isCasting = true
@@ -28,6 +55,16 @@ local function onFinishCasting(self,skillId)
 	self.isCasting = false
 	if skillId == skills.LIGHTNING_BOLT then 
 		battleController.lightning_bolt(go.get_id())
+	end
+	if skillId == skills.COMET_RAIN then 
+		--battleController.comet_rain(go.get_id())
+		local commetRainUrl = collectionfactory.create("/root#cometRainFactory",vmath.vector3(0,0,0))
+		timer.delay(1.5,false, function() 
+			go.delete(commetRainUrl)
+		end) 
+	end
+	if skillId == skills.BLADE_DANCE then
+		battleController.blade_dance("/player#sprite",false)
 	end
 end
 
@@ -43,7 +80,11 @@ local function onPlayerHurt(self,dmg, vfxType, sfxType)
 	local pos = go.get_position()
 	pos.y = pos.y + 100
 
-	if playerModel.hasBuff(buffs.SHIELD) then
+	if playerModel.hasBuff(buffs.EVASION) or self.ultiCasting then
+		events.trigger(gameEvents.PLAY_SFX,"#swoosh2")
+		factory.create("#floatingTextFactory", pos, nil, {value=dmg.dmg, crit=dmg.crit, createdOnEnemy=false, missed=true}, 1)
+		events.trigger(gameEvents.ADD_CP,1)
+	elseif playerModel.hasBuff(buffs.SHIELD) then
 		events.trigger(gameEvents.PLAY_SFX,"#swordhit")
 	elseif sfxType == hitType.SFX.BASIC then
 		local rand = math.random(1,2)
@@ -52,7 +93,7 @@ local function onPlayerHurt(self,dmg, vfxType, sfxType)
 		events.trigger(gameEvents.PLAY_SFX,"#hit_3")
 	end
 
-	if not playerModel.hasBuff(buffs.SHIELD) then
+	if not playerModel.hasBuff(buffs.SHIELD) and not playerModel.hasBuff(buffs.EVASION) and not self.ultiCasting then
 		if(dmg.crit) then 
 			factory.create("/root#statusTextFactory", vmath.vector3(640,500,0.2), nil)
 			events.trigger(gameEvents.SHAKE_EFFECT,0.15,20)
@@ -96,7 +137,6 @@ local function onPlayEffect(self, effectUrl, x, y, rot,scale, flip, lifespan, al
 	pos.x = pos.x + xOffset
 	pos.y = pos.y + yOffset
 	local scale = scale or 1
-	local scale = scale or 1
 	local scaleY = scaleY or scale
 	local factoryName = "#playerEffectFactory"..effectFactoryFinder.getFactoryPostFix(effectUrl)
 	factory.create(factoryName, pos, rotation, 
@@ -111,6 +151,7 @@ end
 
 local function updateBuffs(self,dt)
 	local hasDarkPatapim = playerModel.hasBuff(buffs.DARK_PATAPIM)
+	local hasEvasion = playerModel.hasBuff(buffs.EVASION)
 	
 	playerModel.updateBuffs(dt)
 	playerModel.updateCDS(dt)
@@ -121,6 +162,12 @@ local function updateBuffs(self,dt)
 		end
 	end
 
+	if(hasEvasion) then 
+		if not playerModel.hasBuff(buffs.EVASION) then
+			removeEvasion(self)
+		end
+	end
+	
 	if playerModel.hasBuff(buffs.STUN) then
 		go.set("/playerStun#stun", "tint.w", 1)
 		local rot_speed = math.pi * 6 * dt  
@@ -136,18 +183,20 @@ local function updateBuffs(self,dt)
 	else 
 		go.set("#shield", "tint.w", 0)
 	end
-	
-	if playerModel.hasBuff(buffs.FROST) then
-		if go.get("#sprite", "tint") ~= vmath.vector4(0.4, 0.4, 1, 1) then
-			go.set("#sprite", "tint", vmath.vector4(0.4, 0.4, 1, 1))
-		end
-	elseif playerModel.hasBuff(buffs.BERSERK) then
-		if go.get("#sprite", "tint") ~= vmath.vector4(1, 0, 0, 1) then
-			go.set("#sprite", "tint", vmath.vector4(1, 0, 0, 1))
-		end
-	else
-		if go.get("#sprite", "tint") ~= vmath.vector4(1, 1, 1, 1) then
-			go.set("#sprite", "tint", vmath.vector4(1, 1, 1, 1))
+
+	if not self.ultiCasting and not playerModel.hasBuff(buffs.EVASION) then
+		if playerModel.hasBuff(buffs.FROST) then
+			if go.get("#sprite", "tint") ~= vmath.vector4(0.4, 0.4, 1, 1) then
+				go.set("#sprite", "tint", vmath.vector4(0.4, 0.4, 1, 1))
+			end
+		elseif playerModel.hasBuff(buffs.BERSERK) then
+			if go.get("#sprite", "tint") ~= vmath.vector4(1, 0, 0, 1) then
+				go.set("#sprite", "tint", vmath.vector4(1, 0, 0, 1))
+			end
+		else
+			if go.get("#sprite", "tint") ~= vmath.vector4(1, 1, 1, 1) then
+				go.set("#sprite", "tint", vmath.vector4(1, 1, 1, 1))
+			end
 		end
 	end
 end
@@ -170,7 +219,7 @@ local function checkModeAfterSkill(self)
 end
 
 local function onSkillTrigger(self, skillId)
-	if skillId == skills.WIND_SLASH or skillId == skills.LION_STRIKE or skillId == skills.METEOR_SMASH or skillId == skills.DOUBLE_CUT then 
+	if skillId == skills.WIND_SLASH or skillId == skills.LION_STRIKE or skillId == skills.METEOR_SMASH or skillId == skills.DOUBLE_CUT or skillId == skills.POISON_DAGGER then 
 		setMode(self, self.mode == "normal" and skillId or "normal")
 	end
 	if skillId == skills.BERSERK then 
@@ -189,13 +238,25 @@ local function onSkillTrigger(self, skillId)
 		battleController.startCasting(skillId)
 	end
 	if skillId == skills.ENRAGE then
-		battleController.enrage(go.get_id())
+		battleController.enrage(false)
 	end
 	if skillId == skills.SHIELD then
 		battleController.shield(go.get_id())
 	end
 	if skillId == skills.DARK_PATAPIM then
 		battleController.dark_patapim("/player#sprite")
+	end
+	if skillId == skills.COMET_RAIN then 
+		battleController.startCasting(skillId)
+	end
+	if skillId == skills.COMET_RAIN then 
+		battleController.startCasting(skillId)
+	end
+	if skillId == skills.BLADE_DANCE then 
+		battleController.startCasting(skillId)
+	end
+	if skillId == skills.EVASION then 
+		battleController.evasion("/player#sprite")
 	end
 	checkModeAfterSkill(self)
 end
@@ -211,6 +272,8 @@ local function attack(self)
 		battleController.wind_slash(go.get_id())
 	elseif self.mode == skills.DOUBLE_CUT and playerModel.getResource() >= skills.getResourceCost(skills.DOUBLE_CUT) then
 		battleController.double_cut(go.get_id())
+	elseif self.mode == skills.POISON_DAGGER and playerModel.getResource() >= skills.getResourceCost(skills.POISON_DAGGER) then
+		battleController.poison_dagger(go.get_id())
 	else
 		battleController.attack(go.get_id())
 	end
@@ -222,6 +285,8 @@ function init(self)
 	self.counter = 0
 	self.mode = "normal"
 	self.isCasting = false 
+	self.ultiCasting = false
+	self.enemyUltiCasting = false
 	events.subscribe(gameEvents.PLAYER_START_CASTING,onStartCasting,self)
 	events.subscribe(gameEvents.PLAYER_FINISH_CASTING,onFinishCasting,self)
 	events.subscribe(gameEvents.PLAYER_HURT, onPlayerHurt,self)
@@ -230,8 +295,12 @@ function init(self)
 	events.subscribe(gameEvents.PLAY_EFFECT_ON_PLAYER, onPlayEffect,self)
 	events.subscribe(gameEvents.PLAYER_SHOOT_PROJECTILE,onShootProjectile, self)
 	events.subscribe(gameEvents.PLAY_PARTICLE_ON_PLAYER, onPlayParticle,self)
-	events.subscribe(gameEvents.ENRAGE_EFFECT, onEnrage,self)
+	events.subscribe(gameEvents.ENRAGE_EFFECT_ON_PLAYER, onEnrage,self)
 	events.subscribe(gameEvents.INTERRUPT_PLAYER_CASTING, onInterruptCasting,self)
+	events.subscribe(gameEvents.START_PLAYER_ULTI_CASTING, OnStartPlayerUltiCasting,self)
+	events.subscribe(gameEvents.START_ENEMY_ULTI_CASTING, OnStartEnemyUltiCasting,self)
+	events.subscribe(gameEvents.END_PLAYER_ULTI_CASTING, OnEndPlayerUltiCasting,self)
+	events.subscribe(gameEvents.END_ENEMY_ULTI_CASTING, OnEndEnemyUltiCasting,self)
 end
 
 function final(self)
@@ -243,8 +312,12 @@ function final(self)
 	events.unsubscribe(gameEvents.PLAY_EFFECT_ON_PLAYER, onPlayEffect,self)
 	events.unsubscribe(gameEvents.PLAYER_SHOOT_PROJECTILE,onShootProjectile, self)
 	events.unsubscribe(gameEvents.PLAY_PARTICLE_ON_PLAYER, onPlayParticle,self)
-	events.unsubscribe(gameEvents.ENRAGE_EFFECT, onEnrage,self)
+	events.unsubscribe(gameEvents.ENRAGE_EFFECT_ON_PLAYER, onEnrage,self)
 	events.unsubscribe(gameEvents.INTERRUPT_PLAYER_CASTING, onInterruptCasting,self)
+	events.unsubscribe(gameEvents.START_PLAYER_ULTI_CASTING, OnStartPlayerUltiCasting,self)
+	events.unsubscribe(gameEvents.START_ENEMY_ULTI_CASTING, OnStartEnemyUltiCasting,self)
+	events.unsubscribe(gameEvents.END_PLAYER_ULTI_CASTING, OnEndPlayerUltiCasting,self)
+	events.unsubscribe(gameEvents.END_ENEMY_ULTI_CASTING, OnEndEnemyUltiCasting,self)
 end
 
 function update(self, dt)
@@ -256,15 +329,17 @@ function update(self, dt)
 	if playerModel.hasBuff(buffs.FROST) then 
 		extra = extra / 3
 	end
-	if(playerModel.attackType == attackType.MELEE) and not playerModel.hasBuff(buffs.STUN) and not gameModel.isGameOver and gameModel.enemyEntered then
+	if(playerModel.attackType == attackType.MELEE) and not playerModel.hasBuff(buffs.STUN) 
+	and not gameModel.isGameOver and gameModel.enemyEntered and not self.isCasting and not self.ultiCasting 
+	and not self.enemyUltiCasting then 
 		self.counter = self.counter + (dt*playerModel.spd) * extra
 	end
 	if self.counter >= 3 then
 		attack(self)
-		local time = os.date("*t")
-		print(string.format("Most: %04d-%02d-%02d %02d:%02d:%02d",
-		time.year, time.month, time.day,
-		time.hour, time.min, time.sec))
+		--local time = os.date("*t")
+		--print(string.format("Most: %04d-%02d-%02d %02d:%02d:%02d",
+		--time.year, time.month, time.day,
+		--time.hour, time.min, time.sec))
 		self.counter = 0
 	end
 	-- Add update code here
