@@ -145,17 +145,19 @@ function M.lightning_bolt(go_url, enemyCasted)
 	end)
 
 	timer.delay(0.3,false, function() 
-		if enemyCasted and not playerModel.hasBuff(buffs.SHIELD) and not playerModel.hasBuff(buffs.EVASION) then
-			playerModel.addBuff(buffs.STUN,4)
-		elseif not enemyCasted then
-			enemyModel.addBuff(buffs.STUN,4)
-		end
+		--if enemyCasted and not playerModel.hasBuff(buffs.SHIELD) and not playerModel.hasBuff(buffs.EVASION) then
+	--		playerModel.addBuff(buffs.STUN,4)
+	--	elseif not enemyCasted then
+	--		enemyModel.addBuff(buffs.STUN,4)
+--		end
 		events.trigger(gameEvents.getEffectEvent(enemyCasted),"electric_explosion",0,-40,1,0.6,enemyCasted)
 		events.trigger(gameEvents.PLAY_SFX,"#explosion2")
 		local dmg = M.calculate_damage(skills.LIGHTNING_BOLT,enemyCasted)
 		events.trigger(gameEvents.getHurtEvent(enemyCasted),dmg,hitType.VFX.FLASHING)
 
-		if enemyCasted and not playerModel.hasBuff(buffs.SHIELD) and not playerModel.hasBuff(buffs.EVASION) then
+		print(playerModel.ultiCasting)
+
+		if enemyCasted and not playerModel.hasBuff(buffs.SHIELD) and not playerModel.hasBuff(buffs.EVASION) and not playerModel.ultiCasting then
 			events.trigger(gameEvents.INTERRUPT_PLAYER_CASTING)
 			playerModel.addBuff(buffs.STUN,3)
 		end

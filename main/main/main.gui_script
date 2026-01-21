@@ -11,7 +11,51 @@ local gameModel = require("main/battle/gameModel")
 local hitType = require("main/battle/hitType")
 local dtypewriter = require ("main/utils/dtypewriter")
 local settingsModel = require ("main/settings/settingsModel")
+local upgradesModel = require ("main/upgrades/upgradesModel")
 local achievements = require("main/achievements/achievements")
+local storage = require("main/storage/storage")
+local bridge = require("bridge.bridge")
+
+local function onRevive(self)
+	self.isRevived = true
+	events.trigger(gameEvents.FADE_IN_MUSIC,"#battleMusic")
+	gui.animate(self.flashEffectNode, "color.w", 0, gui.EASING_LINEAR, 1,0, function()
+		events.trigger(gameEvents.REVIVE)
+		timer.delay(2, false, function()
+			self.input_enabled = true
+			gameModel.setIsGameOver(false)
+			gameModel.setEnemyEntered(true)
+		end)
+	end)
+	
+end
+
+local function onReviveBtn(self)
+	gui.set_enabled(self.revivePanel, false)
+	bridge.advertisement.show_rewarded()
+
+end
+
+local function onContinueBtn(self)
+	events.trigger(gameEvents.CHANGE_SCENE,"main","gameOver")
+end
+
+local function onTutorialShow(self)
+	self.input_enabled = false
+end
+
+local function onTutorialHide(self)
+	self.input_enabled = true
+end
+
+local function onShowFailedPanel(self)
+	self.input_enabled = false
+end
+
+local function onHideFailedPanel(self)
+	self.input_enabled = true
+	gui.set_enabled(self.revivePanel, true)
+end
 
 local function onPause(self)
 	self.input_enabled = false
@@ -27,8 +71,6 @@ local function truncate(num, decimals)
 end
 
 local function hideDot(self,dotNum)
-	print("hidedot",dotNum)
-	print(self["dot1"])
 	gui.animate(self["dot"..dotNum], "color.w", 0, gui.EASING_LINEAR, 0.8)
 end
 
@@ -47,7 +89,6 @@ local function changeFace(self,bossCurr,bossNext)
 end
 
 local function updateBossIndicator(self)
-	print("updateBossIndicator",self.dot1)
 	if enemyModel.name == "boneca" then 
 		hideDot(self,1)
 		showDot(self,2)
@@ -71,6 +112,7 @@ local function onEnemyDie(self)
 	updateBossIndicator(self)
 	if enemyModel.name == "superDindin" then 
 		achievements.setDindinDefeated(true)
+		storage.saveData()
 	end
 	if enemyModel.name == "bombardiro" then 
 		timer.delay(1.5, false, function() 
@@ -84,12 +126,18 @@ local function onEnemyDie(self)
 end
 
 local function onPlayerDie(self)
+	upgradesModel.canWatchAd = true
 	gui.set_color(self.flashEffectNode, vmath.vector4(0, 0, 0, 1))
 	gui.set_alpha(self.flashEffectNode, 0)
-	achievements.setDeaths(achievements.deaths + 1)
 	events.trigger(gameEvents.FADE_OUT_MUSIC,"#battleMusic")
 	gui.animate(self.flashEffectNode, "color.w", 1, gui.EASING_LINEAR, 1,0,function()
-		events.trigger(gameEvents.CHANGE_SCENE,"main","gameOver")
+		if not self.isRevived then 
+			gui.set_enabled(self.revivePanel, true)
+		else
+			achievements.setDeaths(achievements.deaths + 1)
+			storage.saveData()
+			events.trigger(gameEvents.CHANGE_SCENE,"main","gameOver")
+		end
 	end)
 end
 
@@ -129,7 +177,6 @@ local function finishPlayerCasting(self)
 	events.trigger(gameEvents.STOP_CAST)
 
 	gui.set_enabled(self.playerCastNode,false)
-	print("fin",self.playerCastSkill)
 	events.trigger(gameEvents.PLAYER_FINISH_CASTING, self.playerCastSkill)
 	self.playerCastCountTarget = 0
 	self.playerCastCount = 0
@@ -151,7 +198,6 @@ local function finishEnemyCasting(self)
 end
 
 local function onInterruptEnemyCasting(self)
-	print("GUI INTERRUPT")
 	events.trigger(gameEvents.STOP_CAST)
 	gui.set_enabled(self.enemyCastNode,false)
 	self.enemyCastCountTarget = 0
@@ -263,7 +309,6 @@ local function updateButtons(self)
 end
 
 local function onFlashEffect(self,color)
-	print("onFlashEffect")
 	color["w"] = 0
 	gui.set_color(self.flashEffectNode, color)
 	
@@ -337,7 +382,6 @@ local function updateEnemyHpText(self)
 end
 
 local function loadPlayerIndicator(self)
-	print(playerModel.currentCharacter)
 	gui.play_flipbook(self.playerIndicator, playerModel.currentCharacter.."_circle")
 end
 
@@ -519,6 +563,7 @@ local function onStartChat(self,dialogName, dialogIndex)
 end
 
 function init(self)
+	gui.set_render_order(1)
 	self.druid = druid.new(self)
 	self.input_enabled = true -- to handle pause
 	self.sahurBtn = self.druid:new_button("sahurBtn", onSahurBtn)
@@ -547,6 +592,24 @@ function init(self)
 	self.enemyDead = false
 	self.gameOver = false
 
+	self.revivePanel = gui.get_node("revivePanel")
+	self.reviveBtn = self.druid:new_button("reviveBtn",onReviveBtn)
+	self.continueBtn = self.druid:new_button("continueBtn",onContinueBtn)
+
+	self.isRevived = false
+
+	bridge.advertisement.on("rewarded_state_changed", function (_, state)
+		if state == "opened" then 
+			self.input_enabled = false
+		elseif state == "rewarded" then 
+			onRevive(self)
+		elseif state == "failed" then 
+			events.trigger(gameEvents.SHOW_FAILED_PANEL)
+		elseif state == "closed" then 
+			--msg.post("game:/soundController", "playMusic", {url = "#menuMusic"} )
+		end
+	end)
+	
 	events.subscribe(gameEvents.PLAYER_START_CASTING, onPlayerStartCasting, self)
 	events.subscribe(gameEvents.CHARACTER_LOADED, onCharacterLoaded, self)
 	events.subscribe(gameEvents.ENEMY_HURT, onEnemyHurt, self)
@@ -567,6 +630,10 @@ function init(self)
 	events.subscribe(gameEvents.START_CHAT, onStartChat, self)
 	events.subscribe(gameEvents.PAUSE, onPause, self)
 	events.subscribe(gameEvents.RESUME, onResume, self)
+	events.subscribe(gameEvents.SHOW_TUTORIAL, onTutorialShow, self)
+	events.subscribe(gameEvents.HIDE_TUTORIAL, onTutorialHide, self)
+	events.subscribe(gameEvents.SHOW_FAILED_PANEL, onShowFailedPanel, self)
+	events.subscribe(gameEvents.HIDE_FAILED_PANEL, onHideFailedPanel, self)
 	
 
 	self.playerHpBar = self.druid:new_progress("playerHpBar", "x")
@@ -641,6 +708,10 @@ function final(self)
 	events.unsubscribe(gameEvents.START_CHAT, onStartChat, self)
 	events.unsubscribe(gameEvents.PAUSE, onPause, self)
 	events.unsubscribe(gameEvents.RESUME, onResume, self)
+	events.unsubscribe(gameEvents.SHOW_TUTORIAL, onTutorialShow, self)
+	events.unsubscribe(gameEvents.HIDE_TUTORIAL, onTutorialHide, self)
+	events.unsubscribe(gameEvents.SHOW_FAILED_PANEL, onShowFailedPanel, self)
+	events.unsubscribe(gameEvents.HIDE_FAILED_PANEL, onHideFailedPanel, self)
 end
 
 function update(self, dt)

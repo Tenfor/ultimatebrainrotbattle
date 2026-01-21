@@ -390,3 +390,17 @@ embedded_components {
   "gain: 0.1\n"
   ""
 }
+embedded_components {
+  id: "flip"
+  type: "sound"
+  data: "sound: \"/assets/sounds/sfx/flip.wav\"\n"
+  "group: \"sfx\"\n"
+  ""
+}
+embedded_components {
+  id: "victoryMusic"
+  type: "sound"
+  data: "sound: \"/assets/sounds/music/victoryMusic.ogg\"\n"
+  "group: \"music\"\n"
+  ""
+}

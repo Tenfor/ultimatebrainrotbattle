@@ -5,7 +5,11 @@ local gameModel = require("main/battle/gameModel")
 local enemyModel = require("main/battle/enemyModel")
 local playerModel = require("main/battle/playerModel")
 local upgradesModel = require("main/upgrades/upgradesModel")
+local tutorial = require("main/tutorial/tutorial")
+local achievements = require("main/achievements/achievements")
+local storage = require("main/storage/storage")
 local dtypewriter = require ("main/utils/dtypewriter")
+local bridge = require("bridge.bridge")
 
 local function setUpTexts(self)
 	local dmgDealt = math.floor(gameModel.damageDone/3)
@@ -81,8 +85,13 @@ end
 
 local function onContinueBtn(self)
 	if self.textShowDone then 		
-		dtypewriter.clear()
-		events.trigger(gameEvents.CHANGE_SCENE,"gameOver","upgrades")
+	
+		if not tutorial.tutorial2.seen then 
+			tutorial.showUpgradesTut = true
+		end
+		print(bridge.advertisement.isInterstitialSupported)
+		bridge.advertisement.show_interstitial()
+		--events.trigger(gameEvents.CHANGE_SCENE,"gameOver","upgrades")		
 	else
 		skipTexts(self)
 	end
@@ -103,9 +112,24 @@ function init(self)
 
 	self.textShowDone = false
 
+	bridge.advertisement.on("interstitial_state_changed", function (_, state)
+		if state == "failed" then 
+			events.trigger(gameEvents.CHANGE_SCENE,"gameOver","upgrades")		
+			dtypewriter.clear()
+			gameModel.reset()
+		elseif state == "closed" then 
+			events.trigger(gameEvents.CHANGE_SCENE,"gameOver","upgrades")		
+			dtypewriter.clear()
+			gameModel.reset()
+		end
+	end)
+
+	achievements.setDeaths(achievements.deaths + 1)
+
 	setUpTexts(self)
 
 	showTexts(self)
+	storage.saveData()
 end
 
 function final(self)

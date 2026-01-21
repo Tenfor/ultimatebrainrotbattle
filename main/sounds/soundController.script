@@ -5,6 +5,7 @@ local settingsModel = require "main/settings/settingsModel"
 local musics = {
 	"#battleMusic",
 	"#menuMusic",
+	"#victoryMusic"
 }
 local sounds = {
 	"#hit_1",
@@ -55,6 +56,7 @@ local sounds = {
 	"#dialogrev2",
 	"#dialogrev3",
 	"#rocket",
+	"#flip"
 }
 
 local function onPause(self)
@@ -122,6 +124,9 @@ end
 
 local function onStopMusic(self,musicUrl)
 	sound.stop(musicUrl)
+	if self.currentTrack == musicUrl then
+		self.currentTrack = ""
+	end
 end
 
 local function onPlayMusic(self,musicUrl)
@@ -155,6 +160,10 @@ local function onBackToMenu(self)
 	print("music stop")
 end
 
+local function onFadeInMusic(self,musicUrl)
+	go.animate(musicUrl, "gain", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_LINEAR, 1, 0)
+end
+
 local function onFadeOutMusic(self,musicUrl)
 	go.animate(musicUrl, "gain", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, 1, 0)
 end
@@ -169,6 +178,7 @@ function init(self)
 	events.subscribe(gameEvents.PLAY_MUSIC, onPlayMusic, self)
 	events.subscribe(gameEvents.STOP_MUSIC, onStopMusic, self)
 	events.subscribe(gameEvents.FADE_OUT_MUSIC, onFadeOutMusic, self)
+	events.subscribe(gameEvents.FADE_IN_MUSIC, onFadeInMusic, self)
 	events.subscribe(gameEvents.ENABLE_SFX, onEnableSfx, self)
 	events.subscribe(gameEvents.DISABLE_SFX, onDisableSfx, self)
 	events.subscribe(gameEvents.ENABLE_MUSIC, onEnableMusic, self)
@@ -176,6 +186,10 @@ function init(self)
 	events.subscribe(gameEvents.PAUSE, onPause, self)
 	events.subscribe(gameEvents.RESUME, onResume, self)
 	events.subscribe(gameEvents.BACK_TO_MENU, onBackToMenu, self)
+
+	pprint("soundControllerLoaded",settingsModel.sound,settingsModel.music)
+	events.trigger(settingsModel.sound and gameEvents.ENABLE_SFX or gameEvents.DISABLE_SFX)
+	events.trigger(settingsModel.music and gameEvents.ENABLE_MUSIC or gameEvents.DISABLE_MUSIC)
 end
 
 
@@ -192,6 +206,7 @@ function final(self)
 	events.unsubscribe(gameEvents.PLAY_CHAT_SFX, onplayChat, self)
 	events.unsubscribe(gameEvents.STOP_CHAT_SFX, onStopChat, self)
 	events.unsubscribe(gameEvents.FADE_OUT_MUSIC, onFadeOutMusic, self)
+	events.unsubscribe(gameEvents.FADE_IN_MUSIC, onFadeInMusic, self)
 	events.unsubscribe(gameEvents.ENABLE_SFX, onEnableSfx, self)
 	events.unsubscribe(gameEvents.DISABLE_SFX, onDisableSfx, self)
 	events.unsubscribe(gameEvents.ENABLE_MUSIC, onEnableMusic, self)

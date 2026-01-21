@@ -3,6 +3,8 @@ local events = require("event.events")
 local gameEvents = require("main/events/gameEvents")
 local gameModel = require("main/battle/gameModel")
 local settingsModel = require("main/settings/settingsModel")
+local storage = require("main/storage/storage")
+local translator = require("main/translator/translator")
 
 local function updateHotkeyText(self)
 	gui.set_text(self.hotkeysText, settingsModel.hotkeys)
@@ -21,12 +23,11 @@ local function onHotkeyNext(self)
 end
 
 local function onPlayBtn(self)
-	gameModel.reset()
 	events.trigger(gameEvents.CHANGE_SCENE,"menu","characterSelect")
 end
 
 local function onSandboxBtn(self)
-	events.trigger(gameEvents.CHANGE_SCENE,"menu","main")
+	events.trigger(gameEvents.CHANGE_SCENE,"menu","victory")
 end
 
 local function onUpgradesBtn(self)
@@ -43,12 +44,14 @@ end
 local function onSoundBtn(self)
 	settingsModel.setSound(not settingsModel.sound)
 	events.trigger(settingsModel.sound and gameEvents.ENABLE_SFX or gameEvents.DISABLE_SFX)
+	storage.saveData()
 	updateSoundButtons(self)
 end
 
 local function onMusicBtn(self)
 	settingsModel.setMusic(not settingsModel.music)
 	events.trigger(settingsModel.music and gameEvents.ENABLE_MUSIC or gameEvents.DISABLE_MUSIC)
+	storage.saveData()
 	updateSoundButtons(self)
 end
 
@@ -70,6 +73,19 @@ end
 local function onInfoBtn(self)
 	gui.set_enabled(self.creditsNode, true)
 	gui.set_enabled(self.menuNode, false)
+end
+
+local function translate(self)
+	translator.translate({
+		"playText",
+		"upgradesText",
+		"settingsTitle",
+		"hotkeysTitle",
+		"langTitle",
+		"resetDataBtnText",
+		"creditsTitle",
+		"creditsText"
+	})
 end
 
 function init(self)
@@ -105,9 +121,13 @@ function init(self)
 	self.hotkeyIndex = 1
 	--TODO: call initHotkey here 
 
+	updateSoundButtons(self)
+
 	timer.delay(0.4, false, function() 
 		events.trigger(gameEvents.PLAY_MUSIC,"#menuMusic")
 	end)
+
+	translate(self)
 end
 
 function final(self)

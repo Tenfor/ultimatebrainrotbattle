@@ -4,4 +4,10 @@ images {
 images {
   image: "/assets/img/bg/menu_bg.png"
 }
+images {
+  image: "/assets/img/bg/sahur_win.png"
+}
+images {
+  image: "/assets/img/bg/patapim_win.png"
+}
 extrude_borders: 2

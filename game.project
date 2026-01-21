@@ -19,14 +19,16 @@ show_made_with_defold = 0
 show_fullscreen_button = 0
 show_console_banner = 0
 cssfile = /builtins/manifests/web/dark_theme.css
+htmlfile = /bridge/engine_template.html
 
 [project]
 title = Ultimate Brainrot Battle
-minimum_log_level = 0
+minimum_log_level = 1
 dependencies#0 = https://github.com/Insality/druid/archive/refs/tags/1.1.5.zip
 dependencies#1 = https://github.com/Insality/defold-event/archive/refs/tags/12.zip
 dependencies#2 = https://github.com/Insality/defold-tweener/archive/refs/tags/5.zip
 dependencies#3 = https://github.com/whiteboxdev/library-defold-typewriter/archive/main.zip
+dependencies#4 = https://github.com/Playgama/bridge-defold/archive/refs/tags/v1.27.0.zip
 
 [graphics]
 default_texture_min_filter = linear_mipmap_linear
@@ -48,5 +50,8 @@ max_count = 128
 max_count = 128
 
 [physics]
-world_count = 8
+world_count = 16
+
+[collection_proxy]
+max_count = 16
 

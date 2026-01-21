@@ -1,0 +1,1064 @@
+script: "/main/tutorial/tutorial.gui_script"
+fonts {
+  name: "game"
+  font: "/assets/font/game.font"
+}
+textures {
+  name: "ui"
+  texture: "/assets/img/ui/ui.atlas"
+}
+textures {
+  name: "characters"
+  texture: "/assets/img/characters/characters.atlas"
+}
+nodes {
+  position {
+    x: 640.0
+    y: 360.0
+    z: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "box"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  size {
+    x: 2000.0
+    y: 2000.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "dark"
+  parent: "box"
+  inherit_alpha: true
+  alpha: 0.5
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "panel"
+  parent: "box"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  scale {
+    x: 0.7
+    y: 0.65
+  }
+  type: TYPE_BOX
+  texture: "ui/table"
+  id: "bg"
+  parent: "panel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "tutorial1"
+  parent: "panel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "t1p1"
+  parent: "tutorial1"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  position {
+    y: -5.0
+  }
+  scale {
+    x: 0.55
+    y: 0.55
+  }
+  size {
+    x: 1250.0
+    y: 370.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_T1P1"
+  font: "game"
+  id: "t1p1desc"
+  line_break: true
+  parent: "t1p1"
+  inherit_alpha: true
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "t1p2"
+  parent: "tutorial1"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  position {
+    y: -5.0
+  }
+  scale {
+    x: 0.55
+    y: 0.55
+  }
+  size {
+    x: 1250.0
+    y: 370.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_T1P2"
+  font: "game"
+  id: "t1p2desc"
+  line_break: true
+  parent: "t1p2"
+  inherit_alpha: true
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "t1p3"
+  parent: "tutorial1"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  position {
+    x: -157.0
+    y: -5.0
+  }
+  scale {
+    x: 0.55
+    y: 0.55
+  }
+  size {
+    x: 800.0
+    y: 370.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_T1P3"
+  font: "game"
+  id: "t1p3desc"
+  pivot: PIVOT_W
+  line_break: true
+  parent: "t1p3"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -237.0
+  }
+  scale {
+    x: -0.6
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "characters/sahur"
+  id: "box1"
+  parent: "t1p3"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "t1p4"
+  parent: "tutorial1"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  position {
+    y: 43.0
+  }
+  scale {
+    x: 0.55
+    y: 0.55
+  }
+  size {
+    x: 1250.0
+    y: 360.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_T1P4"
+  font: "game"
+  id: "t1p4desc"
+  line_break: true
+  parent: "t1p4"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: -55.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "ui/LION_STRIKE"
+  id: "box2"
+  parent: "t1p4"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "t1p5"
+  parent: "tutorial1"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  position {
+    y: 43.0
+  }
+  scale {
+    x: 0.55
+    y: 0.55
+  }
+  size {
+    x: 1250.0
+    y: 360.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_T1P5"
+  font: "game"
+  id: "t1p5desc"
+  line_break: true
+  parent: "t1p5"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -150.0
+    y: -55.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "ui/METEOR_SMASH"
+  id: "box3"
+  parent: "t1p5"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -50.0
+    y: -55.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "ui/ENRAGE"
+  id: "box4"
+  parent: "t1p5"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 50.0
+    y: -55.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "ui/SHIELD"
+  id: "box5"
+  parent: "t1p5"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 150.0
+    y: -55.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "ui/BERSERK"
+  id: "box6"
+  parent: "t1p5"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "tutorial2"
+  parent: "panel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "t2p1"
+  parent: "tutorial2"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  position {
+    y: -5.0
+  }
+  scale {
+    x: 0.55
+    y: 0.55
+  }
+  size {
+    x: 1250.0
+    y: 370.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_T2P1"
+  font: "game"
+  id: "t2p1desc"
+  line_break: true
+  parent: "t2p1"
+  inherit_alpha: true
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "t2p2"
+  parent: "tutorial2"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  position {
+    y: -5.0
+  }
+  scale {
+    x: 0.55
+    y: 0.55
+  }
+  size {
+    x: 1250.0
+    y: 370.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_T2P2"
+  font: "game"
+  id: "t2p2desc"
+  line_break: true
+  parent: "t2p2"
+  inherit_alpha: true
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "t2p3"
+  parent: "tutorial2"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  position {
+    y: -5.0
+  }
+  scale {
+    x: 0.55
+    y: 0.55
+  }
+  size {
+    x: 1250.0
+    y: 370.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_T2P3"
+  font: "game"
+  id: "t2p3desc"
+  line_break: true
+  parent: "t2p3"
+  inherit_alpha: true
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "t2p4"
+  parent: "tutorial2"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  position {
+    y: -5.0
+  }
+  scale {
+    x: 0.55
+    y: 0.55
+  }
+  size {
+    x: 1250.0
+    y: 370.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_T2P4"
+  font: "game"
+  id: "t2p4desc"
+  line_break: true
+  parent: "t2p4"
+  inherit_alpha: true
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "tutorial3"
+  parent: "panel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "t3p1"
+  parent: "tutorial3"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  position {
+    y: 43.0
+  }
+  scale {
+    x: 0.55
+    y: 0.55
+  }
+  size {
+    x: 1250.0
+    y: 360.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_T3P1"
+  font: "game"
+  id: "t3p1desc"
+  line_break: true
+  parent: "t3p1"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: -55.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "ui/METEOR_SMASH"
+  id: "box8"
+  parent: "t3p1"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "t3p2"
+  parent: "tutorial3"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  position {
+    y: -5.0
+  }
+  scale {
+    x: 0.55
+    y: 0.55
+  }
+  size {
+    x: 1250.0
+    y: 370.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_T3P2"
+  font: "game"
+  id: "t3p2desc"
+  line_break: true
+  parent: "t3p2"
+  inherit_alpha: true
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "t3p3"
+  parent: "tutorial3"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  position {
+    y: -5.0
+  }
+  scale {
+    x: 0.55
+    y: 0.55
+  }
+  size {
+    x: 1250.0
+    y: 370.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_T3P3"
+  font: "game"
+  id: "t3p3desc"
+  line_break: true
+  parent: "t3p3"
+  inherit_alpha: true
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "tutorial4"
+  parent: "panel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "t4p1"
+  parent: "tutorial4"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  position {
+    x: -157.0
+    y: -5.0
+  }
+  scale {
+    x: 0.55
+    y: 0.55
+  }
+  size {
+    x: 800.0
+    y: 370.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_T4P1"
+  font: "game"
+  id: "t4p1desc"
+  pivot: PIVOT_W
+  line_break: true
+  parent: "t4p1"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -237.0
+  }
+  scale {
+    x: -0.6
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "characters/patapim"
+  id: "box7"
+  parent: "t4p1"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "t4p2"
+  parent: "tutorial4"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  position {
+    y: -5.0
+  }
+  scale {
+    x: 0.55
+    y: 0.55
+  }
+  size {
+    x: 1250.0
+    y: 370.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_T4P2"
+  font: "game"
+  id: "t4p2desc"
+  line_break: true
+  parent: "t4p2"
+  inherit_alpha: true
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "t4p3"
+  parent: "tutorial4"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  position {
+    y: 43.0
+  }
+  scale {
+    x: 0.55
+    y: 0.55
+  }
+  size {
+    x: 1250.0
+    y: 360.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_T4P3"
+  font: "game"
+  id: "t4p3desc"
+  line_break: true
+  parent: "t4p3"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: -55.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "ui/ARCANE_BOLT"
+  id: "box9"
+  parent: "t4p3"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "tutorial5"
+  parent: "panel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "t5p1"
+  parent: "tutorial5"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  position {
+    x: -157.0
+    y: -5.0
+  }
+  scale {
+    x: 0.55
+    y: 0.55
+  }
+  size {
+    x: 800.0
+    y: 370.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_T5P1"
+  font: "game"
+  id: "t5p1desc"
+  pivot: PIVOT_W
+  line_break: true
+  parent: "t5p1"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -237.0
+  }
+  scale {
+    x: -0.6
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "characters/cappuccino"
+  id: "box10"
+  parent: "t5p1"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "t5p2"
+  parent: "tutorial5"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  position {
+    y: 43.0
+  }
+  scale {
+    x: 0.55
+    y: 0.55
+  }
+  size {
+    x: 1250.0
+    y: 360.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_T5P2"
+  font: "game"
+  id: "t5p2desc"
+  line_break: true
+  parent: "t5p2"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: -65.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "ui/WIND_SLASH"
+  id: "box11"
+  parent: "t5p2"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "t5p3"
+  parent: "tutorial5"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  position {
+    y: 43.0
+  }
+  scale {
+    x: 0.55
+    y: 0.55
+  }
+  size {
+    x: 1250.0
+    y: 360.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_T5P3"
+  font: "game"
+  id: "t5p3desc"
+  line_break: true
+  parent: "t5p3"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -150.0
+    y: -67.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "ui/DOUBLE_CUT"
+  id: "box12"
+  parent: "t5p3"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -50.0
+    y: -67.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "ui/EVASION"
+  id: "box13"
+  parent: "t5p3"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 50.0
+    y: -67.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "ui/POISON_DAGGER"
+  id: "box14"
+  parent: "t5p3"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 150.0
+    y: -67.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  type: TYPE_BOX
+  texture: "ui/BLADE_DANCE"
+  id: "box15"
+  parent: "t5p3"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: 162.25
+  }
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_TUTORIAL"
+  font: "game"
+  id: "title"
+  parent: "panel"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: -136.0
+  }
+  scale {
+    x: 0.4
+    y: 0.4
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "1/4"
+  font: "game"
+  id: "page"
+  parent: "panel"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 110.0
+    y: -199.0
+  }
+  scale {
+    x: 0.55
+    y: 0.55
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "continue"
+  parent: "panel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_NEXT"
+  font: "game"
+  id: "continueBtnText"
+  parent: "continue"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -110.0
+    y: -199.0
+  }
+  scale {
+    x: 0.55
+    y: 0.55
+  }
+  color {
+    x: 0.0
+    y: 0.0
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "skip"
+  parent: "panel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_CLOSE"
+  font: "game"
+  id: "skipBtnText"
+  parent: "skip"
+  inherit_alpha: true
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

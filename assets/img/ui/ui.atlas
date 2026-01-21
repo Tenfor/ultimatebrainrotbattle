@@ -172,4 +172,10 @@ images {
 images {
   image: "/assets/img/ui/button_r.png"
 }
+images {
+  image: "/assets/img/ui/max.png"
+}
+images {
+  image: "/assets/img/ui/clapperboard.png"
+}
 extrude_borders: 2

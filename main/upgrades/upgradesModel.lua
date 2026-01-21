@@ -1,14 +1,15 @@
 local skills = require("main/battle/skills")
 
 local M = {
+	canWatchAd = false,
 	--SAHUR
 	sahur = {
 		gold = 0,
 		skill1 = {
 			name = "skill1",
-			title = "Lion Strike",
+			title = "IDS_LION_TITLE",
 			sprite = "LION_STRIKE",
-			description = "Your next attack will deal extra damage",
+			description = "IDS_LION_DESC",
 			prices = {0},
 			lvl = 1
 		},
@@ -16,7 +17,7 @@ local M = {
 			name = "skill2",
 			title = "Meteor Smash",
 			sprite = "METEOR_SMASH",
-			description = "Your next attack will stun the enemy and deal extra damage",
+			description = "Your next attack will stun the enemy and deal 2.5X damage",
 			prices = {28},
 			lvl = 0
 		},
@@ -32,7 +33,7 @@ local M = {
 			name = "skill4",
 			title = "Shields Up!",
 			sprite = "SHIELD",
-			description = "Block all incoming damage for 3 seconds",
+			description = "Block all incoming attack for 3 seconds",
 			prices = {350},
 			lvl = 0 
 		},
@@ -117,7 +118,7 @@ local M = {
 			name = "skill1",
 			title = "Arcane Blast",
 			sprite = "ARCANE_BOLT",
-			description = "Shoot an arcane projectile that deals base damage",
+			description = "Shoot a projectile for 1X dmg.",
 			prices = {0},
 			lvl = 1
 		},
@@ -125,7 +126,7 @@ local M = {
 			name = "skill2",
 			title = "Fire Ball",
 			sprite = "FIRE_BOLT",
-			description = "Shoot a fire projectile that deals extra damage",
+			description = "Shoot a projectile for 2.5X dmg.",
 			prices = {0},
 			lvl = 1
 		},
@@ -133,7 +134,7 @@ local M = {
 			name = "skill3",
 			title = "Frost Bolt",
 			sprite = "FROST_BOLT",
-			description = "Shoot a frost projectile that deals extra damage and slows the enemy",
+			description = "Shoot a projectile for 2X dmg. Slows down the enemy.",
 			prices = {30},
 			lvl = 0
 		},
@@ -141,7 +142,7 @@ local M = {
 			name = "skill4",
 			title = "Lightning Strike!",
 			sprite = "LIGHTNING_BOLT",
-			description = "Has a short cast time. Deals extra damage and a stuns the enemy. Stun will interrupt enemy casting.",
+			description = "Has a short cast time. deals 4X dmg and stuns the enemy.",
 			prices = {100},
 			lvl = 0 
 		},
@@ -157,7 +158,7 @@ local M = {
 			name = "skill6",
 			title = "Comet Rain",
 			sprite = "COMET_RAIN",
-			description = "Has a long cast time. Deals a massive amount of damage and stuns the enemy. Stun will interrupt enemy casting.",
+			description = "Has a long cast time. deals 5.5X dmg and stuns the enemy.",
 			prices = {1000},
 			lvl = 0
 		},
@@ -226,7 +227,7 @@ local M = {
 			name = "skill1",
 			title = "Wind Slash",
 			sprite = "WIND_SLASH",
-			description = "1.5X extra dmg and generate a combopoint.",
+			description = "deal 1.5X dmg and generate a combopoint.",
 			prices = {0},
 			lvl = 1
 		},

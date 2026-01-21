@@ -4,6 +4,7 @@ local gameEvents = require("main/events/gameEvents")
 local gameModel = require("main/battle/gameModel")
 local playerModel = require("main/battle/playerModel")
 local achievements = require("main/achievements/achievements")
+local translator = require("main/translator/translator")
 
 local function checkUnlocks(self)
 	gui.set_color(self.pataSprite, achievements.isPatapimUnlocked() and vmath.vector4(1,1,1,1) or vmath.vector4(0,0,0,1))
@@ -13,12 +14,12 @@ local function checkUnlocks(self)
 	gui.set_enabled(self.select2BtnNode, achievements.isPatapimUnlocked())
 	gui.set_enabled(self.select3BtnNode, achievements.isCapUnlocked())
 
-	gui.set_text(self.pataNameText, achievements.isPatapimUnlocked() and "Brr Brr Patapim" or "Locked")
-	gui.set_text(self.capNameText, achievements.isCapUnlocked() and "Cappuccino Assassino" or "Locked")
+	gui.set_text(self.pataNameText, achievements.isPatapimUnlocked() and "IDS_PATAPIM_FULL" or "IDS_LOCKED")
+	gui.set_text(self.capNameText, achievements.isCapUnlocked() and "IDS_CAPPUCCINO_FULL" or "IDS_LOCKED")
 
-	if not achievements.isPatapimUnlocked() then
-		gui.set_text(self.pataUnlockText, "Die 10 times to unlock\n"..achievements.deaths.."/10")
-	end
+	--if not achievements.isPatapimUnlocked() then
+--		gui.set_text(self.pataUnlockText, "Die 10 times to unlock\n"..achievements.deaths.."/10")
+--	end
 end
 
 local function onUnlock(self)
@@ -67,6 +68,24 @@ local function onSelectCharacterBtn(self,characterIndex)
 	checkSelectedCharacter(self)
 end
 
+local function translate()
+	translator.translate({
+		"character1Name",
+		"character2Name",
+		"character3Name",
+		"text",
+		"text1",
+		"text2",
+		"text3",
+		"text4",
+		"character1SelectedText",
+		"character2SelectedText",
+		"character3SelectedText",
+		{node="character2UnlockText",args={a = achievements.deaths}},
+		"character3UnlockText",
+	})
+end
+
 function init(self)
 	self.druid = druid.new(self)
 
@@ -112,6 +131,8 @@ function init(self)
 
 
 	checkSelectedCharacter(self)
+
+	translate()
 end
 
 function final(self)

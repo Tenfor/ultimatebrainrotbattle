@@ -1,22 +1,36 @@
 local druid = require("druid.druid")
 local events = require("event.events")
 local gameEvents = require("main/events/gameEvents")
-local gameModel = require("main/battle/gameModel")
 
 local function onContinueBtn(self)
-	events.trigger(gameEvents.CHANGE_SCENE,"victory","menu")
+	gui.set_enabled(self.panel, false)
+	events.trigger(gameEvents.HIDE_FAILED_PANEL)
+	self.input_enabled = false
 end
+
+local function onShowFailedPanel(self)
+	gui.set_enabled(self.panel, true)
+	self.input_enabled = true
+end
+
 
 function init(self)
 	self.druid = druid.new(self)
+	self.input_enabled = false
+	
+
+	self.panel = gui.get_node("panel")
 	self.continueBtn = self.druid:new_button("continueBtn", onContinueBtn)
-	self.continueBtnNode = gui.get_node("continueBtn")
-	events.trigger(gameEvents.PLAY_MUSIC,"#victoryMusic")
-	gameModel.reset()
+
+	events.subscribe(gameEvents.SHOW_FAILED_PANEL, onShowFailedPanel, self)
+
+	gui.set_render_order(2)
 end
 
 function final(self)
 	self.druid:final()
+
+	events.unsubscribe(gameEvents.SHOW_FAILED_PANEL, onShowFailedPanel, self)
 end
 
 function update(self, dt)
@@ -28,5 +42,12 @@ function on_message(self, message_id, message, sender)
 end
 
 function on_input(self, action_id, action)
+	if not self.input_enabled then 
+		return false
+	end
 	return self.druid:on_input(action_id, action)
+end
+
+function on_reload(self)
+
 end

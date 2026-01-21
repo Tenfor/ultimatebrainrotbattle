@@ -5,7 +5,7 @@ local M = {
 	lang = "en"
 }
 
-function M.setHotkeys(val)
+function M.setHotkeys(val, save)
 	if val ~= "123456" and val ~= "QWERTY" and val ~= "AZERTY" then
 		return false
 	end
@@ -20,4 +20,8 @@ function M.setMusic(val)
 	M.music = val
 end
 
+function M.setLang(val)
+	M.lang = val
+end
+	
 return M

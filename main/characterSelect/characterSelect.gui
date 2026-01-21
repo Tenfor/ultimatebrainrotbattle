@@ -84,7 +84,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Tung Tung Tung Sahur"
+  text: "IDS_SAHUR_FULL"
   font: "game"
   id: "character1Name"
   line_break: true
@@ -127,8 +127,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Select\n"
-  ""
+  text: "IDS_SELECT"
   font: "game"
   id: "text"
   parent: "character1Btn"
@@ -147,7 +146,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Selected"
+  text: "IDS_SELECTED"
   font: "game"
   id: "character1SelectedText"
   parent: "characterBox1"
@@ -213,7 +212,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Locked"
+  text: "IDS_LOCKED"
   font: "game"
   id: "character2Name"
   line_break: true
@@ -262,7 +261,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Select"
+  text: "IDS_SELECT"
   font: "game"
   id: "text1"
   parent: "character2Btn"
@@ -281,7 +280,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Selected"
+  text: "IDS_SELECTED"
   font: "game"
   id: "character2SelectedText"
   parent: "characterBox2"
@@ -301,8 +300,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Die 10 times to unlock\n"
-  "0/10"
+  text: "IDS_PATAPIM_UNLOCK"
   font: "game"
   id: "character2UnlockText"
   parent: "characterBox2"
@@ -367,7 +365,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Locked"
+  text: "IDS_LOCKED"
   font: "game"
   id: "character3Name"
   line_break: true
@@ -412,7 +410,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Select"
+  text: "IDS_SELECT"
   font: "game"
   id: "text2"
   parent: "character3Btn"
@@ -431,7 +429,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Selected"
+  text: "IDS_SELECTED"
   font: "game"
   id: "character3SelectedText"
   parent: "characterBox3"
@@ -451,7 +449,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Defeat Udindindindun to unlock"
+  text: "IDS_CAPPUCCINO_UNLOCK"
   font: "game"
   id: "character3UnlockText"
   line_break: true
@@ -460,12 +458,12 @@ nodes {
 }
 nodes {
   position {
-    x: 930.0
-    y: 50.0
+    x: 980.0
+    y: 55.0
   }
   scale {
-    x: 0.7
-    y: 0.7
+    x: 0.6
+    y: 0.6
   }
   type: TYPE_BOX
   texture: "ui/button1"
@@ -479,7 +477,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Battle"
+  text: "IDS_BATTLE"
   font: "game"
   id: "text3"
   parent: "battleBtn"
@@ -487,12 +485,12 @@ nodes {
 }
 nodes {
   position {
-    x: 700.0
-    y: 50.0
+    x: 800.0
+    y: 55.0
   }
   scale {
-    x: 0.7
-    y: 0.7
+    x: 0.6
+    y: 0.6
   }
   color {
     x: 0.0
@@ -514,7 +512,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Back to Menu"
+  text: "IDS_BACK_TO_MENU"
   font: "game"
   id: "text4"
   parent: "menuBtn"

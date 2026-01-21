@@ -2,12 +2,6 @@ images {
   image: "/assets/img/characters/sahur.png"
 }
 images {
-  image: "/assets/img/characters/shinpannzini.png"
-}
-images {
-  image: "/assets/img/characters/lirili.png"
-}
-images {
   image: "/assets/img/characters/bombardiro.png"
 }
 images {
@@ -21,12 +15,6 @@ images {
 }
 images {
   image: "/assets/img/characters/dindin.png"
-}
-images {
-  image: "/assets/img/characters/trallalero.png"
-}
-images {
-  image: "/assets/img/characters/bobrito.png"
 }
 images {
   image: "/assets/img/characters/frigo.png"

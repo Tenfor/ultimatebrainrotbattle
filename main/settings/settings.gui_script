@@ -2,6 +2,7 @@ local druid = require("druid.druid")
 local events = require("event.events")
 local gameEvents = require("main/events/gameEvents")
 local settingsModel = require("main/settings/settingsModel")
+local storage = require("main/storage/storage")
 
 local function updateSoundButtons(self)
 	gui.play_flipbook(self.musicBtnNode, settingsModel.music and "button_music" or "button_music_off")
@@ -11,12 +12,14 @@ end
 local function onMusicBtn(self)
 	settingsModel.setMusic(not settingsModel.music)
 	events.trigger(settingsModel.music and gameEvents.ENABLE_MUSIC or gameEvents.DISABLE_MUSIC)
+	storage.saveData()
 	updateSoundButtons(self)
 end
 
 local function onSoundBtn(self)
 	settingsModel.setSound(not settingsModel.sound)
-	events.trigger(settingsModel.music and gameEvents.ENABLE_SFX or gameEvents.DISABLE_SFX)
+	events.trigger(settingsModel.sound and gameEvents.ENABLE_SFX or gameEvents.DISABLE_SFX)
+	storage.saveData()
 	updateSoundButtons(self)
 end
 

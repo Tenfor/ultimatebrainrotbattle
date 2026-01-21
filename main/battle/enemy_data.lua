@@ -217,6 +217,7 @@ M.list = {
 		mocks = {
 			"Tung tung tung tung tung!",
 			"Tung...",
+			"Tung...",
 		},
 		startPos = {1530,276,0},
 		enterPos = {830,276,0},

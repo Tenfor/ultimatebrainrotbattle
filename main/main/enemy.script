@@ -10,6 +10,15 @@ local chats = require("main/battle/chats")
 local gameModel = require("main/battle/gameModel")
 local upgradesModel = require("main/upgrades/upgradesModel")
 local effectFactoryFinder = require("main/battle/effectFactoryFinder")
+local tutorial = require("main/tutorial/tutorial")
+local achievements = require("main/achievements/achievements")
+local storage = require("main/storage/storage")
+
+local function onHideTutorial(self)
+	if not gameModel.enemyEntered then 
+		gameModel.setEnemyEntered(true)
+	end
+end
 
 local function OnStartPlayerUltiCasting(self)
 	self.playerUltiCasting = true
@@ -38,6 +47,33 @@ local function jumpIn(self,jump_height,jump_time)
 		gameModel.setEnemyEntered(true)
 		events.trigger(gameEvents.PLAY_SFX,"#thud")
 		events.trigger(gameEvents.PLAY_SFX,"#"..enemyModel.name)
+		if(not tutorial.tutorial1.seen and enemyModel.name == "boneca") then
+			gameModel.setEnemyEntered(false)
+			timer.delay(1,false,function()
+				events.trigger(gameEvents.SHOW_TUTORIAL,"tutorial1")
+			end)
+		end
+
+		if(not tutorial.tutorial3.seen and tutorial.tutorial1.seen and enemyModel.name == "boneca" and playerModel.currentCharacter == "sahur" and upgradesModel.sahur.skill2.lvl == 1) then
+			gameModel.setEnemyEntered(false)
+			timer.delay(1,false,function()
+				events.trigger(gameEvents.SHOW_TUTORIAL,"tutorial3")
+			end)
+		end
+
+		if(not tutorial.tutorial4.seen and enemyModel.name == "boneca" and playerModel.currentCharacter == "patapim" and tutorial.tutorial1.seen) then
+			gameModel.setEnemyEntered(false)
+			timer.delay(1,false,function()
+				events.trigger(gameEvents.SHOW_TUTORIAL,"tutorial4")
+			end)
+		end
+
+		if(not tutorial.tutorial5.seen and enemyModel.name == "boneca" and playerModel.currentCharacter == "cappuccino" and tutorial.tutorial1.seen) then
+			gameModel.setEnemyEntered(false)
+			timer.delay(1,false,function()
+				events.trigger(gameEvents.SHOW_TUTORIAL,"tutorial5")
+			end)
+		end
 	end)
 
 	go.animate(".", "position.y", go.PLAYBACK_ONCE_PINGPONG, start_pos.y + jump_height, go.EASING_OUTSINE, jump_time)
@@ -278,6 +314,9 @@ local function onEnemyDie(self)
 	if enemyModel.hasBuff(buffs.POISON) then
 		enemyModel.removeBuff(buffs.POISON)
 	end
+	achievements.enemyDefeated(playerModel.currentCharacter,enemyModel.name)
+	print(achievements.sahurMaxBoss,achievements.patapimMaxBoss,achievements.cappuccinoMaxBoss)
+	storage.saveData()
 	go.set("#sprite", "tint", vmath.vector4(1, 1, 1, 1))
 	dieBlink(self,0)
 end
@@ -508,6 +547,7 @@ function init(self)
 	events.subscribe(gameEvents.START_ENEMY_ULTI_CASTING, OnStartEnemyUltiCasting,self)
 	events.subscribe(gameEvents.END_PLAYER_ULTI_CASTING, OnEndPlayerUltiCasting,self)
 	events.subscribe(gameEvents.END_ENEMY_ULTI_CASTING, OnEndEnemyUltiCasting,self)
+	events.subscribe(gameEvents.HIDE_TUTORIAL, onHideTutorial, self)
 	--go.animate("#sprite", "color_add.w", go.PLAYBACK_LOOP_PINGPONG, 1, go.EASING_LINEAR, 2)		
 end
 
@@ -526,6 +566,7 @@ function final(self)
 	events.unsubscribe(gameEvents.START_ENEMY_ULTI_CASTING, OnStartEnemyUltiCasting,self)
 	events.unsubscribe(gameEvents.END_PLAYER_ULTI_CASTING, OnEndPlayerUltiCasting,self)
 	events.unsubscribe(gameEvents.END_ENEMY_ULTI_CASTING, OnEndEnemyUltiCasting,self)
+	events.unsubscribe(gameEvents.HIDE_TUTORIAL, onHideTutorial, self)
 end
 
 function update(self, dt)

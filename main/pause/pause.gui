@@ -63,7 +63,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Pause"
+  text: "IDS_PAUSE"
   font: "game"
   id: "title"
   parent: "pausePanel"
@@ -90,7 +90,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Resume"
+  text: "IDS_RESUME"
   font: "game"
   id: "resumeBtnText"
   parent: "resumeBtn"
@@ -184,7 +184,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Back to menu?"
+  text: "IDS_BACK_TO_MENU_TITLE"
   font: "game"
   id: "confirmTitle"
   parent: "confirmPanel"
@@ -203,7 +203,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "You won\'t recieve any reward for this round"
+  text: "IDS_BACK_TO_MENU_DESC"
   font: "game"
   id: "confirmDesc"
   line_break: true
@@ -232,7 +232,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Yes"
+  text: "IDS_YES"
   font: "game"
   id: "yesBtnText"
   parent: "yesBtn"
@@ -260,7 +260,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "No"
+  text: "IDS_NO"
   font: "game"
   id: "noBtnText"
   parent: "noBtn"

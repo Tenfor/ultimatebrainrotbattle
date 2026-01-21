@@ -62,7 +62,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Play"
+  text: "IDS_PLAY"
   font: "game"
   id: "playText"
   parent: "playBtn"
@@ -131,7 +131,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Upgrades"
+  text: "IDS_UPGRADES"
   font: "game"
   id: "upgradesText"
   parent: "upgradesBtn"
@@ -143,8 +143,9 @@ nodes {
     y: 117.0
   }
   scale {
-    x: 0.9
-    y: 0.9
+    x: 0.936
+    y: 0.936
+    z: 1.04
   }
   type: TYPE_BOX
   texture: "ui/button_sound"
@@ -239,7 +240,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Settings"
+  text: "IDS_SETTINGS"
   font: "game"
   id: "settingsTitle"
   parent: "settings"
@@ -307,7 +308,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Skill hotkeys"
+  text: "IDS_HOTKEYS"
   font: "game"
   id: "hotkeysTitle"
   parent: "settings"
@@ -379,7 +380,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Language"
+  text: "IDS_LANGUAGE"
   font: "game"
   id: "langTitle"
   parent: "settings"
@@ -463,7 +464,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Reset Data"
+  text: "IDS_RESETDATA"
   font: "game"
   id: "resetDataBtnText"
   parent: "resetDataBtn"
@@ -507,7 +508,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Credits"
+  text: "IDS_CREDITS"
   font: "game"
   id: "creditsTitle"
   parent: "credits"
@@ -543,12 +544,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Graphic design by Kar\303\241di Vikt\303\263ria\n"
-  "\n"
-  "Assets from Craftpix\n"
-  "\n"
-  "Made by Tenfor\n"
-  ""
+  text: "IDS_CREDITS_DETAILS"
   font: "game"
   id: "creditsText"
   parent: "credits"

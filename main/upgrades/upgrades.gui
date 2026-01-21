@@ -73,8 +73,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Pick an upgrade\n"
-  ""
+  text: "IDS_UPGRADES_TITLE"
   font: "game"
   id: "title"
   parent: "infos"
@@ -111,7 +110,7 @@ nodes {
     y: 500.0
   }
   type: TYPE_TEXT
-  text: "Select an upgrade for more info"
+  text: "IDS_UPGRADES_DESC"
   font: "game"
   id: "desc"
   line_break: true
@@ -205,7 +204,7 @@ nodes {
 }
 nodes {
   position {
-    x: 175.0
+    x: 150.0
     y: 500.0
   }
   size {
@@ -228,8 +227,23 @@ nodes {
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
+  size {
+    x: 130.0
+    y: 130.0
+  }
+  color {
+    z: 0.0
+  }
+  type: TYPE_BOX
+  texture: "ui/max"
+  id: "stat1Max"
+  parent: "stat1Btn"
+  inherit_alpha: true
+  enabled: false
+}
+nodes {
   position {
-    y: -75.0
+    y: -80.0
   }
   scale {
     x: 0.5
@@ -248,7 +262,7 @@ nodes {
 }
 nodes {
   position {
-    x: 295.0
+    x: 280.0
     y: 500.0
   }
   size {
@@ -271,8 +285,23 @@ nodes {
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
+  size {
+    x: 130.0
+    y: 130.0
+  }
+  color {
+    z: 0.0
+  }
+  type: TYPE_BOX
+  texture: "ui/max"
+  id: "stat2Max"
+  parent: "stat2Btn"
+  inherit_alpha: true
+  enabled: false
+}
+nodes {
   position {
-    y: -75.0
+    y: -80.0
   }
   scale {
     x: 0.5
@@ -291,7 +320,7 @@ nodes {
 }
 nodes {
   position {
-    x: 415.0
+    x: 410.0
     y: 500.0
   }
   size {
@@ -314,8 +343,23 @@ nodes {
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
+  size {
+    x: 130.0
+    y: 130.0
+  }
+  color {
+    z: 0.0
+  }
+  type: TYPE_BOX
+  texture: "ui/max"
+  id: "stat3Max"
+  parent: "stat3Btn"
+  inherit_alpha: true
+  enabled: false
+}
+nodes {
   position {
-    y: -75.0
+    y: -80.0
   }
   scale {
     x: 0.5
@@ -334,7 +378,7 @@ nodes {
 }
 nodes {
   position {
-    x: 535.0
+    x: 540.0
     y: 500.0
   }
   size {
@@ -357,8 +401,23 @@ nodes {
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
+  size {
+    x: 130.0
+    y: 130.0
+  }
+  color {
+    z: 0.0
+  }
+  type: TYPE_BOX
+  texture: "ui/max"
+  id: "stat4Max"
+  parent: "stat4Btn"
+  inherit_alpha: true
+  enabled: false
+}
+nodes {
   position {
-    y: -75.0
+    y: -80.0
   }
   scale {
     x: 0.5
@@ -377,7 +436,7 @@ nodes {
 }
 nodes {
   position {
-    x: 655.0
+    x: 670.0
     y: 499.0
   }
   size {
@@ -400,8 +459,23 @@ nodes {
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
+  size {
+    x: 130.0
+    y: 130.0
+  }
+  color {
+    z: 0.0
+  }
+  type: TYPE_BOX
+  texture: "ui/max"
+  id: "stat5Max"
+  parent: "stat5Btn"
+  inherit_alpha: true
+  enabled: false
+}
+nodes {
   position {
-    y: -75.0
+    y: -80.0
   }
   scale {
     x: 0.5
@@ -420,7 +494,7 @@ nodes {
 }
 nodes {
   position {
-    x: 775.0
+    x: 800.0
     y: 499.0
   }
   size {
@@ -443,8 +517,23 @@ nodes {
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
+  size {
+    x: 130.0
+    y: 130.0
+  }
+  color {
+    z: 0.0
+  }
+  type: TYPE_BOX
+  texture: "ui/max"
+  id: "stat6Max"
+  parent: "stat6Btn"
+  inherit_alpha: true
+  enabled: false
+}
+nodes {
   position {
-    y: -75.0
+    y: -80.0
   }
   scale {
     x: 0.5
@@ -462,6 +551,9 @@ nodes {
   inherit_alpha: true
 }
 nodes {
+  position {
+    y: 30.0
+  }
   size {
     x: 200.0
     y: 100.0
@@ -475,7 +567,7 @@ nodes {
 }
 nodes {
   position {
-    x: 225.0
+    x: 200.0
     y: 277.0
   }
   size {
@@ -501,8 +593,23 @@ nodes {
   inherit_alpha: true
 }
 nodes {
+  size {
+    x: 130.0
+    y: 130.0
+  }
+  color {
+    z: 0.0
+  }
+  type: TYPE_BOX
+  texture: "ui/max"
+  id: "skill1Max"
+  parent: "skill1Btn"
+  inherit_alpha: true
+  enabled: false
+}
+nodes {
   position {
-    y: -75.0
+    y: -80.0
   }
   scale {
     x: 0.5
@@ -521,7 +628,7 @@ nodes {
 }
 nodes {
   position {
-    x: 345.0
+    x: 330.0
     y: 277.0
   }
   size {
@@ -547,8 +654,23 @@ nodes {
   inherit_alpha: true
 }
 nodes {
+  size {
+    x: 130.0
+    y: 130.0
+  }
+  color {
+    z: 0.0
+  }
+  type: TYPE_BOX
+  texture: "ui/max"
+  id: "skill2Max"
+  parent: "skill2Btn"
+  inherit_alpha: true
+  enabled: false
+}
+nodes {
   position {
-    y: -75.0
+    y: -80.0
   }
   scale {
     x: 0.5
@@ -567,7 +689,7 @@ nodes {
 }
 nodes {
   position {
-    x: 465.0
+    x: 460.0
     y: 277.0
   }
   size {
@@ -593,8 +715,23 @@ nodes {
   inherit_alpha: true
 }
 nodes {
+  size {
+    x: 130.0
+    y: 130.0
+  }
+  color {
+    z: 0.0
+  }
+  type: TYPE_BOX
+  texture: "ui/max"
+  id: "skill3Max"
+  parent: "skill3Btn"
+  inherit_alpha: true
+  enabled: false
+}
+nodes {
   position {
-    y: -75.0
+    y: -80.0
   }
   scale {
     x: 0.5
@@ -613,7 +750,7 @@ nodes {
 }
 nodes {
   position {
-    x: 585.0
+    x: 590.0
     y: 277.0
   }
   size {
@@ -639,8 +776,23 @@ nodes {
   inherit_alpha: true
 }
 nodes {
+  size {
+    x: 130.0
+    y: 130.0
+  }
+  color {
+    z: 0.0
+  }
+  type: TYPE_BOX
+  texture: "ui/max"
+  id: "skill4Max"
+  parent: "skill4Btn"
+  inherit_alpha: true
+  enabled: false
+}
+nodes {
   position {
-    y: -75.0
+    y: -80.0
   }
   scale {
     x: 0.5
@@ -659,7 +811,7 @@ nodes {
 }
 nodes {
   position {
-    x: 705.0
+    x: 720.0
     y: 277.0
   }
   size {
@@ -685,8 +837,23 @@ nodes {
   inherit_alpha: true
 }
 nodes {
+  size {
+    x: 130.0
+    y: 130.0
+  }
+  color {
+    z: 0.0
+  }
+  type: TYPE_BOX
+  texture: "ui/max"
+  id: "skill5Max"
+  parent: "skill5Btn"
+  inherit_alpha: true
+  enabled: false
+}
+nodes {
   position {
-    y: -75.0
+    y: -80.0
   }
   scale {
     x: 0.5
@@ -705,7 +872,7 @@ nodes {
 }
 nodes {
   position {
-    x: 775.0
+    x: 800.0
     y: 277.0
   }
   size {
@@ -732,8 +899,23 @@ nodes {
   inherit_alpha: true
 }
 nodes {
+  size {
+    x: 130.0
+    y: 130.0
+  }
+  color {
+    z: 0.0
+  }
+  type: TYPE_BOX
+  texture: "ui/max"
+  id: "skill6Max"
+  parent: "skill6Btn"
+  inherit_alpha: true
+  enabled: false
+}
+nodes {
   position {
-    y: -75.0
+    y: -80.0
   }
   scale {
     x: 0.5
@@ -760,7 +942,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Sahur Upgrades"
+  text: "IDS_SAHUR_UPGRADES"
   font: "game"
   id: "header"
   parent: "sahurUpgrades"
@@ -768,12 +950,12 @@ nodes {
 }
 nodes {
   position {
-    x: 700.0
-    y: 50.0
+    x: 800.0
+    y: 55.0
   }
   scale {
-    x: 0.7
-    y: 0.7
+    x: 0.6
+    y: 0.6
   }
   color {
     x: 0.0
@@ -796,7 +978,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Back to Menu"
+  text: "IDS_BACK_TO_MENU"
   font: "game"
   id: "text4"
   parent: "menuBtn"
@@ -804,12 +986,12 @@ nodes {
 }
 nodes {
   position {
-    x: 930.0
-    y: 50.0
+    x: 980.0
+    y: 55.0
   }
   scale {
-    x: 0.7
-    y: 0.7
+    x: 0.6
+    y: 0.6
   }
   type: TYPE_BOX
   texture: "ui/button1"
@@ -824,7 +1006,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Battle"
+  text: "IDS_BATTLE"
   font: "game"
   id: "text3"
   parent: "battleBtn"
@@ -840,37 +1022,63 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Gold: 0"
+  text: "IDS_GOLD"
   font: "game"
   id: "goldText"
   inherit_alpha: true
 }
 nodes {
   position {
-    x: 256.0
+    x: 225.0
     y: 123.0
   }
   scale {
     x: 0.6
     y: 0.6
   }
+  color {
+    x: 0.0
+    y: 0.0
+  }
   type: TYPE_BOX
   texture: "ui/button1"
-  id: "addGold"
+  id: "watchAd"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
 }
 nodes {
+  position {
+    x: 46.666664
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
   size {
     x: 200.0
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "1000"
+  text: "IDS_AD_REWARD"
   font: "game"
-  id: "text1"
-  parent: "addGold"
+  id: "adRewardText"
+  parent: "watchAd"
   inherit_alpha: true
+}
+nodes {
+  position {
+    x: -78.333336
+  }
+  scale {
+    x: 0.9
+    y: 0.8
+  }
+  type: TYPE_BOX
+  texture: "ui/clapperboard"
+  id: "box"
+  parent: "watchAd"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
 }
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT

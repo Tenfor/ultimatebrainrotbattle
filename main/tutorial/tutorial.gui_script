@@ -1,0 +1,160 @@
+local druid = require("druid.druid")
+local events = require("event.events")
+local gameEvents = require("main/events/gameEvents")
+local tutorial = require("main/tutorial/tutorial")
+local storage = require("main/storage/storage")
+local translator = require("main/translator/translator")
+
+local function hideTutorial(self)
+	if tutorial[self.name] then 
+		tutorial[self.name].seen = true
+		storage.saveData()
+	end
+	gui.animate(
+		self.panel,
+		gui.PROP_COLOR,
+		vmath.vector4(1, 1, 1, 0),
+		gui.EASING_OUT,
+		0.3
+	)
+
+-- Zoom animáció
+	gui.animate(
+		self.panel,
+		gui.PROP_SCALE,
+		vmath.vector3(0.4, 0.41, 1),
+		gui.EASING_LINEAR,
+		0.3,
+		0,
+		function() 
+			gui.set_enabled(self.box, false)
+			gui.set_enabled(self.currentPage, false)
+			events.trigger(gameEvents.HIDE_TUTORIAL)
+		end
+	)
+end
+
+local function onSkip(self)
+	events.trigger(gameEvents.PLAY_SFX,"#flip")
+	hideTutorial(self)
+end
+
+local function onContinue(self)
+	if self.isVisible then
+		events.trigger(gameEvents.PLAY_SFX,"#flip")
+		if self.pageIndex < #tutorial[self.name].pages then 
+			self.pageIndex = self.pageIndex + 1
+			gui.set_enabled(self.currentPage, false)
+			self.currentPage = gui.get_node(tutorial[self.name].pages[self.pageIndex])
+			gui.set_text(self.page, self.pageIndex.."/"..#tutorial[self.name].pages)
+			gui.set_enabled(self.currentPage, true)
+		else 
+			hideTutorial(self)
+		end
+	end
+end
+
+local function onShowTutorial(self,name)
+	--
+	print("ONSHOWTUT")
+	self.isVisible = true
+	-- Kezdő állapot
+	gui.set_scale(self.panel, vmath.vector3(0.4, 0.4, 1))
+	gui.set_color(self.panel, vmath.vector4(1, 1, 1, 0))
+	gui.set_enabled(self.box, true)
+	events.trigger(gameEvents.PLAY_SFX,"#flip")
+	if tutorial[name] then
+		self.pageIndex = 1
+		self.currentPage = gui.get_node(tutorial[name].pages[self.pageIndex])
+		self.name = name
+		gui.set_enabled(self.currentPage, true)
+		gui.set_text(self.page, "1/"..#tutorial[self.name].pages)
+		
+	else 
+		--
+	end
+
+	-- Alpha animáció
+	gui.animate(
+		self.panel,
+		gui.PROP_COLOR,
+		vmath.vector4(1, 1, 1, 1),
+		gui.EASING_OUT,
+		0.3
+	)
+
+	-- Zoom animáció
+	gui.animate(
+		self.panel,
+		gui.PROP_SCALE,
+		vmath.vector3(1, 1, 1),
+		gui.EASING_LINEAR,
+		0.3
+	)
+end
+
+local function translate()
+	translator.translate({
+		"title",
+		"continueBtnText",
+		"skipBtnText",
+		"t1p1desc",
+		"t1p2desc",
+		"t1p3desc",
+		"t1p4desc",
+		"t1p5desc",
+		"t2p1desc",
+		"t2p2desc",
+		"t2p3desc",
+		"t2p4desc",
+		"t3p1desc",
+		"t3p2desc",
+		"t3p3desc",
+		"t4p1desc",
+		"t4p2desc",
+		"t4p3desc",
+		"t5p1desc",
+		"t5p2desc",
+		"t5p3desc",
+	})
+end
+
+function init(self)
+	self.druid = druid.new(self)
+	self.name = ""
+	self.currentPage = ""	
+	self.pageIndex = 1
+	self.isVisible = false
+	
+	self.continueBtn = self.druid:new_button("continue", onContinue)
+	self.skipBtn = self.druid:new_button("skip", onSkip)
+	self.box = gui.get_node("box")
+	self.panel = gui.get_node("panel")
+--	self.desc = gui.get_node("desc")
+	self.page = gui.get_node("page")
+	events.subscribe(gameEvents.SHOW_TUTORIAL,onShowTutorial, self)
+	gui.set_render_order(2)
+
+	translate()
+end
+
+function final(self)
+	self.druid:final()
+	events.unsubscribe(gameEvents.SHOW_TUTORIAL,onShowTutorial, self)
+end
+
+function update(self, dt)
+	self.druid:update(dt)
+end
+
+function on_message(self, message_id, message, sender)
+	self.druid:on_message(message_id, message, sender)
+end
+
+function on_input(self, action_id, action)
+	return self.druid:on_input(action_id, action)
+end
+
+function on_reload(self)
+
+end

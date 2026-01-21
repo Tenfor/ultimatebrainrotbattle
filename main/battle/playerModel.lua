@@ -45,8 +45,13 @@ local M = {
 		EVASION = 0,
 	},
 	attackType = attackType.MELEE,
-	resourceType = resourceType.RAGE
+	resourceType = resourceType.RAGE,
+	ultiCasting = false
 }
+
+function M.setUltiCasting(val)
+	M.ultiCasting = val
+end
 
 function M.setRage(val) 
 	M.rage = val 
@@ -272,6 +277,18 @@ function M.addBuff(buff,duration)
 	if M.buffs[buff] ~= nil then 
 		M.buffs[buff] = duration
 	end
+end
+
+function M.resetBuffs()
+	M.buffs = {
+		BERSERK = 0,
+		FROST = 0,
+		SHIELD = 0,
+		STUN = 0,
+		DARK_PATAPIM = 0,
+		POISON = 0,
+		EVASION = 0,
+	}
 end
 
 function M.hasBuff(buff)

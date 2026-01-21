@@ -9,7 +9,19 @@ local hitType = require("main/battle/hitType")
 local effectFactoryFinder = require("main/battle/effectFactoryFinder")
 local gameModel = require("main/battle/gameModel")
 
+local function onRevive(self)
+	playerModel.resetBuffs()
+	local green = vmath.vector4(0, 1, 0, 1)
+	events.trigger(gameEvents.PLAY_SFX,"#powerup6")
+	go.animate("#sprite", "color_add", go.PLAYBACK_ONCE_PINGPONG, green, go.EASING_LINEAR, 1,0)
+	timer.delay(1, false, function() 
+		playerModel.setHp(0)
+		events.trigger(gameEvents.PLAYER_HEAL, math.floor(playerModel.maxHp*0.5))
+	end)
+end
+
 local function OnStartPlayerUltiCasting(self)
+	playerModel.setUltiCasting(true)
 	self.ultiCasting = true
 	self.counter = 0
 end
@@ -19,6 +31,7 @@ local function OnStartEnemyUltiCasting(self)
 end
 
 local function OnEndPlayerUltiCasting(self)
+	playerModel.setUltiCasting(false)
 	self.ultiCasting = false
 end
 
@@ -152,9 +165,11 @@ end
 local function updateBuffs(self,dt)
 	local hasDarkPatapim = playerModel.hasBuff(buffs.DARK_PATAPIM)
 	local hasEvasion = playerModel.hasBuff(buffs.EVASION)
-	
-	playerModel.updateBuffs(dt)
-	playerModel.updateCDS(dt)
+
+	if not gameModel.isGameOver then
+		playerModel.updateBuffs(dt)
+		playerModel.updateCDS(dt)
+	end
 
 	if(hasDarkPatapim) then 
 		if not playerModel.hasBuff(buffs.DARK_PATAPIM) then
@@ -285,6 +300,7 @@ function init(self)
 	self.counter = 0
 	self.mode = "normal"
 	self.isCasting = false 
+	playerModel.setUltiCasting(false)
 	self.ultiCasting = false
 	self.enemyUltiCasting = false
 	events.subscribe(gameEvents.PLAYER_START_CASTING,onStartCasting,self)
@@ -301,6 +317,7 @@ function init(self)
 	events.subscribe(gameEvents.START_ENEMY_ULTI_CASTING, OnStartEnemyUltiCasting,self)
 	events.subscribe(gameEvents.END_PLAYER_ULTI_CASTING, OnEndPlayerUltiCasting,self)
 	events.subscribe(gameEvents.END_ENEMY_ULTI_CASTING, OnEndEnemyUltiCasting,self)
+	events.subscribe(gameEvents.REVIVE, onRevive,self)
 end
 
 function final(self)
@@ -318,6 +335,7 @@ function final(self)
 	events.unsubscribe(gameEvents.START_ENEMY_ULTI_CASTING, OnStartEnemyUltiCasting,self)
 	events.unsubscribe(gameEvents.END_PLAYER_ULTI_CASTING, OnEndPlayerUltiCasting,self)
 	events.unsubscribe(gameEvents.END_ENEMY_ULTI_CASTING, OnEndEnemyUltiCasting,self)
+	events.unsubscribe(gameEvents.REVIVE, onRevive,self)
 end
 
 function update(self, dt)

@@ -8,8 +8,8 @@ textures {
   texture: "/assets/img/ui/ui.atlas"
 }
 textures {
-  name: "characters"
-  texture: "/assets/img/characters/characters.atlas"
+  name: "bg"
+  texture: "/assets/img/bg/bg.atlas"
 }
 nodes {
   position {
@@ -48,9 +48,39 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Congratulations!"
+  text: "Congratulations Tung Tung Tung Sahur!"
   font: "game"
   id: "title"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 640.0
+    y: 574.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "You are the strongest Brainrot!"
+  font: "game"
+  id: "title1"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 640.0
+    y: 180.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "Thank you for playing!"
+  font: "game"
+  id: "title2"
   inherit_alpha: true
 }
 material: "/builtins/materials/gui.material"
