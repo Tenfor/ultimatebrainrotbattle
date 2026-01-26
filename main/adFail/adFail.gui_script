@@ -1,6 +1,7 @@
 local druid = require("druid.druid")
 local events = require("event.events")
 local gameEvents = require("main/events/gameEvents")
+local translator = require("main/translator/translator")
 
 local function onContinueBtn(self)
 	gui.set_enabled(self.panel, false)
@@ -13,6 +14,14 @@ local function onShowFailedPanel(self)
 	self.input_enabled = true
 end
 
+local function translate()
+	translator.translate({
+		{node = "title", textId = "IDS_ADFAIL_TITLE"},
+		{node = "description", textId = "IDS_ADFAIL_DESC"},
+		{node = "continueBtnText", textId = "IDS_CONTINUE"},
+	})
+end
+
 
 function init(self)
 	self.druid = druid.new(self)
@@ -23,14 +32,17 @@ function init(self)
 	self.continueBtn = self.druid:new_button("continueBtn", onContinueBtn)
 
 	events.subscribe(gameEvents.SHOW_FAILED_PANEL, onShowFailedPanel, self)
+	events.subscribe(gameEvents.LANG_CHANGED,translate)
 
 	gui.set_render_order(2)
+	translate();
 end
 
 function final(self)
 	self.druid:final()
 
 	events.unsubscribe(gameEvents.SHOW_FAILED_PANEL, onShowFailedPanel, self)
+	events.unsubscribe(gameEvents.LANG_CHANGED,translate)
 end
 
 function update(self, dt)

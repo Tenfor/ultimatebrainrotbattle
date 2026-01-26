@@ -34,7 +34,7 @@ end
 
 local function onSoundBtn(self)
 	settingsModel.setSound(not settingsModel.sound)
-	events.trigger(settingsModel.music and gameEvents.ENABLE_SFX or gameEvents.DISABLE_SFX)
+	events.trigger(settingsModel.sound and gameEvents.ENABLE_SFX or gameEvents.DISABLE_SFX)
 	storage.saveData()
 	updateSoundButtons(self)
 end

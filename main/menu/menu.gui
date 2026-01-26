@@ -70,38 +70,6 @@ nodes {
 }
 nodes {
   position {
-    x: 1167.0
-    y: 642.0
-  }
-  scale {
-    x: 0.6
-    y: 0.6
-  }
-  type: TYPE_BOX
-  texture: "ui/button1"
-  id: "sandboxBtn"
-  parent: "menu"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    y: 6.123635
-  }
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  type: TYPE_TEXT
-  text: "Sandbox\n"
-  ""
-  font: "game"
-  id: "sandboxText"
-  parent: "sandboxBtn"
-  inherit_alpha: true
-}
-nodes {
-  position {
     x: 629.0
     y: 283.0
   }
@@ -122,8 +90,8 @@ nodes {
     y: 3.53671
   }
   scale {
-    x: 0.9
-    y: 0.9
+    x: 0.8
+    y: 0.8
     z: 0.8
   }
   size {
@@ -265,7 +233,7 @@ nodes {
 nodes {
   position {
     x: 753.0
-    y: 493.0
+    y: 480.0
   }
   scale {
     x: 0.8
@@ -281,7 +249,7 @@ nodes {
 nodes {
   position {
     x: 583.0
-    y: 493.0
+    y: 480.0
   }
   scale {
     x: 0.8
@@ -456,8 +424,8 @@ nodes {
 }
 nodes {
   scale {
-    x: 0.8
-    y: 0.8
+    x: 0.65
+    y: 0.65
   }
   size {
     x: 200.0
@@ -548,6 +516,225 @@ nodes {
   font: "game"
   id: "creditsText"
   parent: "credits"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 640.0
+    y: 360.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "resetConfirmPanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "ui/table"
+  id: "bg1"
+  parent: "resetConfirmPanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: 111.0
+  }
+  scale {
+    x: 0.8
+    y: 0.8
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_ARE_YOU_SURE"
+  font: "game"
+  id: "resetConfirmTitle"
+  parent: "resetConfirmPanel"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    y: 16.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 900.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_RESET_DESC"
+  font: "game"
+  id: "resetConfirmDesc"
+  line_break: true
+  parent: "resetConfirmPanel"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -100.0
+    y: -95.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "yesBtn"
+  parent: "resetConfirmPanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_YES"
+  font: "game"
+  id: "yesBtnText"
+  parent: "yesBtn"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 100.0
+    y: -95.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "noBtn"
+  parent: "resetConfirmPanel"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_NO"
+  font: "game"
+  id: "noBtnText"
+  parent: "noBtn"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 640.0
+    y: 360.0
+  }
+  size {
+    x: 1280.0
+    y: 720.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "resetSuccessPanel"
+  inherit_alpha: true
+  alpha: 0.5
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  scale {
+    x: 0.4
+    y: 0.4
+  }
+  type: TYPE_BOX
+  texture: "ui/table"
+  id: "box"
+  parent: "resetSuccessPanel"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: 90.0
+  }
+  scale {
+    x: 0.55
+    y: 0.55
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_RESET_SUCCESS_TITLE"
+  font: "game"
+  id: "resetSuccessTitle"
+  parent: "resetSuccessPanel"
+}
+nodes {
+  position {
+    y: 4.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 800.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_RESET_SUCCESS_DESC"
+  font: "game"
+  id: "resetSuccessDescription"
+  line_break: true
+  parent: "resetSuccessPanel"
+}
+nodes {
+  position {
+    y: -78.0
+  }
+  scale {
+    x: 0.45
+    y: 0.45
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "continueBtn"
+  parent: "resetSuccessPanel"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_CONTINUE"
+  font: "game"
+  id: "continueBtnText"
+  parent: "continueBtn"
   inherit_alpha: true
 }
 material: "/builtins/materials/gui.material"

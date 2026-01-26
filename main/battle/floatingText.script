@@ -7,12 +7,6 @@ go.property("missed", false)
 --go.property("parentId", hash("enemy"))
 
 function init(self)
-
-	--go.set_parent(go.get_id(),self.parentId,true)
-
-	--self.parentId = hash("enemy")
-	--print(self.parentId)
-
 	self.offsetX = 0;
 	self.offsetY = 100;
 	
@@ -84,8 +78,6 @@ function update(self, dt)
 	end
 	target_pos.x = target_pos.x + self.offsetX
 	target_pos.y = target_pos.y + self.offsetY
-
-	--print(self.parentId,target_pos)
 	
 	go.set_position(target_pos,go.get_id())
 end

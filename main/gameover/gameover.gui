@@ -49,19 +49,19 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Game Over"
+  text: "IDS_GAME_OVER"
   font: "game"
   id: "title"
   inherit_alpha: true
 }
 nodes {
   position {
-    x: 67.0
+    x: 45.0
     y: 540.0
   }
   scale {
-    x: 0.7
-    y: 0.7
+    x: 0.65
+    y: 0.65
   }
   size {
     x: 200.0
@@ -77,12 +77,12 @@ nodes {
 }
 nodes {
   position {
-    x: 67.0
+    x: 45.0
     y: 470.0
   }
   scale {
-    x: 0.7
-    y: 0.7
+    x: 0.65
+    y: 0.65
   }
   size {
     x: 200.0
@@ -98,12 +98,12 @@ nodes {
 }
 nodes {
   position {
-    x: 67.0
+    x: 45.0
     y: 400.0
   }
   scale {
-    x: 0.7
-    y: 0.7
+    x: 0.65
+    y: 0.65
   }
   size {
     x: 200.0
@@ -119,12 +119,12 @@ nodes {
 }
 nodes {
   position {
-    x: 67.0
+    x: 45.0
     y: 330.0
   }
   scale {
-    x: 0.7
-    y: 0.7
+    x: 0.65
+    y: 0.65
   }
   size {
     x: 200.0
@@ -140,8 +140,12 @@ nodes {
 }
 nodes {
   position {
-    x: 67.0
+    x: 45.0
     y: 220.0
+  }
+  scale {
+    x: 0.9
+    y: 0.9
   }
   size {
     x: 200.0
@@ -157,7 +161,7 @@ nodes {
 }
 nodes {
   position {
-    x: 904.0
+    x: 950.0
     y: 238.0
   }
   type: TYPE_BOX
@@ -168,16 +172,21 @@ nodes {
 }
 nodes {
   position {
-    x: 904.0
+    x: 950.0
     y: 471.0
   }
   scale {
-    x: 0.6
-    y: 0.6
+    x: 0.5
+    y: 0.5
   }
   size {
-    x: 200.0
+    x: 1200.0
     y: 100.0
+  }
+  color {
+    x: 0.4
+    y: 0.6
+    z: 0.4
   }
   type: TYPE_BOX
   id: "chatBox"

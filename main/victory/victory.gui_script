@@ -2,9 +2,37 @@ local druid = require("druid.druid")
 local events = require("event.events")
 local gameEvents = require("main/events/gameEvents")
 local gameModel = require("main/battle/gameModel")
+local playerModel = require("main/battle/playerModel")
+local upgradesModel = require("main/upgrades/upgradesModel")
+local translator = require("main/translator/translator")
 
 local function onContinueBtn(self)
+	events.trigger(gameEvents.FADE_OUT_MUSIC,"#victoryMusic")
+	events.trigger(gameEvents.STOP_ROCKET)
+	self.input_enabled = false
+	gui.animate(self.darkening, "color.w", 1, gui.EASING_LINEAR, 2, 0,function() 
+		gui.set_enabled(self.continueBtnNode, false)
+		self.input_enabled = true
+		gui.set_enabled(self.panel, true)
+	end)
+end
+
+local function onContinueBtn1(self)
+	upgradesModel[playerModel.currentCharacter].gold = upgradesModel[playerModel.currentCharacter].gold+5000
 	events.trigger(gameEvents.CHANGE_SCENE,"victory","menu")
+end
+
+
+local function translate()
+	translator.translate({
+		"label",
+		"title",
+		"title1",
+		"title2",
+		"title3",
+		"description",
+		"continueBtnText"
+	})
 end
 
 function init(self)
@@ -13,6 +41,12 @@ function init(self)
 	self.continueBtnNode = gui.get_node("continueBtn")
 	events.trigger(gameEvents.PLAY_MUSIC,"#victoryMusic")
 	gameModel.reset()
+	self.input_enabled = true
+	self.darkening = gui.get_node("darkening")
+	self.panel = gui.get_node("panel")
+	self.continueBtn1 = self.druid:new_button("continueBtn1", onContinueBtn1)
+	
+	translate()
 end
 
 function final(self)
@@ -28,5 +62,8 @@ function on_message(self, message_id, message, sender)
 end
 
 function on_input(self, action_id, action)
+	if not self.input_enabled then
+		return false
+	end
 	return self.druid:on_input(action_id, action)
 end

@@ -173,13 +173,6 @@ embedded_components {
   ""
 }
 embedded_components {
-  id: "lirili"
-  type: "sound"
-  data: "sound: \"/assets/sounds/vo/lirili.wav\"\n"
-  "group: \"sfx\"\n"
-  ""
-}
-embedded_components {
   id: "boing"
   type: "sound"
   data: "sound: \"/assets/sounds/sfx/boing.wav\"\n"
@@ -246,24 +239,6 @@ embedded_components {
   "group: \"sfx\"\n"
   "gain: 0.1\n"
   "speed: 0.9\n"
-  ""
-}
-embedded_components {
-  id: "dialogrev3"
-  type: "sound"
-  data: "sound: \"/assets/sounds/sfx/dialogrev3.wav\"\n"
-  "looping: 1\n"
-  "group: \"sfx\"\n"
-  "gain: 0.3\n"
-  ""
-}
-embedded_components {
-  id: "dialogrev2"
-  type: "sound"
-  data: "sound: \"/assets/sounds/sfx/dialogrev2.wav\"\n"
-  "looping: 1\n"
-  "group: \"sfx\"\n"
-  "gain: 0.3\n"
   ""
 }
 embedded_components {

@@ -35,7 +35,6 @@ local sounds = {
 	"#patapim_ulti",
 	"#cappuccino_ulti",
 	"#boneca",
-	"#lirili",
 	"#dindin",
 	"#patapim",
 	"#cappuccino",
@@ -53,8 +52,6 @@ local sounds = {
 	"#buy",
 	"#teleport",
 	"#dialogrev1",
-	"#dialogrev2",
-	"#dialogrev3",
 	"#rocket",
 	"#flip"
 }
@@ -132,13 +129,11 @@ end
 local function onPlayMusic(self,musicUrl)
 	--if gameSettings.music
 	if self.currentTrack ~= musicUrl then
-		print("stop music",self.currentTrack)
 		sound.stop(self.currentTrack)
 		timer.delay(0.1, false, function()
 			go.set(musicUrl, "gain", musicUrl == "#menuMusic" and 0.1 or 0.4)
 			sound.play(musicUrl)
 			self.currentTrack = musicUrl
-			print("play music",self.currentTrack)
 		end)
 	end
 		--if musicUrl == "#menuMusic" and not self.menuMusicPlaying then 
@@ -157,7 +152,6 @@ local function onBackToMenu(self)
 		sound.stop(sounds[i])
 	end
 	sound.stop("#battleMusic")
-	print("music stop")
 end
 
 local function onFadeInMusic(self,musicUrl)
@@ -187,7 +181,6 @@ function init(self)
 	events.subscribe(gameEvents.RESUME, onResume, self)
 	events.subscribe(gameEvents.BACK_TO_MENU, onBackToMenu, self)
 
-	pprint("soundControllerLoaded",settingsModel.sound,settingsModel.music)
 	events.trigger(settingsModel.sound and gameEvents.ENABLE_SFX or gameEvents.DISABLE_SFX)
 	events.trigger(settingsModel.music and gameEvents.ENABLE_MUSIC or gameEvents.DISABLE_MUSIC)
 end

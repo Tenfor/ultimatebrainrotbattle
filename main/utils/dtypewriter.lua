@@ -62,6 +62,35 @@ local _messages_url
 
 local _callback_handle
 
+
+local function utf8_iter(s)
+	local i = 1
+	local len = #s
+
+	return function()
+		if i > len then return nil end
+
+		local c = string.byte(s, i)
+		local bytes
+
+		if c < 0x80 then
+			bytes = 1
+		elseif c < 0xE0 then
+			bytes = 2
+		elseif c < 0xF0 then
+			bytes = 3
+		else
+			bytes = 4
+		end
+
+		local start = i
+		local char = string.sub(s, i, i + bytes - 1)
+		i = i + bytes
+
+		return start, char
+	end
+end
+
 ----------------------------------------------------------------------
 -- CONSTANTS
 ----------------------------------------------------------------------
@@ -101,6 +130,10 @@ end
 
 local function set_transparent(color)
 	return vmath.vector4(color.x, color.y, color.z, 0)
+end
+
+local function set_transparent_back(color)
+	return vmath.vector4(color.x, color.y, color.z, 1)
 end
 
 local function type_callback()
@@ -195,66 +228,110 @@ function dtypewriter.load(text)
 	local character_index = 1
 	local character_color = _default_color
 	local character_speed = _default_type_speed
-	while character_index <= #text do
-		local character = string.sub(text, character_index, character_index)
+	for byte_index, character in utf8_iter(text) do
+		--local character = utf8.char(codepoint)
+
+		-- SPACE
 		if character == " " then
 			local chunk_type = "content"
-			local chunk_text = string.sub(text, chunk_start_index, character_index - 1)
-			local chunk_data = { text = chunk_text, metrics = resource.get_text_metrics(_font, chunk_text) }
+			local chunk_text = string.sub(text, chunk_start_index, byte_index - 1)
+			local chunk_data = {
+				text = chunk_text,
+				metrics = resource.get_text_metrics(_font, chunk_text)
+			}
 			add_chunk(chunk_type, chunk_data)
+
 			chunk_type = "space"
 			chunk_text = " "
-			chunk_data = { text = chunk_text, metrics = resource.get_text_metrics(_font, chunk_text) }
+			chunk_data = {
+				text = chunk_text,
+				metrics = resource.get_text_metrics(_font, chunk_text)
+			}
 			add_chunk(chunk_type, chunk_data)
+
 			add_character(#_chunks, chunk_text, character_color, character_speed)
-			chunk_start_index = character_index + 1
-			character_index = character_index + 1
+
+			chunk_start_index = byte_index + 1
+
+			-- TAG START
 		elseif character == "<" then
-			if string.sub(text, character_index, character_index + 6) == "<color=" then
-				local color_start_index, color_end_index = string.find(text, "%l+", character_index + 7)
-				local color_name = string.sub(text, color_start_index, color_end_index)
-				character_color = (color_name == "default" or not _colors[color_name]) and _default_color or _colors[color_name]
-				text = string.sub(text, 1, character_index - 1) .. string.sub(text, color_end_index + 2)
-			elseif string.sub(text, character_index, character_index + 6) == "<speed=" then
-				local speed_start_index, speed_end_index = string.find(text, "%d*%l*", character_index + 7)
-				local speed_text = string.sub(text, speed_start_index, speed_end_index)
+			-- <color=...>
+			if string.sub(text, byte_index, byte_index + 6) == "<color=" then
+				local s, e = string.find(text, "%l+", byte_index + 7)
+				local color_name = string.sub(text, s, e)
+
+				character_color =
+				(color_name == "default" or not _colors[color_name])
+				and _default_color
+				or _colors[color_name]
+
+				text = string.sub(text, 1, byte_index - 1)
+				.. string.sub(text, e + 2)
+
+				chunk_start_index = byte_index
+
+				-- <speed=...>
+			elseif string.sub(text, byte_index, byte_index + 6) == "<speed=" then
+				local s, e = string.find(text, "%d*%l*", byte_index + 7)
+				local speed_text = string.sub(text, s, e)
+
 				if speed_text == "default" then
 					character_speed = _default_type_speed
 				elseif speed_text == "instant" then
 					character_speed = 0
 				else
-					character_speed = speed_text
+					character_speed = tonumber(speed_text)
 				end
-				text = string.sub(text, 1, character_index - 1) .. string.sub(text, speed_end_index + 2)
-			elseif string.sub(text, character_index, character_index + 5) == "<line>" then
+
+				text = string.sub(text, 1, byte_index - 1)
+				.. string.sub(text, e + 2)
+
+				chunk_start_index = byte_index
+
+				-- <line>
+			elseif string.sub(text, byte_index, byte_index + 5) == "<line>" then
 				local chunk_type = "content"
-				local chunk_text = string.sub(text, chunk_start_index, character_index - 1)
-				local chunk_data = { text = chunk_text, metrics = resource.get_text_metrics(_font, chunk_text) }
+				local chunk_text = string.sub(text, chunk_start_index, byte_index - 1)
+				local chunk_data = {
+					text = chunk_text,
+					metrics = resource.get_text_metrics(_font, chunk_text)
+				}
 				add_chunk(chunk_type, chunk_data)
-				chunk_type = "line"
-				add_chunk(chunk_type)
-				chunk_start_index = character_index + 6
-				character_index = character_index + 6
-			elseif string.sub(text, character_index, character_index + 10) == "<paragraph>" then
+
+				add_chunk("line")
+
+				chunk_start_index = byte_index + 6
+
+				-- <paragraph>
+			elseif string.sub(text, byte_index, byte_index + 10) == "<paragraph>" then
 				local chunk_type = "content"
-				local chunk_text = string.sub(text, chunk_start_index, character_index - 1)
-				local chunk_data = { text = chunk_text, metrics = resource.get_text_metrics(_font, chunk_text) }
+				local chunk_text = string.sub(text, chunk_start_index, byte_index - 1)
+				local chunk_data = {
+					text = chunk_text,
+					metrics = resource.get_text_metrics(_font, chunk_text)
+				}
 				add_chunk(chunk_type, chunk_data)
-				chunk_type = "paragraph"
-				add_chunk(chunk_type)
-				chunk_start_index = character_index + 11
-				character_index = character_index + 11
+
+				add_chunk("paragraph")
+
+				chunk_start_index = byte_index + 11
 			end
+
+			-- NORMAL CHARACTER (UTF-8 OK)
 		else
 			add_character(#_chunks + 1, character, character_color, character_speed)
-			if character_index == #text then
-				local chunk_type = "content"
-				local chunk_text = string.sub(text, chunk_start_index, character_index)
-				local chunk_data = { text = chunk_text, metrics = resource.get_text_metrics(_font, chunk_text) }
-				add_chunk(chunk_type, chunk_data)
-			end
-			character_index = character_index + 1
 		end
+
+		character_index = character_index + 1
+	end
+
+	-- záró content chunk
+	if chunk_start_index <= #text then
+		local chunk_text = string.sub(text, chunk_start_index)
+		add_chunk("content", {
+			text = chunk_text,
+			metrics = resource.get_text_metrics(_font, chunk_text)
+		})
 	end
 	local text_metrics = resource.get_text_metrics(_font, text)
 	local paragraph = 1

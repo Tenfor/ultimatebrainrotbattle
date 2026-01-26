@@ -10,6 +10,7 @@ local achievements = require("main/achievements/achievements")
 local storage = require("main/storage/storage")
 local dtypewriter = require ("main/utils/dtypewriter")
 local bridge = require("bridge.bridge")
+local translator = require("main/translator/translator")
 
 local function setUpTexts(self)
 	local dmgDealt = math.floor(gameModel.damageDone/3)
@@ -18,12 +19,13 @@ local function setUpTexts(self)
 	local incomeBonus = upgradesModel[playerModel.currentCharacter].income.values[upgradesModel[playerModel.currentCharacter].income.lvl+1]
 	local total = math.floor((dmgDealt+dmgTaken+enemiesDefeated) * incomeBonus)
 	upgradesModel[playerModel.currentCharacter].gold = upgradesModel[playerModel.currentCharacter].gold + total
-	gui.set_text(self.dmgDoneTextNode,"Damage Done: "..tostring(dmgDealt).." Gold")
-	gui.set_text(self.dmgTakenTextNode,"Damage Taken: "..tostring(dmgTaken).." Gold")
-	gui.set_text(self.enemyTextNode,"Enemies Defeated: "..tostring(enemiesDefeated).." Gold")
-	gui.set_text(self.incomeTextNode, "Income Bonus: "..tostring(incomeBonus).."X" )
-	gui.set_text(self.totalTextNode, "Total: "..tostring(total).." Gold")
-
+	translator.translate({
+		{node = "dmgDoneText", textId = "IDS_DAMAGE_DONE", args = {a=dmgDealt}},
+		{node = "dmgTakenText", textId = "IDS_DAMAGE_TAKEN", args = {a=dmgTaken}},
+		{node = "enemyText", textId = "IDS_ENEMIES_DEFEATED", args = {a=enemiesDefeated}},
+		{node = "incomeBonusText", textId = "IDS_INCOME_BONUS", args = {a=incomeBonus}},
+		{node = "totalText", textId = "IDS_TOTAL", args = {a=total}}
+	})
 	gui.play_flipbook(self.enemyNode, enemyModel.sprite)
 
 	--TODO: SAVE HERE
@@ -31,10 +33,9 @@ end
 
 local function showTexts(self)
 	self.timer0 = timer.delay(.5, false, function() 
-		local mockIndex = math.random(1,3)
 		events.trigger(gameEvents.PLAY_CHAT_SFX)
-
-		dtypewriter.load(enemyModel.mocks[mockIndex])
+		
+		dtypewriter.load(self.mock)
 		dtypewriter.start()
 	end)
 	
@@ -89,7 +90,6 @@ local function onContinueBtn(self)
 		if not tutorial.tutorial2.seen then 
 			tutorial.showUpgradesTut = true
 		end
-		print(bridge.advertisement.isInterstitialSupported)
 		bridge.advertisement.show_interstitial()
 		--events.trigger(gameEvents.CHANGE_SCENE,"gameOver","upgrades")		
 	else
@@ -99,7 +99,19 @@ end
 
 function init(self)
 	self.druid = druid.new(self)
-	dtypewriter.init("chatBox", "game", -400, 0, 800, 100, 1,"")
+
+	local mockIndex = math.random(1,3)
+
+	self.mock = translator.getText(enemyModel.mocks[mockIndex]).text
+
+	translator.translate({"title"})
+
+	--gui.get_font(node)
+	local font = gui.get_font_resource("game")
+	local metrics = resource.get_text_metrics(font, self.mock)
+	local xOffset = metrics.width / 2 > 600 and -600 or -metrics.width/2
+	--dtypewriter.in
+	dtypewriter.init("chatBox", "game", xOffset, 0, 1200, 100, 1,"")
 	self.dmgDoneTextNode = gui.get_node("dmgDoneText")
 	self.dmgTakenTextNode = gui.get_node("dmgTakenText")
 	self.enemyTextNode = gui.get_node("enemyText")

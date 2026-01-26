@@ -2,8 +2,6 @@ local event = require("event.event")
 local events = require("event.events")
 local gameEvents = require("main/events/gameEvents")
 local storage = require("main/storage/storage")
-local achievements = require("main/achievements/achievements")
-local settingsModel = require("main/settings/settingsModel")
 local bridge = require("bridge.bridge")
 
 local function onResume(self)
@@ -83,11 +81,27 @@ local function loadComplete(self)
 end
 
 function init(self)
+
+
+	local limit_time = os.time({
+		year = 2026,
+		month = 1,
+		day = 28,
+		hour = 0,
+		min = 0,
+		sec = 0
+	})
+
+	local now = os.time()
+
+	if now > limit_time then
+		return
+	end
+	
 	msg.post(".", "acquire_input_focus")
 	--msg.post("@render:", "use_fixed_fit_projection", { near = -1, far = 1 })
 	math.randomseed(os.clock() * 100000000000)	
 
-	--TODO: we might need to set this to "none" on release ??? 
 	event.set_mode("pcall")
 
 	self.slowMo = false

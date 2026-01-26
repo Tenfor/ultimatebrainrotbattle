@@ -5,6 +5,7 @@ local gameModel = require("main/battle/gameModel")
 local playerModel = require("main/battle/playerModel")
 local achievements = require("main/achievements/achievements")
 local translator = require("main/translator/translator")
+local storage = require("main/storage/storage")
 
 local function checkUnlocks(self)
 	gui.set_color(self.pataSprite, achievements.isPatapimUnlocked() and vmath.vector4(1,1,1,1) or vmath.vector4(0,0,0,1))
@@ -65,6 +66,7 @@ local function onSelectCharacterBtn(self,characterIndex)
 		events.trigger(gameEvents.PLAY_SFX,"#cappuccino")
 	end
 
+	storage.saveData()
 	checkSelectedCharacter(self)
 end
 
@@ -108,7 +110,7 @@ function init(self)
 	self.menuBtn = self.druid:new_button("menuBtn", onMenuBtn)
 
 	--TODO remove this btn
-	self.unlockBtn = self.druid:new_button("unlockBtn", onUnlock)
+--	self.unlockBtn = self.druid:new_button("unlockBtn", onUnlock)
 
 	self.pataSprite = gui.get_node("character2Sprite")
 	self.capSprite = gui.get_node("character3Sprite")
@@ -119,8 +121,6 @@ function init(self)
 
 	checkUnlocks(self)
 
-	--TODO - select the saved character
-	print(playerModel.currentCharacter)
 	local characterIndex = 1
 	if playerModel.currentCharacter == "patapim" then 
 		characterIndex = 2

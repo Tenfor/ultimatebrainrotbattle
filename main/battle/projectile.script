@@ -13,7 +13,6 @@ go.property("flip", false)
 go.property("speed", 200)
 
 local function onImpact(self)
-	print(self.enemyCasted,playerModel.hasBuff(buffs.SHIELD))
 	if (not self.enemyCasted and not enemyModel.hasBuff(buffs.SHIELD)) or (self.enemyCasted and not playerModel.hasBuff(buffs.SHIELD)) then
 		if self.animName == hash("fire_bolt") then
 			battleController.fire_bolt_impact(self.enemyCasted)

@@ -14,6 +14,7 @@ local settingsModel = require ("main/settings/settingsModel")
 local upgradesModel = require ("main/upgrades/upgradesModel")
 local achievements = require("main/achievements/achievements")
 local storage = require("main/storage/storage")
+local translator = require("main/translator/translator")
 local bridge = require("bridge.bridge")
 
 local function onRevive(self)
@@ -59,10 +60,12 @@ end
 
 local function onPause(self)
 	self.input_enabled = false
+	gui.set_enabled(self.chatBoxNode, false)
 end
 
 local function onResume(self)
 	self.input_enabled = true
+	gui.set_enabled(self.chatBoxNode, true)
 end
 
 local function truncate(num, decimals)
@@ -115,10 +118,10 @@ local function onEnemyDie(self)
 		storage.saveData()
 	end
 	if enemyModel.name == "bombardiro" then 
-		timer.delay(1.5, false, function() 
+		timer.delay(4.5, false, function() 
 			gui.set_color(self.flashEffectNode, vmath.vector4(0, 0, 0, 1))
 			gui.set_alpha(self.flashEffectNode, 0)
-			gui.animate(self.flashEffectNode, "color.w", 1, gui.EASING_LINEAR, 1,0,function()
+			gui.animate(self.flashEffectNode, "color.w", 1, gui.EASING_LINEAR, 2,0,function()
 				events.trigger(gameEvents.CHANGE_SCENE,"main","victory")
 			end)
 		end)
@@ -131,10 +134,10 @@ local function onPlayerDie(self)
 	gui.set_alpha(self.flashEffectNode, 0)
 	events.trigger(gameEvents.FADE_OUT_MUSIC,"#battleMusic")
 	gui.animate(self.flashEffectNode, "color.w", 1, gui.EASING_LINEAR, 1,0,function()
-		if not self.isRevived then 
+		if not self.isRevived and not settingsModel.hideAds then 
 			gui.set_enabled(self.revivePanel, true)
 		else
-			achievements.setDeaths(achievements.deaths + 1)
+			--achievements.setDeaths(achievements.deaths + 1)
 			storage.saveData()
 			events.trigger(gameEvents.CHANGE_SCENE,"main","gameOver")
 		end
@@ -508,6 +511,13 @@ local function onEnemyHpMinusBtn2(self)
 	events.trigger(gameEvents.ENEMY_HURT,{dmg=500, crit=false},hitType.VFX.NONE,hitType.SFX.NONE)
 end
 
+local function translate()
+	translator.translate({
+		"watchAdText",
+		"reviveText",
+		"continueText"
+	})
+end
 
 local function initGui(self)
 	loadButtons(self)
@@ -542,7 +552,7 @@ end
 local function onStartChat(self,dialogName, dialogIndex)
 	if chats[dialogName] and chats[dialogName].seen == false then
 		local di = dialogIndex or 1 
-		local dialogs = chats[dialogName].en
+		local dialogs = settingsModel.lang == "en" and chats[dialogName].en or chats[dialogName].ru
 		if di <= #dialogs then 
 			events.trigger(gameEvents.PLAY_CHAT_SFX)
 			dtypewriter.clear()
@@ -684,6 +694,7 @@ function init(self)
 	dtypewriter.init("chatBox", "game", -400, 0, 800, 100, 1,"")
 
 	initGui(self)
+	translate()
 end
 
 function final(self)

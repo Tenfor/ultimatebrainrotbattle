@@ -2,12 +2,15 @@ images {
   image: "/assets/img/bg/bg1.png"
 }
 images {
-  image: "/assets/img/bg/menu_bg.png"
-}
-images {
   image: "/assets/img/bg/sahur_win.png"
 }
 images {
   image: "/assets/img/bg/patapim_win.png"
+}
+images {
+  image: "/assets/img/bg/menu_bg.png"
+}
+images {
+  image: "/assets/img/bg/cappuccino_win.png"
 }
 extrude_borders: 2

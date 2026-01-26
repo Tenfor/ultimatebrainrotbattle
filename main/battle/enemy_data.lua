@@ -28,9 +28,9 @@ M.list = {
 			skills.BONECA_TRANSFORM_BACK,
 		},
 		mocks = {
-			"GG EASY LEMON SQUEZY NOOB!",
-			"Let me give you an advice: GIT GUD!",
-			"HAHA! Boneca Ambalabu is the best!"
+			"IDS_BONECA_MOCK1",
+			"IDS_BONECA_MOCK2",
+			"IDS_BONECA_MOCK3",
 		},
 		startPos = {1530,276,0},
 		enterPos = {830,276,0},
@@ -60,9 +60,9 @@ M.list = {
 			skills.FROST_BOLT_CAST
 		},
 		mocks = {
-			"Am I cool or what?",
-			"I've been an ordinary camel until a radioactive fridge bit me.",
-			"You better cool down mate! Got it?"
+			"IDS_FRIGO_MOCK1",
+			"IDS_FRIGO_MOCK2",
+			"IDS_FRIGO_MOCK3"
 		},
 		startPos = {830,276,0},
 		enterPos = {830,276,0},
@@ -117,9 +117,9 @@ M.list = {
 			skills.METEOR_SMASH
 		},
 		mocks = {
-			"My mother always told me: Never skip leg day bro!",
-			"I've only used 1% of my power bro.",
-			"Train a bit more little bro! It wasn't even my final form."
+			"IDS_DINDIN_MOCK1",
+			"IDS_DINDIN_MOCK2",
+			"IDS_DINDIN_MOCK3"
 		},
 		startPos = {830,1500,0},
 		enterPos = {830,276,0},
@@ -150,9 +150,9 @@ M.list = {
 			skills.EMPTY,
 		},
 		mocks = {
-			"My mother always told me: Never skip leg day bro!",
-			"I've only used 1% of my power bro.",
-			"Train a bit more little bro! It wasn't even my final form."
+			"IDS_DINDIN_MOCK1",
+			"IDS_DINDIN_MOCK2",
+			"IDS_DINDIN_MOCK3"
 		},
 		startPos = {830,276,0},
 		enterPos = {830,306,0},
@@ -180,9 +180,9 @@ M.list = {
 			skills.CALL_PATAPIM,
 		},
 		mocks = {
-			"HAHAHA! Now nothing stands in my way!",
-			"Now I shall explode everything you love!",
-			"Haha! The whole world will go kaboom!"
+			"IDS_BOMBARDIRO_MOCK1",
+			"IDS_BOMBARDIRO_MOCK2",
+			"IDS_BOMBARDIRO_MOCK3"
 		},
 		castBarPos = {930,453,0},
 		startPos = {1530,340,0},
@@ -215,9 +215,9 @@ M.list = {
 			skills.ENRAGE,
 		},
 		mocks = {
-			"Tung tung tung tung tung!",
-			"Tung...",
-			"Tung...",
+			"IDS_SAHUR_MOCK1",
+			"IDS_SAHUR_MOCK2",
+			"IDS_SAHUR_MOCK3"
 		},
 		startPos = {1530,276,0},
 		enterPos = {830,276,0},
@@ -246,9 +246,9 @@ M.list = {
 			skills.FIRE_BOLT,
 		},
 		mocks = {
-			"I am sorry I must obey.",
-			"You must grow stronger to stop him!",
-			"You are not prepared to face him yet."
+			"IDS_PATAPIM_MOCK1",
+			"IDS_PATAPIM_MOCK2",
+			"IDS_PATAPIM_MOCK3"
 		},
 		startPos = {1530,276,0},
 		enterPos = {830,276,0},
@@ -274,9 +274,9 @@ M.list = {
 			skills.EMPTY,
 		},
 		mocks = {
-			"Target eliminated!",
-			"very funny text here",
-			"Requiescat in pace."
+			"IDS_CAPPUCCINO_MOCK1",
+			"IDS_CAPPUCCINO_MOCK2",
+			"IDS_CAPPUCCINO_MOCK3"
 		},
 		startPos = {830,276,0},
 		enterPos = {830,276,0},

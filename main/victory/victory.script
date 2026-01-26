@@ -1,44 +1,20 @@
-local events = require("event.events")
-local gameEvents = require("main/events/gameEvents")
-
-local function onStopRocket(self)
-	self.rocketsActive = false
-end
-
-local function shootRocket(self)
-	local x = math.random(40, 1240)
-	local y = -125
-	factory.create("#rocketFactory",vmath.vector3(x,y,0))
-
-	self.counter = 0
-	self.targetCounter = math.random(1,4) / 2
-
-	local sfxs = {"#rocket","#laser32"}
-	events.trigger(gameEvents.PLAY_SFX,sfxs[math.random(1,#sfxs)])
-
-	events.subscribe(gameEvents.STOP_ROCKET, onStopRocket, self)
-end
+local playerModel = require("main/battle/playerModel")
 
 function init(self)
-	self.counter = 0
-	self.targetCounter = 1.5
-	self.rocketsActive = true
+	sprite.play_flipbook("#character", playerModel.currentCharacter.."_win")
+	go.set("#bg", "tint", vmath.vector4(0.5,0.5,0.5,1))
 end
 
 function final(self)
-	events.unsubscribe(gameEvents.STOP_ROCKET, onStopRocket, self)
 	-- Add finalization code here
 	-- Learn more: https://defold.com/manuals/script/
 	-- Remove this function if not needed
 end
 
 function update(self, dt)
-	if self.rocketsActive then 
-		self.counter = self.counter + dt 
-		if self.counter >= self.targetCounter then 
-			shootRocket(self)
-		end
-	end
+	-- Add update code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
 end
 
 function fixed_update(self, dt)

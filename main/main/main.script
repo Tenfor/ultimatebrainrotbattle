@@ -44,8 +44,6 @@ function init(self)
 	events.subscribe(gameEvents.LOAD_CAPPUCINO, on_load_cappucino,self)
 	enemyModel.loadEnemyModel("boneca")
 
-	print(enemyModel.startPos[1],enemyModel.enterPos[1])
-
 	--events.trigger(gameEvents.STOP_MUSIC,"#menuMusic")
 	events.trigger(gameEvents.PLAY_MUSIC,"#battleMusic")
 

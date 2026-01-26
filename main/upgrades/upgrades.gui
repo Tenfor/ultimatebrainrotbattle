@@ -7,6 +7,21 @@ textures {
   name: "ui"
   texture: "/assets/img/ui/ui.atlas"
 }
+textures {
+  name: "bg"
+  texture: "/assets/img/bg/bg.atlas"
+}
+nodes {
+  position {
+    x: 640.0
+    y: 360.0
+  }
+  type: TYPE_BOX
+  texture: "bg/menu_bg"
+  id: "bg"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
 nodes {
   position {
     x: 640.0
@@ -17,7 +32,7 @@ nodes {
   }
   type: TYPE_BOX
   texture: "ui/table"
-  id: "bg"
+  id: "frame"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
 }
@@ -62,30 +77,31 @@ nodes {
 }
 nodes {
   position {
-    y: 180.0
+    y: 174.0
   }
   scale {
-    x: 0.6
-    y: 0.6
+    x: 0.5
+    y: 0.5
   }
   size {
-    x: 200.0
+    x: 450.0
     y: 100.0
   }
   type: TYPE_TEXT
   text: "IDS_UPGRADES_TITLE"
   font: "game"
   id: "title"
+  line_break: true
   parent: "infos"
   inherit_alpha: true
 }
 nodes {
   position {
-    y: 115.0
+    y: 120.0
   }
   scale {
-    x: 0.6
-    y: 0.6
+    x: 0.5
+    y: 0.5
   }
   size {
     x: 200.0
@@ -137,12 +153,16 @@ nodes {
   position {
     y: 27.5
   }
+  scale {
+    x: 0.9
+    y: 0.9
+  }
   size {
     x: 200.0
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Buy for"
+  text: "IDS_BUY_BTN"
   font: "game"
   id: "buyBtnLabel"
   parent: "buyBtn"
@@ -1017,6 +1037,10 @@ nodes {
     x: 465.0
     y: 120.0
   }
+  scale {
+    x: 0.9
+    y: 0.9
+  }
   size {
     x: 200.0
     y: 100.0
@@ -1029,12 +1053,12 @@ nodes {
 }
 nodes {
   position {
-    x: 225.0
+    x: 215.0
     y: 123.0
   }
   scale {
-    x: 0.6
-    y: 0.6
+    x: 0.65
+    y: 0.65
   }
   color {
     x: 0.0
@@ -1051,8 +1075,8 @@ nodes {
     x: 46.666664
   }
   scale {
-    x: 0.5
-    y: 0.5
+    x: 0.4
+    y: 0.4
   }
   size {
     x: 200.0
@@ -1067,10 +1091,10 @@ nodes {
 }
 nodes {
   position {
-    x: -78.333336
+    x: -81.410255
   }
   scale {
-    x: 0.9
+    x: 0.8
     y: 0.8
   }
   type: TYPE_BOX

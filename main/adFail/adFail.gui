@@ -52,7 +52,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Failed to load the ad"
+  text: "IDS_ADFAIL_TITLE"
   font: "game"
   id: "title"
   parent: "panel"
@@ -70,7 +70,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "There was an error while loading the ad."
+  text: "IDS_ADFAIL_DESC"
   font: "game"
   id: "description"
   line_break: true
@@ -96,7 +96,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Continue"
+  text: "IDS_CONTINUE"
   font: "game"
   id: "continueBtnText"
   parent: "continueBtn"

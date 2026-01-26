@@ -234,11 +234,11 @@ end
 
 local function dieBlink(self, blinkCount)
 	go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_PINGPONG, 0, go.EASING_LINEAR, 0.2,0, function()
-		if blinkCount < 4 then 
+		local maxBlinkCount = 4
+		if blinkCount < maxBlinkCount then 
 			dieBlink(self, blinkCount+1)
 		elseif enemyModel.name ~= "dindin" then
 			go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, 0.1, 0, function() 
-				print("dead",enemyModel.name)
 				if(enemyModel.name == "boneca") then
 					enemyModel.loadEnemyModel("frigo")
 					events.trigger(gameEvents.ENEMY_ENTER)
@@ -303,7 +303,23 @@ local function dieBlink(self, blinkCount)
 		end
 	end)
 end
-	
+
+local function bombardiroDieing(self)
+	events.trigger(gameEvents.FADE_OUT_MUSIC,"#battleMusic")
+	for i = 1, 6 do
+		timer.delay(0.4*i, false, function()
+			local x = math.random(-120, 120)
+			local y = math.random(-70, 70)
+			onPlayEffect(self,"explosion",x,y,1,0.5)
+			events.trigger(gameEvents.PLAY_SFX,"#explosion1")
+		end)
+	end
+
+	timer.delay(2.8, true, function()
+		dieBlink(self,0)
+	end)
+end
+
 
 local function onEnemyDie(self)
 	gameModel.setEnemyEntered(false)
@@ -315,10 +331,14 @@ local function onEnemyDie(self)
 		enemyModel.removeBuff(buffs.POISON)
 	end
 	achievements.enemyDefeated(playerModel.currentCharacter,enemyModel.name)
-	print(achievements.sahurMaxBoss,achievements.patapimMaxBoss,achievements.cappuccinoMaxBoss)
 	storage.saveData()
 	go.set("#sprite", "tint", vmath.vector4(1, 1, 1, 1))
-	dieBlink(self,0)
+	if enemyModel.name == "bombardiro" then 
+		bombardiroDieing(self)
+	else 
+		dieBlink(self,0)	
+	end
+	
 end
 
 local function startCasting(self,skillId)

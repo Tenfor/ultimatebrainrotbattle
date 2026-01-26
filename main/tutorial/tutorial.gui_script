@@ -56,7 +56,6 @@ end
 
 local function onShowTutorial(self,name)
 	--
-	print("ONSHOWTUT")
 	self.isVisible = true
 	-- Kezdő állapot
 	gui.set_scale(self.panel, vmath.vector3(0.4, 0.4, 1))
@@ -95,27 +94,27 @@ end
 
 local function translate()
 	translator.translate({
-		"title",
-		"continueBtnText",
-		"skipBtnText",
-		"t1p1desc",
-		"t1p2desc",
-		"t1p3desc",
-		"t1p4desc",
-		"t1p5desc",
-		"t2p1desc",
-		"t2p2desc",
-		"t2p3desc",
-		"t2p4desc",
-		"t3p1desc",
-		"t3p2desc",
-		"t3p3desc",
-		"t4p1desc",
-		"t4p2desc",
-		"t4p3desc",
-		"t5p1desc",
-		"t5p2desc",
-		"t5p3desc",
+		{node = "title", textId = "IDS_TUTORIAL"},
+		{node = "continueBtnText", textId = "IDS_NEXT"},
+		{node = "skipBtnText", textId = "IDS_CLOSE"},
+		{node = "t1p1desc", textId = "IDS_T1P1"},
+		{node = "t1p2desc", textId = "IDS_T1P2"},
+		{node = "t1p3desc", textId = "IDS_T1P3"},
+		{node = "t1p4desc", textId = "IDS_T1P4"},
+		{node = "t1p5desc", textId = "IDS_T1P5"},
+		{node = "t2p1desc", textId = "IDS_T2P1"},
+		{node = "t2p2desc", textId = "IDS_T2P2"},
+		{node = "t2p3desc", textId = "IDS_T2P3"},
+		{node = "t2p4desc", textId = "IDS_T2P4"},
+		{node = "t3p1desc", textId = "IDS_T3P1"},
+		{node = "t3p2desc", textId = "IDS_T3P2"},
+		{node = "t3p3desc", textId = "IDS_T3P3"},
+		{node = "t4p1desc", textId = "IDS_T4P1"},
+		{node = "t4p2desc", textId = "IDS_T4P2"},
+		{node = "t4p3desc", textId = "IDS_T4P3"},
+		{node = "t5p1desc", textId = "IDS_T5P1"},
+		{node = "t5p2desc", textId = "IDS_T5P2"},
+		{node = "t5p3desc", textId = "IDS_T5P3"},
 	})
 end
 
@@ -133,6 +132,7 @@ function init(self)
 --	self.desc = gui.get_node("desc")
 	self.page = gui.get_node("page")
 	events.subscribe(gameEvents.SHOW_TUTORIAL,onShowTutorial, self)
+	events.subscribe(gameEvents.LANG_CHANGED,translate)
 	gui.set_render_order(2)
 
 	translate()
@@ -141,6 +141,7 @@ end
 function final(self)
 	self.druid:final()
 	events.unsubscribe(gameEvents.SHOW_TUTORIAL,onShowTutorial, self)
+	events.unsubscribe(gameEvents.LANG_CHANGED,translate)
 end
 
 function update(self, dt)

@@ -8,6 +8,7 @@ local achievements = require("main/achievements/achievements")
 local storage = require("main/storage/storage")
 local bridge = require("bridge.bridge")
 local translator = require("main/translator/translator")
+local settingsModel = require("main/settings/settingsModel")
 
 local function onTutorialShow(self)
 	self.input_enabled = false
@@ -25,7 +26,7 @@ local function onHideFailedPanel(self)
 	self.input_enabled = true
 end
 
-local function setDescription(infoObj)
+local function setDescription1(infoObj)
 	if infoObj.name == "precision" then
 		return infoObj.description
 	end
@@ -122,6 +123,153 @@ local function setDescription(infoObj)
 	return infoObj.description
 end
 
+local function getDescription(infoObj)
+	if infoObj.name == "str" then 
+		local strObj = upgradesModel[playerModel.currentCharacter].str
+		return {
+			node = "desc",
+			textId = strObj.lvl >= #strObj.prices and "IDS_STR_MAX_DESC" or "IDS_STR_DESC",
+			args = strObj.lvl >= #strObj.prices and {
+				a = strObj.values[strObj.lvl + 1][1],
+				b = strObj.values[strObj.lvl + 1][2],
+			} 
+			or {
+				a = strObj.values[strObj.lvl + 1][1],
+				b = strObj.values[strObj.lvl + 1][2],
+				c = strObj.values[strObj.lvl + 2][1],
+				d = strObj.values[strObj.lvl + 2][2]
+			}
+		}
+	end
+	if infoObj.name == "pow" then 
+		local powObj = upgradesModel[playerModel.currentCharacter].pow
+		return {
+			node = "desc",
+			textId = powObj.lvl >= #powObj.prices and "IDS_POW_MAX_DESC" or "IDS_POW_DESC",
+			args = powObj.lvl >= #powObj.prices and {
+				a = powObj.values[powObj.lvl + 1][1],
+				b = powObj.values[powObj.lvl + 1][2],
+			} 
+			or {
+				a = powObj.values[powObj.lvl + 1][1],
+				b = powObj.values[powObj.lvl + 1][2],
+				c = powObj.values[powObj.lvl + 2][1],
+				d = powObj.values[powObj.lvl + 2][2]
+			}
+		}
+	end
+	if infoObj.name == "spd" then 
+		local spdObj = upgradesModel[playerModel.currentCharacter].spd
+		return {
+			node = "desc",
+			textId = spdObj.lvl >= #spdObj.prices and "IDS_SPD_MAX_DESC" or "IDS_SPD_DESC",
+			args = spdObj.lvl >= #spdObj.prices and {
+				a = string.format("%.1f",spdObj.values[spdObj.lvl + 1]/3)
+			} 
+			or {
+				a = string.format("%.1f",spdObj.values[spdObj.lvl + 1]/3),
+				b = string.format("%.1f",spdObj.values[spdObj.lvl + 2]/3)
+			}
+		}
+	end
+	if infoObj.name == "hp" then 
+		local hpObj = upgradesModel[playerModel.currentCharacter].hp
+		return {
+			node = "desc",
+			textId = hpObj.lvl >= #hpObj.prices and "IDS_HP_MAX_DESC" or "IDS_HP_DESC",
+			args = hpObj.lvl >= #hpObj.prices and {
+				a = hpObj.values[hpObj.lvl + 1],
+			} 
+			or {
+				a = hpObj.values[hpObj.lvl + 1],
+				b = hpObj.values[hpObj.lvl + 2],
+			}
+		}
+	end
+	if infoObj.name == "crit" then 
+		local critObj = upgradesModel[playerModel.currentCharacter].crit
+		return {
+			node = "desc",
+			textId = critObj.lvl >= #critObj.prices and "IDS_CRIT_MAX_DESC" or "IDS_CRIT_DESC",
+			args = critObj.lvl >= #critObj.prices and {
+				a = critObj.values[critObj.lvl + 1][1],
+				b = critObj.values[critObj.lvl + 1][2],
+			} 
+			or {
+				a = critObj.values[critObj.lvl + 1][1],
+				b = critObj.values[critObj.lvl + 1][2],
+				c = critObj.values[critObj.lvl + 2][1],
+				d = critObj.values[critObj.lvl + 2][2],
+			}
+		}
+	end
+	if infoObj.name == "income" then 
+		local incomeObj = upgradesModel[playerModel.currentCharacter].income
+		return {
+			node = "desc",
+			textId = incomeObj.lvl >= #incomeObj.prices and "IDS_INCOME_MAX_DESC" or "IDS_INCOME_DESC",
+			args = incomeObj.lvl >= #incomeObj.prices and {
+				a = incomeObj.values[incomeObj.lvl + 1],
+			} 
+			or {
+				a = incomeObj.values[incomeObj.lvl + 1],
+				b = incomeObj.values[incomeObj.lvl + 2],
+			}
+		}
+	end
+	if infoObj.name == "rage" then 
+		local rageObj = upgradesModel[playerModel.currentCharacter].rage
+		return {
+			node = "desc",
+			textId = rageObj.lvl >= #rageObj.prices and "IDS_RAGE_MAX_DESC" or "IDS_RAGE_DESC",
+			args = rageObj.lvl >= #rageObj.prices and {
+				a = rageObj.values[rageObj.lvl + 1],
+			} 
+			or {
+				a = rageObj.values[rageObj.lvl + 1],
+				b = rageObj.values[rageObj.lvl + 2],
+			}
+		}
+	end
+	if infoObj.name == "mana" then 
+		local manaObj = upgradesModel[playerModel.currentCharacter].mana
+		return {
+			node = "desc",
+			textId = manaObj.lvl >= #manaObj.prices and "IDS_MANA_MAX_DESC" or "IDS_MANA_DESC",
+			args = manaObj.lvl >= #manaObj.prices and {
+				a = manaObj.values[manaObj.lvl + 1],
+			} 
+			or {
+				a = manaObj.values[manaObj.lvl + 1],
+				b = manaObj.values[manaObj.lvl + 2],
+			}
+		}
+	end
+	if infoObj.name == "cdr" then 
+		local cdrObj = upgradesModel[playerModel.currentCharacter].cdr
+		return {
+			node = "desc",
+			textId = cdrObj.lvl >= #cdrObj.prices and "IDS_CDR_MAX_DESC" or "IDS_CDR_DESC",
+			args = cdrObj.lvl >= #cdrObj.prices and {
+				a = cdrObj.values[cdrObj.lvl + 1],
+			} 
+			or {
+				a = cdrObj.values[cdrObj.lvl + 1],
+				b = cdrObj.values[cdrObj.lvl + 2],
+			}
+		}
+	end
+	if infoObj.name == "precision" then 
+		local precisionObj = upgradesModel[playerModel.currentCharacter].precision
+		return {
+			node = "desc",
+			textId = precisionObj.lvl >= #precisionObj.prices and "IDS_PRECISION_MAX_DESC" or "IDS_PRECISION_DESC",
+		}
+	end
+
+	return {node = "desc", textId = infoObj.description}
+end
+
 local function setInfo(self,name)
 	local infoObj = upgradesModel.sahur[name]
 	
@@ -132,15 +280,26 @@ local function setInfo(self,name)
 	end
 	
 	if infoObj ~= nil then 
-		gui.set_text(self.titleNode, infoObj.title)
+		--gui.set_text(self.titleNode, infoObj.title)
+		local descElement = {
+			node = "desc"
+		}
+		translator.translate({
+			{node="title",args={},textId=infoObj.title},
+			getDescription(infoObj),
+			{
+				node="lvl",
+				textId = infoObj.lvl >= #infoObj.prices and "IDS_MAX_LEVEL" or "IDS_LEVEL", 
+				args = infoObj.lvl >= #infoObj.prices and {} or {a = infoObj.lvl, b = #infoObj.prices}
+			}
+		})
 
-		local description = setDescription(infoObj)
+		--local description = setDescription(infoObj)
 		
-		gui.set_text(self.descNode, description)
+	--	gui.set_text(self.descNode, description)
 	
 		
 		if infoObj.lvl >= #infoObj.prices then
-			gui.set_text(self.lvlNode,  "Max Level")
 			if gui.is_enabled(self.buyBtnNode) then 
 				gui.set_enabled(self.buyBtnNode, false)
 			end
@@ -149,7 +308,6 @@ local function setInfo(self,name)
 				gui.set_enabled(self.buyBtnNode, true)
 			end
 			gui.set_text(self.priceNode,infoObj.prices[infoObj.lvl+1])
-			gui.set_text(self.lvlNode,  "Level: "..(infoObj.lvl).."/"..#infoObj.prices)
 		end
 	end
 end
@@ -178,13 +336,13 @@ local function initAdReward(self)
 		maxBoss = achievements.cappuccinoMaxBoss
 	end
 	if maxBoss == 1 then 
-		local adReward = 50
+		adReward = 50
 	elseif maxBoss == 2 then
-		local adReward = 100
+		adReward = 100
 	elseif maxBoss == 3 then
-		local adReward = 200
+		adReward = 200
 	elseif maxBoss == 4 then 
-		local adReward = 500
+		adReward = 500
 	end
 
 	local incomeBonus = upgradesModel[playerModel.currentCharacter].income.values[upgradesModel[playerModel.currentCharacter].income.lvl+1]
@@ -294,6 +452,7 @@ local function translate()
 		"text3",
 		"text4",
 		{node = "goldText", args = {a=upgradesModel[playerModel.currentCharacter].gold}, textId="IDS_GOLD"},
+		"buyBtnLabel"
 		--s{node = "adRewardText", args = {a=self.adReward}, textId="IDS_AD_REWARD"},
 	})
 end
@@ -340,7 +499,7 @@ function init(self)
 	self.watchAdBtnNode = gui.get_node("watchAd")
 	self.adRewardText = gui.get_node("adRewardText")
 
-	gui.set_enabled(self.watchAdBtnNode, upgradesModel.canWatchAd)
+	gui.set_enabled(self.watchAdBtnNode, upgradesModel.canWatchAd and not settingsModel.hideAds)
 	
 	--createBoxes(self)
 	--initAdReward(self)
@@ -379,9 +538,7 @@ function init(self)
 			upgradesModel.canWatchAd = false
 		elseif state == "failed" then 
 			events.trigger(gameEvents.SHOW_FAILED_PANEL)
-			upgradesModel[playerModel.currentCharacter].gold = 30000
 		elseif state == "closed" then 
-			print("closed")
 			self.input_enabled = true
 			events.trigger(gameEvents.PLAY_MUSIC,"#menuMusic")
 			--msg.post("game:/soundController", "playMusic", {url = "#menuMusic"} )

@@ -3,13 +3,17 @@ local settingsModel = require("main/settings/settingsModel")
 local achievements = require("main/achievements/achievements")
 local tutorial = require("main/tutorial/tutorial")
 local upgradesModel = require("main/upgrades/upgradesModel")
+local playerModel = require("main/battle/playerModel")
 
 local M = {}
+
 
 
 function M.saveData()
 	bridge.storage.delete(
 	{ 
+		--CURRENTCHARACTER
+		"currentCharacter",
 		--SETTINGS
 		"sound","music","lang","hotkeys",
 		--ACHIEVEMENTS
@@ -28,8 +32,9 @@ function M.saveData()
 		"cappuccinoStr", "cappuccinoHp", "cappuccinoSpd", "cappuccinoCrit", "cappuccinoIncome", "cappuccinoPrecision", "cappuccinoGold",
 	},
 	function ()
-		print("saveData",achievements.sahurMaxBoss)
 		bridge.storage.set({
+			--CURRENTCHARACTER
+			currentCharacter = playerModel.currentCharacter,
 			--SETTINGS
 			sound = settingsModel.sound and "on" or "off",
 			music = settingsModel.music and "on" or "off",
@@ -92,7 +97,7 @@ function M.saveData()
 			cappuccinoGold = upgradesModel.cappuccino.gold,
 		},
 		function() 
-			print("SAVEDATA SUCCESS")	
+
 		end,
 		function() 
 			print("Error: save data failed")
@@ -108,6 +113,8 @@ end
 function M.loadData(onComplete)
 	bridge.storage.get(
 	{
+		--currentcharacter
+		"currentCharacter",
 		--settings
 		"sound","music","lang","hotkeys", 
 		--achi
@@ -125,6 +132,15 @@ function M.loadData(onComplete)
 		"cappuccinoStr", "cappuccinoHp", "cappuccinoSpd", "cappuccinoCrit", "cappuccinoIncome", "cappuccinoPrecision", "cappuccinoGold",
 	},
 	function (_, data)		
+
+		if data.currentCharacter == "patapim" and data.deaths >= 10 then 
+			playerModel.currentCharacter = data.currentCharacter
+		elseif data.currentCharacter == "cappuccino" and data.dindinDefeated then
+			playerModel.currentCharacter = data.currentCharacter
+		else 
+			playerModel.currentCharacter = "sahur"
+		end
+		
 		if data.sound == "off" then 
 			settingsModel.setSound(false)
 		end
@@ -134,7 +150,6 @@ function M.loadData(onComplete)
 		settingsModel.setLang(data.lang or "en")
 		settingsModel.setHotkeys(data.hotkeys or "123456")
 
-		pprint(data)
 		achievements.setDeaths(data.deaths or 0)
 		achievements.setDindinDefeated(data.dindinDefeated or false)
 		achievements.setSahurMaxBoss(data.sahurMaxBoss or 0)
@@ -194,9 +209,69 @@ function M.loadData(onComplete)
 	end,
 	function (_,data)
 		print("Error: Load data failed")
-		pprint(data)
 		onComplete()
 	end)
+end
+
+function M.resetData()
+	playerModel.currentCharacter = "sahur"
+	achievements.setDeaths(0)
+	achievements.setDindinDefeated(false)
+	achievements.sahurMaxBoss= 0
+	achievements.patapimMaxBoss = 0
+	achievements.cappuccinoMaxBoss = 0
+
+	tutorial.tutorial1.seen = false
+	tutorial.tutorial2.seen = false
+	tutorial.tutorial3.seen = false
+	tutorial.tutorial4.seen = false
+	tutorial.tutorial5.seen = false
+
+	--sahurskills
+	upgradesModel.sahur.skill1.lvl = 1
+	upgradesModel.sahur.skill2.lvl = 0
+	upgradesModel.sahur.skill3.lvl = 0
+	upgradesModel.sahur.skill4.lvl = 0
+	upgradesModel.sahur.skill5.lvl = 0
+	--sahurstats
+	upgradesModel.sahur.str.lvl = 0
+	upgradesModel.sahur.hp.lvl = 0
+	upgradesModel.sahur.spd.lvl = 0
+	upgradesModel.sahur.crit.lvl = 0
+	upgradesModel.sahur.income.lvl = 0
+	upgradesModel.sahur.rage.lvl = 0
+	upgradesModel.sahur.gold = 0
+	--patapimskills
+	upgradesModel.patapim.skill1.lvl = 1
+	upgradesModel.patapim.skill2.lvl = 1
+	upgradesModel.patapim.skill3.lvl = 0
+	upgradesModel.patapim.skill4.lvl = 0
+	upgradesModel.patapim.skill5.lvl = 0
+	upgradesModel.patapim.skill6.lvl = 0
+	--patapimstats
+	upgradesModel.patapim.pow.lvl = 0
+	upgradesModel.patapim.hp.lvl = 0
+	upgradesModel.patapim.mana.lvl = 0
+	upgradesModel.patapim.cdr.lvl = 0
+	upgradesModel.patapim.crit.lvl = 0
+	upgradesModel.patapim.income.lvl = 0
+	upgradesModel.patapim.gold = 0
+	--cappuccinoskills
+	upgradesModel.cappuccino.skill1.lvl = 1
+	upgradesModel.cappuccino.skill2.lvl = 0
+	upgradesModel.cappuccino.skill3.lvl = 0
+	upgradesModel.cappuccino.skill4.lvl = 0
+	upgradesModel.cappuccino.skill5.lvl = 0
+	--sahurstats
+	upgradesModel.cappuccino.str.lvl = 0
+	upgradesModel.cappuccino.hp.lvl = 0
+	upgradesModel.cappuccino.spd.lvl = 0
+	upgradesModel.cappuccino.crit.lvl = 0
+	upgradesModel.cappuccino.income.lvl = 0
+	upgradesModel.cappuccino.precision.lvl = 0
+	upgradesModel.cappuccino.gold = 0
+
+	M.saveData()
 end
 
 return M

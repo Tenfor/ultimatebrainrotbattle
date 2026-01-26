@@ -1554,13 +1554,14 @@ nodes {
 }
 nodes {
   size {
-    x: 200.0
+    x: 850.0
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Watch an ad to revive with 50% HP?"
+  text: "IDS_ADREVIVE"
   font: "game"
   id: "reviveText"
+  line_break: true
   parent: "revivePanel"
   inherit_alpha: true
 }
@@ -1578,15 +1579,15 @@ nodes {
 }
 nodes {
   scale {
-    x: 0.8
-    y: 0.8
+    x: 0.7
+    y: 0.7
   }
   size {
     x: 200.0
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "No thanks"
+  text: "IDS_NO_THANKS"
   font: "game"
   id: "continueText"
   parent: "continueBtn"
@@ -1610,7 +1611,7 @@ nodes {
 }
 nodes {
   position {
-    x: -49.999996
+    x: -48.0
   }
   scale {
     x: 0.7
@@ -1621,7 +1622,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Revive"
+  text: "IDS_REVIVE"
   font: "game"
   id: "watchAdText"
   parent: "reviveBtn"
@@ -1629,7 +1630,7 @@ nodes {
 }
 nodes {
   position {
-    x: 66.666664
+    x: 68.0
   }
   type: TYPE_BOX
   texture: "ui/clapperboard"

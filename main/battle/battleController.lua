@@ -155,8 +155,6 @@ function M.lightning_bolt(go_url, enemyCasted)
 		local dmg = M.calculate_damage(skills.LIGHTNING_BOLT,enemyCasted)
 		events.trigger(gameEvents.getHurtEvent(enemyCasted),dmg,hitType.VFX.FLASHING)
 
-		print(playerModel.ultiCasting)
-
 		if enemyCasted and not playerModel.hasBuff(buffs.SHIELD) and not playerModel.hasBuff(buffs.EVASION) and not playerModel.ultiCasting then
 			events.trigger(gameEvents.INTERRUPT_PLAYER_CASTING)
 			playerModel.addBuff(buffs.STUN,3)

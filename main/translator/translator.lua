@@ -1,5 +1,6 @@
 local settingsModel = require("main/settings/settingsModel")
 local en = require("main/translator/locale_en")
+local ru = require("main/translator/locale_ru")
 
 local M = {
 
@@ -10,11 +11,14 @@ function M.getText(textId)
 		if en[textId] then 
 			return en[textId]
 		else 
-			pprint("TRANSLATE ERROR",textId,en[textId])
 			return {text="text id not found",args={}}
 		end
 	elseif settingsModel.lang == "ru" then
-		return {text="",args={}}
+		if ru[textId] then 
+			return ru[textId]
+		else 
+			return {text="text id not found",args={}}
+		end
 	end
 end
 

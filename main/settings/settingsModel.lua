@@ -2,7 +2,8 @@ local M = {
 	sound = true,
 	music = true,
 	hotkeys = "123456",
-	lang = "en"
+	lang = "en",
+	hideAds = true
 }
 
 function M.setHotkeys(val, save)

@@ -14,6 +14,21 @@ textures {
 nodes {
   position {
     x: 640.0
+    y: 574.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_STRONGEST"
+  font: "game"
+  id: "title1"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 640.0
     y: 82.0
   }
   scale {
@@ -32,7 +47,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Continue"
+  text: "IDS_CONTINUE"
   font: "game"
   id: "label"
   parent: "continueBtn"
@@ -48,24 +63,9 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Congratulations Tung Tung Tung Sahur!"
+  text: "IDS_CONGRATS"
   font: "game"
   id: "title"
-  inherit_alpha: true
-}
-nodes {
-  position {
-    x: 640.0
-    y: 574.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  type: TYPE_TEXT
-  text: "You are the strongest Brainrot!"
-  font: "game"
-  id: "title1"
   inherit_alpha: true
 }
 nodes {
@@ -78,9 +78,127 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Thank you for playing!"
+  text: "IDS_THANK_YOU"
   font: "game"
   id: "title2"
+  inherit_alpha: true
+  visible: false
+}
+nodes {
+  position {
+    x: 640.0
+    y: 360.0
+    z: 0.1
+  }
+  size {
+    x: 1280.0
+    y: 720.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "darkening"
+  inherit_alpha: true
+  alpha: 0.0
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 640.0
+    y: 360.0
+  }
+  size {
+    x: 1280.0
+    y: 720.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "panel"
+  inherit_alpha: true
+  alpha: 0.0
+  size_mode: SIZE_MODE_AUTO
+  enabled: false
+  visible: false
+}
+nodes {
+  scale {
+    x: 0.4
+    y: 0.4
+  }
+  type: TYPE_BOX
+  texture: "ui/table"
+  id: "box"
+  parent: "panel"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: 90.0
+  }
+  scale {
+    x: 0.55
+    y: 0.55
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_THANK_YOU"
+  font: "game"
+  id: "title3"
+  parent: "panel"
+}
+nodes {
+  position {
+    y: 4.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 800.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_VICTORY_DESC"
+  font: "game"
+  id: "description"
+  line_break: true
+  parent: "panel"
+}
+nodes {
+  position {
+    y: -78.0
+  }
+  scale {
+    x: 0.45
+    y: 0.45
+  }
+  type: TYPE_BOX
+  texture: "ui/button1"
+  id: "continueBtn1"
+  parent: "panel"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_CONTINUE"
+  font: "game"
+  id: "continueBtnText"
+  parent: "continueBtn1"
   inherit_alpha: true
 }
 material: "/builtins/materials/gui.material"
