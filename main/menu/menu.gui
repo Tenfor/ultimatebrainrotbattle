@@ -184,7 +184,7 @@ nodes {
 }
 nodes {
   position {
-    x: 670.0
+    x: 640.0
     y: 396.0
   }
   scale {
@@ -200,7 +200,7 @@ nodes {
 }
 nodes {
   position {
-    x: 668.0
+    x: 640.0
     y: 578.0
   }
   size {
@@ -216,7 +216,7 @@ nodes {
 }
 nodes {
   position {
-    x: 670.0
+    x: 640.0
     y: 105.0
   }
   scale {
@@ -232,7 +232,7 @@ nodes {
 }
 nodes {
   position {
-    x: 753.0
+    x: 720.0
     y: 480.0
   }
   scale {
@@ -248,7 +248,7 @@ nodes {
 }
 nodes {
   position {
-    x: 583.0
+    x: 580.0
     y: 480.0
   }
   scale {
@@ -264,156 +264,16 @@ nodes {
 }
 nodes {
   position {
-    x: 509.0
-    y: 394.0
-  }
-  scale {
-    x: 0.6
-    y: 0.6
-  }
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  type: TYPE_TEXT
-  text: "IDS_HOTKEYS"
-  font: "game"
-  id: "hotkeysTitle"
-  parent: "settings"
-  inherit_alpha: true
-}
-nodes {
-  position {
-    x: 509.0
-    y: 334.0
-  }
-  scale {
-    x: 0.6
-    y: 0.6
-  }
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  type: TYPE_TEXT
-  text: "123456"
-  font: "game"
-  id: "hotkeysText"
-  parent: "settings"
-  inherit_alpha: true
-}
-nodes {
-  position {
-    x: 401.0
-    y: 333.0
-  }
-  scale {
-    x: 0.5
-    y: 0.5
-  }
-  type: TYPE_BOX
-  texture: "ui/button_l"
-  id: "hotkeyPrev"
-  parent: "settings"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 614.0
-    y: 333.0
-  }
-  scale {
-    x: 0.5
-    y: 0.5
-  }
-  type: TYPE_BOX
-  texture: "ui/button_r"
-  id: "hotkeyNext"
-  parent: "settings"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 821.0
-    y: 393.0
-  }
-  scale {
-    x: 0.6
-    y: 0.6
-  }
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  type: TYPE_TEXT
-  text: "IDS_LANGUAGE"
-  font: "game"
-  id: "langTitle"
-  parent: "settings"
-  inherit_alpha: true
-}
-nodes {
-  position {
-    x: 821.0
-    y: 333.0
-  }
-  scale {
-    x: 0.6
-    y: 0.6
-  }
-  size {
-    x: 200.0
-    y: 100.0
-  }
-  type: TYPE_TEXT
-  text: "English"
-  font: "game"
-  id: "langText"
-  parent: "settings"
-  inherit_alpha: true
-}
-nodes {
-  position {
-    x: 713.0
-    y: 332.0
-  }
-  scale {
-    x: 0.5
-    y: 0.5
-  }
-  type: TYPE_BOX
-  texture: "ui/button_l"
-  id: "langPrev"
-  parent: "settings"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 926.0
-    y: 332.0
-  }
-  scale {
-    x: 0.5
-    y: 0.5
-  }
-  type: TYPE_BOX
-  texture: "ui/button_r"
-  id: "langNext"
-  parent: "settings"
-  inherit_alpha: true
-  size_mode: SIZE_MODE_AUTO
-}
-nodes {
-  position {
-    x: 670.0
+    x: 640.0
     y: 240.0
   }
   scale {
     x: 0.6
     y: 0.6
+  }
+  color {
+    y: 0.0
+    z: 0.0
   }
   type: TYPE_BOX
   texture: "ui/button1"
@@ -437,6 +297,168 @@ nodes {
   id: "resetDataBtnText"
   parent: "resetDataBtn"
   inherit_alpha: true
+}
+nodes {
+  position {
+    x: 820.0
+    y: 333.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "langSettings"
+  parent: "settings"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "English"
+  font: "game"
+  id: "langText"
+  parent: "langSettings"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -108.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "ui/button_l"
+  id: "langPrev"
+  parent: "langSettings"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 108.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "ui/button_r"
+  id: "langNext"
+  parent: "langSettings"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    y: 60.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_LANGUAGE"
+  font: "game"
+  id: "langTitle"
+  parent: "langSettings"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 460.0
+    y: 333.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "hotkeySettings"
+  parent: "settings"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+  visible: false
+}
+nodes {
+  position {
+    y: 60.0
+  }
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "IDS_HOTKEYS"
+  font: "game"
+  id: "hotkeysTitle"
+  parent: "hotkeySettings"
+  inherit_alpha: true
+}
+nodes {
+  scale {
+    x: 0.6
+    y: 0.6
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "123456"
+  font: "game"
+  id: "hotkeysText"
+  parent: "hotkeySettings"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: -108.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "ui/button_l"
+  id: "hotkeyPrev"
+  parent: "hotkeySettings"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 108.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "ui/button_r"
+  id: "hotkeyNext"
+  parent: "hotkeySettings"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
 }
 nodes {
   size {

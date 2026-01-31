@@ -24,6 +24,7 @@ end
 
 local function onHideFailedPanel(self)
 	self.input_enabled = true
+	events.trigger(gameEvents.PLAY_MUSIC,"#menuMusic")
 end
 
 local function setDescription1(infoObj)
@@ -528,7 +529,7 @@ function init(self)
 	end
 
 	bridge.advertisement.on("rewarded_state_changed", function (_, state)
-		if state == "opened" then 
+		if state == "opened" or state == "loading" then 
 			self.input_enabled = false
 			events.trigger(gameEvents.STOP_MUSIC,"#menuMusic")
 		elseif state == "rewarded" then 
@@ -541,6 +542,8 @@ function init(self)
 		elseif state == "closed" then 
 			self.input_enabled = true
 			events.trigger(gameEvents.PLAY_MUSIC,"#menuMusic")
+			--self.input_enabled = true
+			--events.trigger(gameEvents.PLAY_MUSIC,"#menuMusic")
 			--msg.post("game:/soundController", "playMusic", {url = "#menuMusic"} )
 		end
 	end)

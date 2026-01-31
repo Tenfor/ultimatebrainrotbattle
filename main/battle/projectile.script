@@ -49,8 +49,14 @@ function init(self)
 	sprite.set_hflip("#sprite", self.flip)
 	--	events.subscribe(self.doneEvent, callback, callback_context)
 	local target_pos = go.get_position("/enemy")
+	if target_pos.x < 700 then 
+		target_pos.x = enemyModel.enterPos[1]
+	end
 	if self.enemyCasted then 
 		target_pos = go.get_position("/player")
+		if target_pos.x > 600 then 
+			target_pos.x = 450
+		end
 	end
 	if self.animName == hash("dagger") then
 		go.set("#sprite", "tint", vmath.vector4(0.4, 1, 0.4, 1))

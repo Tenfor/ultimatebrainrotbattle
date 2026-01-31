@@ -1,4 +1,7 @@
+local translator = require("main/translator/translator")
+
 function init(self)
+	label.set_text("#label", translator.getText("IDS_CRITICAL_LABEL").text)
 	go.animate("#label", "color.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, 0.5)
 	go.animate("#label", "outline.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, 0.5)
 	go.animate("#label", "shadow.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, 0.5)

@@ -549,7 +549,7 @@ nodes {
 nodes {
   position {
     x: 100.0
-    y: 48.0
+    y: 68.0
     z: 0.1
   }
   scale {
@@ -623,7 +623,7 @@ nodes {
 nodes {
   position {
     x: 195.0
-    y: 48.0
+    y: 68.0
     z: 0.1
   }
   scale {
@@ -698,7 +698,7 @@ nodes {
 nodes {
   position {
     x: 290.0
-    y: 48.0
+    y: 68.0
     z: 0.1
   }
   scale {
@@ -773,7 +773,7 @@ nodes {
 nodes {
   position {
     x: 385.0
-    y: 48.0
+    y: 68.0
     z: 0.1
   }
   scale {
@@ -848,7 +848,7 @@ nodes {
 nodes {
   position {
     x: 480.0
-    y: 48.0
+    y: 68.0
     z: 0.1
   }
   scale {
@@ -923,7 +923,7 @@ nodes {
 nodes {
   position {
     x: 575.0
-    y: 48.0
+    y: 68.0
     z: 0.1
   }
   scale {

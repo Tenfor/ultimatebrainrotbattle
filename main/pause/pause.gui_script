@@ -2,8 +2,10 @@ local druid = require("druid.druid")
 local events = require("event.events")
 local gameEvents = require("main/events/gameEvents")
 local settingsModel = require("main/settings/settingsModel")
+local gameModel = require("main/battle/gameModel")
 local translator = require("main/translator/translator")
 local storage = require("main/storage/storage")
+local bridge = require("bridge.bridge")
 
 local function onTutorialShow(self)
 	self.input_enabled = false
@@ -15,9 +17,12 @@ end
 
 
 local function onPause(self)
-	gui.set_enabled(self.pauseBtnNode, false)
-	gui.set_enabled(self.pausePanel, true)
-	events.trigger(gameEvents.PAUSE)
+	if not gameModel.isGameOver then
+		gui.set_enabled(self.pauseBtnNode, false)
+		gui.set_enabled(self.pausePanel, true)
+		events.trigger(gameEvents.PAUSE)
+		bridge.platform.send_message("gameplay_stopped");
+	end
 end
 
 local function updateSoundButtons(self)
@@ -43,6 +48,7 @@ local function onResume(self)
 	gui.set_enabled(self.pauseBtnNode, true)
 	gui.set_enabled(self.pausePanel, false)
 	events.trigger(gameEvents.RESUME)
+	bridge.platform.send_message("gameplay_started");
 end
 
 local function onHomeBtn(self)

@@ -1,7 +1,7 @@
 local playerModel = require("main/battle/playerModel")
 
 function init(self)
-	sprite.play_flipbook("#character", playerModel.currentCharacter.."_win")
+	sprite.play_flipbook("#character", playerModel.currentCharacter.."_win")	
 	go.set("#bg", "tint", vmath.vector4(0.5,0.5,0.5,1))
 end
 

@@ -9,8 +9,19 @@ local function onContinueBtn(self)
 	self.input_enabled = false
 end
 
+local function onReviveBtn(self)
+	gui.set_enabled(self.revivePanel, false)
+	events.trigger(gameEvents.HIDE_REVIVE_PANEL)
+	self.input_enabled = false
+end
+
 local function onShowFailedPanel(self)
 	gui.set_enabled(self.panel, true)
+	self.input_enabled = true
+end
+
+local function onShowRevivePanel(self)
+	gui.set_enabled(self.revivePanel, true)
 	self.input_enabled = true
 end
 
@@ -19,6 +30,8 @@ local function translate()
 		{node = "title", textId = "IDS_ADFAIL_TITLE"},
 		{node = "description", textId = "IDS_ADFAIL_DESC"},
 		{node = "continueBtnText", textId = "IDS_CONTINUE"},
+		{node = "reviveDesc", textId = "IDS_REVIVE_SUCCESS"},
+		{node = "reviveBtnText", textId = "IDS_ARISE"},
 	})
 end
 
@@ -30,8 +43,11 @@ function init(self)
 
 	self.panel = gui.get_node("panel")
 	self.continueBtn = self.druid:new_button("continueBtn", onContinueBtn)
+	self.revivePanel = gui.get_node("revivePanel")
+	self.reviveBtn = self.druid:new_button("reviveBtn", onReviveBtn)
 
 	events.subscribe(gameEvents.SHOW_FAILED_PANEL, onShowFailedPanel, self)
+	events.subscribe(gameEvents.SHOW_REVIVE_PANEL, onShowRevivePanel, self)
 	events.subscribe(gameEvents.LANG_CHANGED,translate)
 
 	gui.set_render_order(2)
@@ -42,6 +58,7 @@ function final(self)
 	self.druid:final()
 
 	events.unsubscribe(gameEvents.SHOW_FAILED_PANEL, onShowFailedPanel, self)
+	events.unsubscribe(gameEvents.SHOW_REVIVE_PANEL, onShowRevivePanel, self)
 	events.unsubscribe(gameEvents.LANG_CHANGED,translate)
 end
 

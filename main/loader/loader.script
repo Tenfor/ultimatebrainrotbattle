@@ -76,28 +76,12 @@ local function loadComplete(self)
 	events.trigger(gameEvents.LOAD_SCENE,"adFail")	
 	events.trigger(gameEvents.LOAD_SCENE, "soundController")
 	timer.delay(0.01, false, function() 
+		bridge.platform.send_message("game_ready");
 		events.trigger(gameEvents.LOAD_SCENE,"menu")	
 	end)
 end
 
-function init(self)
-
-
-	local limit_time = os.time({
-		year = 2026,
-		month = 1,
-		day = 28,
-		hour = 0,
-		min = 0,
-		sec = 0
-	})
-
-	local now = os.time()
-
-	if now > limit_time then
-		return
-	end
-	
+function init(self)	
 	msg.post(".", "acquire_input_focus")
 	--msg.post("@render:", "use_fixed_fit_projection", { near = -1, far = 1 })
 	math.randomseed(os.clock() * 100000000000)	
@@ -107,14 +91,15 @@ function init(self)
 	self.slowMo = false
 	self.pause = false
 
-	bridge.platform.send_message("game_ready");
-
+	
 	events.subscribe(gameEvents.CHANGE_SCENE, changeScene, self)
 	events.subscribe(gameEvents.LOAD_SCENE, loadScene, self)
 	events.subscribe(gameEvents.UNLOAD_SCENE, unloadScene, self)
 	events.subscribe(gameEvents.SLOW_MOTION, onSlowMo, self)
 	events.subscribe(gameEvents.PAUSE, onPause, self)
 	events.subscribe(gameEvents.RESUME, onResume, self)
+
+	bridge.advertisement.set_minimum_delay_between_interstitial(450)
 
 	storage.loadData(function() 
 		loadComplete(self) 

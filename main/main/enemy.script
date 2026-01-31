@@ -322,21 +322,23 @@ end
 
 
 local function onEnemyDie(self)
-	gameModel.setEnemyEntered(false)
-	self.casting = false
-	if enemyModel.name ~= "dindin" then
-		gameModel.setEnemiesDefeated(gameModel.enemiesDefeated+1)
-	end
-	if enemyModel.hasBuff(buffs.POISON) then
-		enemyModel.removeBuff(buffs.POISON)
-	end
-	achievements.enemyDefeated(playerModel.currentCharacter,enemyModel.name)
-	storage.saveData()
-	go.set("#sprite", "tint", vmath.vector4(1, 1, 1, 1))
-	if enemyModel.name == "bombardiro" then 
-		bombardiroDieing(self)
-	else 
-		dieBlink(self,0)	
+	if gameModel.enemyEntered then
+		gameModel.setEnemyEntered(false)
+		self.casting = false
+		if enemyModel.name ~= "dindin" then
+			gameModel.setEnemiesDefeated(gameModel.enemiesDefeated+1)
+		end
+		if enemyModel.hasBuff(buffs.POISON) then
+			enemyModel.removeBuff(buffs.POISON)
+		end
+		achievements.enemyDefeated(playerModel.currentCharacter,enemyModel.name)
+		storage.saveData()
+		go.set("#sprite", "tint", vmath.vector4(1, 1, 1, 1))
+		if enemyModel.name == "bombardiro" then 
+			bombardiroDieing(self)
+		else 
+			dieBlink(self,0)	
+		end
 	end
 	
 end

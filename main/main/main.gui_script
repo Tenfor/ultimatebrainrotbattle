@@ -16,25 +16,11 @@ local achievements = require("main/achievements/achievements")
 local storage = require("main/storage/storage")
 local translator = require("main/translator/translator")
 local bridge = require("bridge.bridge")
-
-local function onRevive(self)
-	self.isRevived = true
-	events.trigger(gameEvents.FADE_IN_MUSIC,"#battleMusic")
-	gui.animate(self.flashEffectNode, "color.w", 0, gui.EASING_LINEAR, 1,0, function()
-		events.trigger(gameEvents.REVIVE)
-		timer.delay(2, false, function()
-			self.input_enabled = true
-			gameModel.setIsGameOver(false)
-			gameModel.setEnemyEntered(true)
-		end)
-	end)
-	
-end
+local device = require ("main/utils/device")
 
 local function onReviveBtn(self)
 	gui.set_enabled(self.revivePanel, false)
 	bridge.advertisement.show_rewarded()
-
 end
 
 local function onContinueBtn(self)
@@ -206,6 +192,27 @@ local function onInterruptEnemyCasting(self)
 	self.enemyCastCountTarget = 0
 	self.enemyCastCount = 0
 end
+
+
+local function onRevive(self)
+	self.isRevived = true
+	events.trigger(gameEvents.FADE_IN_MUSIC,"#battleMusic")
+	gui.animate(self.flashEffectNode, "color.w", 0, gui.EASING_LINEAR, 1,0, function()
+		events.trigger(gameEvents.REVIVE)
+		timer.delay(2, false, function()
+			self.input_enabled = true
+			gameModel.setIsGameOver(false)
+			gameModel.setEnemyEntered(true)
+			if enemyModel.hp <= 0 then
+				events.trigger(gameEvents.ENEMY_DIE)
+				onInterruptPlayerCasting(self)
+				onInterruptEnemyCasting(self)
+				--gameModel.setIsGameOver(true)
+				gameModel.setEnemyEntered(false)
+			end
+		end)
+	end)
+end
 	
 local function updatePlayerCast(self, dt)
 	if self.playerCastCountTarget > 0 then
@@ -282,6 +289,15 @@ local function loadButtons(self)
 		gui.set_text(self.hotkeyText4, "R")
 		gui.set_text(self.hotkeyText5, "T")
 		gui.set_text(self.hotkeyText6, "Y")
+	end
+
+	if device.type ~= "desktop" then 
+		gui.set_text(self.hotkeyText1, "")
+		gui.set_text(self.hotkeyText2, "")
+		gui.set_text(self.hotkeyText3, "")
+		gui.set_text(self.hotkeyText4, "")
+		gui.set_text(self.hotkeyText5, "")
+		gui.set_text(self.hotkeyText6, "")
 	end
 	
 	gui.set_enabled(self.skillBtn6Node, playerModel.currentCharacter == "patapim")
@@ -400,7 +416,7 @@ local function onEnemyHurt(self,dmg)
 		enemyModel.setHp(enemyModel.hp-dmg.dmg)
 		gameModel.setDamageDone(gameModel.damageDone + dmg.dmg)
 		updateEnemyHpText(self)
-		if enemyModel.hp <= 0 then
+		if enemyModel.hp <= 0 and gameModel.enemyEntered then
 			events.trigger(gameEvents.ENEMY_DIE)
 			onInterruptPlayerCasting(self)
 			onInterruptEnemyCasting(self)
@@ -411,7 +427,7 @@ local function onEnemyHurt(self,dmg)
 end
 
 local function onPlayerHurt(self,dmg)
-	if not playerModel.hasBuff(buffs.SHIELD) and not playerModel.hasBuff(buffs.EVASION) then
+	if not playerModel.hasBuff(buffs.SHIELD) and not playerModel.hasBuff(buffs.EVASION) and not playerModel.ultiCasting then
 		playerModel.setHp(playerModel.hp-dmg.dmg)
 		gameModel.setDamageTaken(gameModel.damageTaken + dmg.dmg)
 		updatePlayerHpText(self)
@@ -515,7 +531,7 @@ local function translate()
 	translator.translate({
 		"watchAdText",
 		"reviveText",
-		"continueText"
+		"continueText",
 	})
 end
 
@@ -607,16 +623,21 @@ function init(self)
 	self.continueBtn = self.druid:new_button("continueBtn",onContinueBtn)
 
 	self.isRevived = false
+	self.rewardSuccess = false
 
 	bridge.advertisement.on("rewarded_state_changed", function (_, state)
 		if state == "opened" then 
 			self.input_enabled = false
 		elseif state == "rewarded" then 
-			onRevive(self)
+			self.rewardSuccess = true
 		elseif state == "failed" then 
 			events.trigger(gameEvents.SHOW_FAILED_PANEL)
 		elseif state == "closed" then 
-			--msg.post("game:/soundController", "playMusic", {url = "#menuMusic"} )
+			if self.rewardSuccess then 
+				events.trigger(gameEvents.SHOW_REVIVE_PANEL)
+			else
+				events.trigger(gameEvents.SHOW_FAILED_PANEL)
+			end
 		end
 	end)
 	
@@ -644,6 +665,7 @@ function init(self)
 	events.subscribe(gameEvents.HIDE_TUTORIAL, onTutorialHide, self)
 	events.subscribe(gameEvents.SHOW_FAILED_PANEL, onShowFailedPanel, self)
 	events.subscribe(gameEvents.HIDE_FAILED_PANEL, onHideFailedPanel, self)
+	events.subscribe(gameEvents.HIDE_REVIVE_PANEL, onRevive, self)
 	
 
 	self.playerHpBar = self.druid:new_progress("playerHpBar", "x")
@@ -723,6 +745,7 @@ function final(self)
 	events.unsubscribe(gameEvents.HIDE_TUTORIAL, onTutorialHide, self)
 	events.unsubscribe(gameEvents.SHOW_FAILED_PANEL, onShowFailedPanel, self)
 	events.unsubscribe(gameEvents.HIDE_FAILED_PANEL, onHideFailedPanel, self)
+	events.unsubscribe(gameEvents.HIDE_REVIVE_PANEL, onRevive, self)
 end
 
 function update(self, dt)

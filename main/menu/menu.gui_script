@@ -6,6 +6,7 @@ local enemyModel = require("main/battle/enemyModel")
 local settingsModel = require("main/settings/settingsModel")
 local storage = require("main/storage/storage")
 local translator = require("main/translator/translator")
+local device = require ("main/utils/device")
 
 local function translate()
 	translator.translate({
@@ -167,6 +168,17 @@ local function initHotkeys(self)
 	gui.set_text(self.hotkeysText, self.hotkeys[hi])
 end
 
+local function checkDevice(self)
+	if device.type ~= "desktop" then
+		local hotkeySettingsNode = gui.get_node("hotkeySettings")
+		local langSettingsNode = gui.get_node("langSettings")
+		gui.set_enabled(hotkeySettingsNode, false)
+		local newPos = gui.get_position(langSettingsNode)
+		newPos.x = 640 
+		gui.set_position(langSettingsNode, newPos)
+	end
+end
+
 function init(self)
 	self.druid = druid.new(self)
 
@@ -222,6 +234,7 @@ function init(self)
 		events.trigger(gameEvents.PLAY_MUSIC,"#menuMusic")
 	end)
 
+	checkDevice(self)
 	translate()
 end
 

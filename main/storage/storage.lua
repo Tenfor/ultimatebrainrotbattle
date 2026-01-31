@@ -28,7 +28,7 @@ function M.saveData()
 		"patapimSkill1", "patapimSkill2", "patapimSkill3", "patapimSkill4", "patapimSkill5", "patapimSkill6", 
 		"patapimPow", "patapimHp", "patapimMana", "patapimCdr", "patapimCrit", "patapimIncome", "patapimGold",
 		--CAPPUCCINO UPGRADES
-		"cappuccinoSkill1", "appuccinoSkill2", "cappuccinoSkill3", "appuccinoSkill4", "cappuccinoSkill5",
+		"cappuccinoSkill1", "cappuccinoSkill2", "cappuccinoSkill3", "cappuccinoSkill4", "cappuccinoSkill5",
 		"cappuccinoStr", "cappuccinoHp", "cappuccinoSpd", "cappuccinoCrit", "cappuccinoIncome", "cappuccinoPrecision", "cappuccinoGold",
 	},
 	function ()
@@ -128,7 +128,7 @@ function M.loadData(onComplete)
 		"patapimSkill1", "patapimSkill2", "patapimSkill3", "patapimSkill4", "patapimSkill5", "patapimSkill6", 
 		"patapimPow", "patapimHp", "patapimMana", "patapimCdr", "patapimCrit", "patapimIncome", "patapimGold",
 		--CAPPUCCINO UPGRADES
-		"cappuccinoSkill1", "appuccinoSkill2", "cappuccinoSkill3", "appuccinoSkill4", "cappuccinoSkill5",
+		"cappuccinoSkill1", "cappuccinoSkill2", "cappuccinoSkill3", "cappuccinoSkill4", "cappuccinoSkill5",
 		"cappuccinoStr", "cappuccinoHp", "cappuccinoSpd", "cappuccinoCrit", "cappuccinoIncome", "cappuccinoPrecision", "cappuccinoGold",
 	},
 	function (_, data)		
@@ -147,7 +147,8 @@ function M.loadData(onComplete)
 		if data.music == "off" then 
 			settingsModel.setMusic(false)
 		end
-		settingsModel.setLang(data.lang or "en")
+		local lang = bridge.platform.language() == "ru" and "ru" or "en"
+		settingsModel.setLang(data.lang or lang)
 		settingsModel.setHotkeys(data.hotkeys or "123456")
 
 		achievements.setDeaths(data.deaths or 0)

@@ -104,7 +104,7 @@ function init(self)
 
 	self.mock = translator.getText(enemyModel.mocks[mockIndex]).text
 
-	translator.translate({"title"})
+	translator.translate({"title", "label"})
 
 	--gui.get_font(node)
 	local font = gui.get_font_resource("game")
@@ -126,15 +126,19 @@ function init(self)
 
 	bridge.advertisement.on("interstitial_state_changed", function (_, state)
 		if state == "failed" then 
+			bridge.platform.send_message("gameplay_started");
 			events.trigger(gameEvents.CHANGE_SCENE,"gameOver","upgrades")		
 			dtypewriter.clear()
 			gameModel.reset()
 		elseif state == "closed" then 
+			bridge.platform.send_message("gameplay_started");
 			events.trigger(gameEvents.CHANGE_SCENE,"gameOver","upgrades")		
 			dtypewriter.clear()
 			gameModel.reset()
 		end
 	end)
+
+	bridge.platform.send_message("gameplay_stopped");
 
 	achievements.setDeaths(achievements.deaths + 1)
 

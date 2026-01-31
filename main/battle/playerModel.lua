@@ -289,6 +289,7 @@ function M.resetBuffs()
 		POISON = 0,
 		EVASION = 0,
 	}
+	M.ultiCasting = false
 end
 
 function M.hasBuff(buff)

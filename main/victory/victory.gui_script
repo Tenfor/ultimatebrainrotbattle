@@ -5,6 +5,7 @@ local gameModel = require("main/battle/gameModel")
 local playerModel = require("main/battle/playerModel")
 local upgradesModel = require("main/upgrades/upgradesModel")
 local translator = require("main/translator/translator")
+local bridge = require("bridge.bridge")
 
 local function onContinueBtn(self)
 	events.trigger(gameEvents.FADE_OUT_MUSIC,"#victoryMusic")
@@ -19,6 +20,7 @@ end
 
 local function onContinueBtn1(self)
 	upgradesModel[playerModel.currentCharacter].gold = upgradesModel[playerModel.currentCharacter].gold+5000
+	bridge.platform.send_message("gameplay_started");
 	events.trigger(gameEvents.CHANGE_SCENE,"victory","menu")
 end
 
@@ -45,7 +47,8 @@ function init(self)
 	self.darkening = gui.get_node("darkening")
 	self.panel = gui.get_node("panel")
 	self.continueBtn1 = self.druid:new_button("continueBtn1", onContinueBtn1)
-	
+
+	bridge.platform.send_message("gameplay_stopped");
 	translate()
 end
 

@@ -80,7 +80,7 @@ local M = {
 	IDS_EVASION_TITLE = {text= "Уклонение", args = {}},
 	IDS_EVASION_DESC = {text= "Уклоняйтесь от всех атак в течение 5 секунд. За каждое уклонение начисляется комбо.", args = {}},
 	IDS_POISON_TITLE = {text= "Ядовитый Кинжал", args = {}},
-	IDS_POISON_DESC = {text= "Расходует 2 очка комбо. Наносит 1x урон немедленно, затем 4x урон в течение 4 секунд.", args = {}},
+	IDS_POISON_DESC = {text= "Расходует 2 очка комбо. Ваша следующая атака нанесет 1x урона немедленно, затем 4x урона в течение 4 секунд.", args = {}},
 	IDS_BLADE_TITLE = {text= "Танец Клинков", args = {}},
 	IDS_BLADE_DESC = {text= "13 попаданий, каждое из которых наносит урон в 0,25 раза больше.", args = {}},
 	IDS_STR_TITLE = {text= "Сила", args = {}},
@@ -148,7 +148,7 @@ local M = {
 	IDS_ENEMIES_DEFEATED = {text= "Побеждённые враги: %a золота", args = {a = 0}},
 	IDS_INCOME_BONUS = {text= "Бонус к доходу: %aX", args = {a = 0}},
 	IDS_TOTAL = {text= "Итого: %a золота", args = {a = 0}},
-	IDS_CONGRATS = {text= "Поздравляем, %a!", args = {a = ""}},
+	IDS_CONGRATS = {text= "Поздравляем!", args = {a = ""}},
 	IDS_STRONGEST = {text= "Ты сильнейший Брэйнрот", args = {}},
 	IDS_THANK_YOU = {text= "Спасибо за игру!", args = {}},
 	IDS_GAME_OVER = {text= "Игра закончена", args = {}},
@@ -157,6 +157,10 @@ local M = {
 	IDS_RESET_SUCCESS_TITLE = {text= "Успех", args = {}},
 	IDS_RESET_SUCCESS_DESC = {text= "Сохраненные данные удалены.", args = {}},
 	IDS_VICTORY_DESC = {text= "Обязательно попробуйте и других персонажей.", args = {}},
+	IDS_REVIVE_SUCCESS = {text= "Вы снова будете сражаться.", args = {}},
+	IDS_ARISE = {text= "Восстань!", args = {}},
+	IDS_MISS_LABEL = {text= "Промах", args = {}},
+	IDS_CRITICAL_LABEL = {text= "Критический", args = {}},
 }
 
 return M

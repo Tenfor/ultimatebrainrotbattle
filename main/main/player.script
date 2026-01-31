@@ -217,8 +217,10 @@ local function updateBuffs(self,dt)
 end
 
 local function setMode(self,newMode)
-	self.mode = newMode
-	events.trigger(gameEvents.SET_PLAYER_MOD,newMode)
+	if self.mode ~= newMode then
+		self.mode = newMode
+		events.trigger(gameEvents.SET_PLAYER_MOD,newMode)
+	end
 end
 
 local function checkCost(skillName)
@@ -235,7 +237,8 @@ end
 
 local function onSkillTrigger(self, skillId)
 	if skillId == skills.WIND_SLASH or skillId == skills.LION_STRIKE or skillId == skills.METEOR_SMASH or skillId == skills.DOUBLE_CUT or skillId == skills.POISON_DAGGER then 
-		setMode(self, self.mode == "normal" and skillId or "normal")
+		--setMode(self, self.mode == "normal" and skillId or "normal") -- use this if you want to cancel on reuse
+		setMode(self, skillId) -- use this if you dont want to cancel on reuse
 	end
 	if skillId == skills.BERSERK then 
 		battleController.berserk(go.get_id())

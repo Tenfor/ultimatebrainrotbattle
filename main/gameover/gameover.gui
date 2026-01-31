@@ -33,7 +33,7 @@ nodes {
     y: 100.0
   }
   type: TYPE_TEXT
-  text: "Continue"
+  text: "IDS_CONTINUE"
   font: "game"
   id: "label"
   parent: "continueBtn"
