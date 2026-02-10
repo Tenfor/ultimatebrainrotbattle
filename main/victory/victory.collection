@@ -42,10 +42,6 @@ embedded_instances {
   "  texture: \\\"/assets/img/bg/bg.atlas\\\"\\n"
   "}\\n"
   "\"\n"
-  "  position {\n"
-  "    x: 640.0\n"
-  "    y: 360.0\n"
-  "  }\n"
   "}\n"
   "embedded_components {\n"
   "  id: \"character\"\n"
@@ -62,8 +58,7 @@ embedded_instances {
   "}\\n"
   "\"\n"
   "  position {\n"
-  "    x: 640.0\n"
-  "    y: 358.0\n"
+  "    y: -2.0\n"
   "    z: 0.1\n"
   "  }\n"
   "  scale {\n"
@@ -72,4 +67,8 @@ embedded_instances {
   "  }\n"
   "}\n"
   ""
+  position {
+    x: 640.0
+    y: 360.0
+  }
 }

@@ -9,6 +9,7 @@ local storage = require("main/storage/storage")
 local bridge = require("bridge.bridge")
 local translator = require("main/translator/translator")
 local settingsModel = require("main/settings/settingsModel")
+local utils = require("main/utils/utils")
 
 local function onTutorialShow(self)
 	self.input_enabled = false
@@ -549,6 +550,11 @@ function init(self)
 	end)
 
 	translate()
+
+	window.set_listener(utils.gui_window_callback)
+	local width, height = window.get_size()
+	local data = {width = width, height = height}
+	utils.gui_window_callback(self,window.WINDOW_EVENT_RESIZED,data)
 end
 
 function final(self)

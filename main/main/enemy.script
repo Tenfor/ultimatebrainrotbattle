@@ -570,6 +570,8 @@ function init(self)
 	events.subscribe(gameEvents.END_PLAYER_ULTI_CASTING, OnEndPlayerUltiCasting,self)
 	events.subscribe(gameEvents.END_ENEMY_ULTI_CASTING, OnEndEnemyUltiCasting,self)
 	events.subscribe(gameEvents.HIDE_TUTORIAL, onHideTutorial, self)
+
+	go.set("#sprite", "tint.w", 0)
 	--go.animate("#sprite", "color_add.w", go.PLAYBACK_LOOP_PINGPONG, 1, go.EASING_LINEAR, 2)		
 end
 

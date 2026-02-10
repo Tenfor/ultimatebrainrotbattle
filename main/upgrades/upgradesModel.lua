@@ -178,7 +178,7 @@ local M = {
 			title = "IDS_MANA_TITLE",
 			description = "IDS_MANA_DESC",
 			prices = {8,25,120,200,310,500},
-			values = {10,20,45,85,130,200,400},
+			values = {10,20,45,85,130,200,450},
 			lvl = 0, 
 		},
 		cdr = {

@@ -6,6 +6,7 @@ local playerModel = require("main/battle/playerModel")
 local achievements = require("main/achievements/achievements")
 local translator = require("main/translator/translator")
 local storage = require("main/storage/storage")
+local utils = require("main/utils/utils")
 
 local function checkUnlocks(self)
 	gui.set_color(self.pataSprite, achievements.isPatapimUnlocked() and vmath.vector4(1,1,1,1) or vmath.vector4(0,0,0,1))
@@ -133,6 +134,11 @@ function init(self)
 	checkSelectedCharacter(self)
 
 	translate()
+
+	window.set_listener(utils.gui_window_callback)
+	local width, height = window.get_size()
+	local data = {width = width, height = height}
+	utils.gui_window_callback(self,window.WINDOW_EVENT_RESIZED,data)
 end
 
 function final(self)

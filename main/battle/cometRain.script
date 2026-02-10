@@ -73,6 +73,7 @@ function init(self)
 	self.comet4StartPos = go.get_position("comet4")
 
 	battleController.addCd(skills.COMET_RAIN,self.enemyCasted)
+	battleController.payResourceCost(skills.COMET_RAIN, self.enemyCasted)
 	
 	self.targetPos = vmath.vector3(enemyModel.enterPos[1],enemyModel.enterPos[2],enemyModel.enterPos[3])
 	-- comet1: 0.3 mp után

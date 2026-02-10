@@ -1,0 +1,8 @@
+local utils = require("main/utils/utils")
+
+function init(self)
+	window.set_listener(utils.go_window_callback)
+	local width, height = window.get_size()
+	local data = {width = width, height = height}
+	utils.go_window_callback(self,window.WINDOW_EVENT_RESIZED,data)
+end

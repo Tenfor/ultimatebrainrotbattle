@@ -1,8 +1,14 @@
 local playerModel = require("main/battle/playerModel")
+local utils = require("main/utils/utils")
 
 function init(self)
 	sprite.play_flipbook("#character", playerModel.currentCharacter.."_win")	
 	go.set("#bg", "tint", vmath.vector4(0.5,0.5,0.5,1))
+
+	window.set_listener(utils.go_window_callback)
+	local width, height = window.get_size()
+	local data = {width = width, height = height}
+	utils.go_window_callback(self,window.WINDOW_EVENT_RESIZED,data)
 end
 
 function final(self)

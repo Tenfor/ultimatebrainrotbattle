@@ -267,9 +267,6 @@ local function onSkillTrigger(self, skillId)
 	if skillId == skills.COMET_RAIN then 
 		battleController.startCasting(skillId)
 	end
-	if skillId == skills.COMET_RAIN then 
-		battleController.startCasting(skillId)
-	end
 	if skillId == skills.BLADE_DANCE then 
 		battleController.startCasting(skillId)
 	end

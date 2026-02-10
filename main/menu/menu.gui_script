@@ -7,6 +7,7 @@ local settingsModel = require("main/settings/settingsModel")
 local storage = require("main/storage/storage")
 local translator = require("main/translator/translator")
 local device = require ("main/utils/device")
+local utils = require ("main/utils/utils")
 
 local function translate()
 	translator.translate({
@@ -236,6 +237,11 @@ function init(self)
 
 	checkDevice(self)
 	translate()
+
+	window.set_listener(utils.gui_window_callback)
+	local width, height = window.get_size()
+	local data = {width = width, height = height}
+	utils.gui_window_callback(self,window.WINDOW_EVENT_RESIZED,data)
 end
 
 function final(self)

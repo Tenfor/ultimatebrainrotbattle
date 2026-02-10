@@ -24,9 +24,25 @@ nodes {
   type: TYPE_BOX
   id: "panel"
   inherit_alpha: true
-  alpha: 0.5
+  alpha: 0.0
   size_mode: SIZE_MODE_AUTO
   enabled: false
+}
+nodes {
+  size {
+    x: 4000.0
+    y: 4000.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "darkening"
+  parent: "panel"
+  alpha: 0.5
+  size_mode: SIZE_MODE_AUTO
 }
 nodes {
   scale {
